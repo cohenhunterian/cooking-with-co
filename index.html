@@ -614,7 +614,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
   <div class="container" style="margin-bottom:48px;padding-top:32px;">
     <div style="text-align:center;margin-bottom:28px;max-width:600px;margin-left:auto;margin-right:auto;">
       <div style="font-size:11px;font-weight:500;color:var(--dim);text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px;">Our mission</div>
-      <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,3.5vw,36px);font-weight:600;line-height:1.2;margin:0 0 12px;letter-spacing:-.01em;color:var(--text);">Michelin chef inspiration, meets accessible home food.</h2>
+      <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,3.5vw,36px);font-weight:600;line-height:1.2;margin:0 0 12px;letter-spacing:-.01em;color:var(--text);">Michelin chef inspiration, meets food kids actually make.</h2>
       <p style="font-size:14px;color:var(--dim);line-height:1.6;margin:0;">We take what world-class chefs do, and ask: can a kid make this for school tomorrow? Or for dinner tonight?</p>
     </div>
     
@@ -658,21 +658,15 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
   <!-- AI CHEF BUDDY -->
   <div class="container" style="margin-bottom:56px;">
     <div style="background:var(--bg3);border:1px solid var(--border);border-radius:24px;padding:48px 32px;text-align:center;">
-      <div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:16px;">🔥 AI Chef Buddy</div>
-      <h2 style="font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,56px);font-weight:600;line-height:1.05;margin:0 0 14px;letter-spacing:-.02em;color:var(--text);">Stuck? Just ask.</h2>
-      <p style="font-size:15px;line-height:1.65;color:var(--dim);margin:0 auto 28px;max-width:520px;">Tell us what you have, what you're craving, or how much time you've got. We'll find the right recipe.</p>
+      <div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:16px;">✨ Ask Co</div>
+      <h2 style="font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,56px);font-weight:600;line-height:1.05;margin:0 0 14px;letter-spacing:-.02em;color:var(--text);">Nothing sounds good?</h2>
+      <p style="font-size:15px;line-height:1.65;color:var(--dim);margin:0 auto 28px;max-width:520px;">Tell Co what you're feeling — school lunch tomorrow, a quick snack, or dinner tonight. Chef-inspired recipes, actually makeable.</p>
       
       <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:18px;max-width:600px;margin:0 auto;text-align:left;">
         <div id="ai-chat" style="max-height:380px;overflow-y:auto;margin-bottom:12px;">
-          <div class="ai-msg ai-msg-bot" style="margin-bottom:0;">Hey! 👋 Tell me what you’re feeling — ingredients, a craving, school lunch tomorrow, or a fancy dinner. I’ll find the right recipe.</div>
+          <div class="ai-msg ai-msg-bot" style="margin-bottom:0;">What are you feeling? Pick something below and I’ll narrow it down. 🍳</div>
         </div>
-        <div id="ai-suggestions" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;justify-content:center;">
-          <button class="ai-prompt">🎒 Pack for school</button>
-          <button class="ai-prompt">🥚 Quick snack</button>
-          <button class="ai-prompt">⏰ Dinner in 20</button>
-          <button class="ai-prompt">🍕 I'm hungry</button>
-          <button class="ai-prompt">🤩 Impress my parents</button>
-        </div>
+        <div id="ai-suggestions" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;justify-content:center;"></div>
         <div style="display:flex;gap:8px;">
           <input type="text" id="ai-input" placeholder="Type ingredients or ask anything..." autocomplete="off" style="flex:1;background:var(--bg3);border:1.5px solid transparent;border-radius:14px;padding:12px 16px;color:var(--text);font-size:13px;outline:none;font-family:'Sora',sans-serif;"/>
           <button class="ai-send-btn" style="padding:12px 18px;border-radius:14px;border:none;background:var(--accent);color:white;font-size:16px;font-weight:600;cursor:pointer;">→</button>
@@ -2270,18 +2264,19 @@ function doBuddyChat(){
   
   // Try the API proxy first (if configured), else use local
   if (window.BUDDY_PROXY_URL) {
-    callBuddyProxy(msg, chatEl, clearTyping);
+    callBuddyProxy(msg, chatEl, clearTyping, showCoReset);
   } else {
     setTimeout(function(){
       clearTyping();
       localBuddyReply(msg, chatEl);
+      showCoReset();
     }, 400);
   }
 }
 
 // Call your backend proxy (Cloudflare Worker, Vercel function, etc.)
 // Set window.BUDDY_PROXY_URL = 'https://your-proxy.workers.dev' to enable
-function callBuddyProxy(msg, chatEl, clearTyping){
+function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
   // Build minimal context: recipes + chefs (just titles + IDs to keep payload small)
   var recipeCtx = recipes.map(function(r){
     return {id:r.id, title:r.title, chef:r.chef, time:r.time, cost:r.cost, hs:r.hs, tags:r.tags};
@@ -2360,11 +2355,13 @@ function callBuddyProxy(msg, chatEl, clearTyping){
       chatEl.appendChild(grid);
     }
     chatEl.scrollTop = chatEl.scrollHeight;
+    if (typeof onComplete === 'function') onComplete();
   })
   .catch(function(err){
     clearTyping();
     console.warn('Proxy failed, falling back to local:', err);
     localBuddyReply(buddyHistory[buddyHistory.length-1].content, chatEl);
+    if (typeof onComplete === 'function') onComplete();
   });
 }
 
@@ -2711,31 +2708,165 @@ function localBuddyReply(msg, chatEl){
   var random = recipes.filter(function(r){return state.lastShownIds.indexOf(r.id) < 0;}).sort(function(){return Math.random()-.5;}).slice(0, 4);
   reply('Here are some popular picks to try! 🔥 Or tell me an ingredient, time available, or mood (fancy/easy/healthy/etc) for tailored suggestions 👇', random);
 }
-document.addEventListener('DOMContentLoaded', function(){
-  var suggestions = document.getElementById('ai-suggestions');
-  if(suggestions){
-    suggestions.querySelectorAll('button').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var text = this.textContent.replace(/^[^a-zA-Z]+/, '').trim();
-        var prompts = {
-          "I'm hungry": "I am hungry, what can I make?",
-          "Quick dinner tonight": "What is something quick I can make for dinner tonight?",
-          "Bored of the same food": "I am so bored of eating the same thing every day",
-          "School lunch ideas": "I need to pack a school lunch for tomorrow",
-          "Impress my parents": "I want to cook something that will impress my parents",
-          "What's in the fridge": "What can I make with what is already in the fridge?"
-        };
-        var msg = prompts[text] || text;
-        document.getElementById('ai-input').value = msg;
-        doBuddyChat();
-      });
+// === ASK CO — GUIDED CONVERSATION FLOW ===
+var coFlow = { step: 'start', context: {} };
+
+var coSteps = {
+  start: { pills: [
+    { label: '🎒 What do I pack tomorrow?', action: 'school'  },
+    { label: '⚡ I\'m starving',            action: 'hungry'  },
+    { label: '🍝 What\'s for dinner?',      action: 'dinner'  },
+    { label: '🍗 I\'m hungry',              action: 'hungry'  }
+  ]},
+  snack_or_meal: { question: 'Snack or a full meal?', pills: [
+    { label: '🍫 Just a snack', action: 'snack' },
+    { label: '🍽 Full meal',    action: 'meal'  }
+  ]},
+  snack_type: { question: 'Sweet or savory?', pills: [
+    { label: '🍫 Sweet',        action: 'sweet_snack'  },
+    { label: '🧀 Savory',       action: 'savory_snack' },
+    { label: '🤷 Either works', action: 'any_snack'    }
+  ]},
+  meal_type: { question: 'Which one?', pills: [
+    { label: '🌅 Breakfast', action: 'breakfast'   },
+    { label: '☀️ Lunch',     action: 'lunch'       },
+    { label: '🌙 Dinner',    action: 'dinner_meal' }
+  ]},
+  time: { question: 'How much time do you have?', pills: [
+    { label: '⚡ Under 10 min',   action: 'time_10' },
+    { label: '🕐 About 20 min',   action: 'time_20' },
+    { label: '🍳 I\'ve got time', action: 'time_30' }
+  ]}
+};
+
+function renderCoPills(step) {
+  var sug = document.getElementById('ai-suggestions');
+  if (!sug) return;
+  sug.innerHTML = '';
+  sug.style.display = 'flex';
+  var stepData = coSteps[step] || coSteps.start;
+  stepData.pills.forEach(function(pill) {
+    var btn = document.createElement('button');
+    btn.className = 'ai-prompt';
+    btn.textContent = pill.label;
+    btn.addEventListener('click', function() {
+      var chatEl = document.getElementById('ai-chat');
+      if (!chatEl || buddyTyping) return;
+      var ud = document.createElement('div');
+      ud.className = 'ai-msg ai-msg-user';
+      ud.textContent = pill.label;
+      chatEl.appendChild(ud);
+      chatEl.scrollTop = chatEl.scrollHeight;
+      handleCoAction(pill.action, chatEl);
     });
+    sug.appendChild(btn);
+  });
+}
+
+function showCoQuestion(stepKey, chatEl) {
+  var stepData = coSteps[stepKey];
+  if (!stepData || !stepData.question) return;
+  var d = document.createElement('div');
+  d.className = 'ai-msg ai-msg-bot';
+  d.textContent = stepData.question;
+  chatEl.appendChild(d);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  renderCoPills(stepKey);
+}
+
+function handleCoAction(action, chatEl) {
+  var ctx = coFlow.context;
+  if (action === 'school') {
+    ctx.meal = 'a school lunch to pack tomorrow';
+    coFlow.step = 'time'; showCoQuestion('time', chatEl);
+  } else if (action === 'dinner') {
+    ctx.meal = 'dinner';
+    coFlow.step = 'time'; showCoQuestion('time', chatEl);
+  } else if (action === 'hungry') {
+    coFlow.step = 'snack_or_meal'; showCoQuestion('snack_or_meal', chatEl);
+  } else if (action === 'snack') {
+    coFlow.step = 'snack_type'; showCoQuestion('snack_type', chatEl);
+  } else if (action === 'meal') {
+    coFlow.step = 'meal_type'; showCoQuestion('meal_type', chatEl);
+  } else if (action === 'sweet_snack') {
+    ctx.meal = 'a sweet snack'; coFlow.step = 'time'; showCoQuestion('time', chatEl);
+  } else if (action === 'savory_snack') {
+    ctx.meal = 'a savory snack'; coFlow.step = 'time'; showCoQuestion('time', chatEl);
+  } else if (action === 'any_snack') {
+    ctx.meal = 'a snack'; coFlow.step = 'time'; showCoQuestion('time', chatEl);
+  } else if (action === 'breakfast') {
+    ctx.meal = 'breakfast'; coFlow.step = 'time'; showCoQuestion('time', chatEl);
+  } else if (action === 'lunch') {
+    ctx.meal = 'lunch'; coFlow.step = 'time'; showCoQuestion('time', chatEl);
+  } else if (action === 'dinner_meal') {
+    ctx.meal = 'dinner'; coFlow.step = 'time'; showCoQuestion('time', chatEl);
+  } else if (action === 'time_10') {
+    ctx.time = 'under 10 minutes'; fireCoQuery(chatEl);
+  } else if (action === 'time_20') {
+    ctx.time = 'about 20 minutes'; fireCoQuery(chatEl);
+  } else if (action === 'time_30') {
+    ctx.time = 'no rush, 30+ minutes'; fireCoQuery(chatEl);
   }
+}
+
+function showCoReset() {
+  var sug = document.getElementById('ai-suggestions');
+  if (!sug) return;
+  sug.innerHTML = '';
+  sug.style.display = 'flex';
+  var btn = document.createElement('button');
+  btn.className = 'ai-prompt';
+  btn.textContent = '🔄 Ask something else';
+  btn.addEventListener('click', function() {
+    coFlow = { step: 'start', context: {} };
+    renderCoPills('start');
+  });
+  sug.appendChild(btn);
+}
+
+function fireCoQuery(chatEl) {
+  var ctx = coFlow.context;
+  var query = 'I want ' + (ctx.meal || 'something to eat') + (ctx.time ? '. I have ' + ctx.time + '.' : '.');
+  coFlow = { step: 'start', context: {} };
+
+  var sug = document.getElementById('ai-suggestions');
+  if (sug) sug.style.display = 'none';
+
+  buddyHistory.push({role:'user', content: query});
+  buddyTyping = true;
+
+  var typingDiv = document.createElement('div');
+  typingDiv.className = 'ai-msg ai-msg-bot';
+  typingDiv.id = 'buddy-typing';
+  typingDiv.innerHTML = '<span style="display:inline-flex;gap:4px;align-items:center;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite"></span><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite .2s"></span><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite .4s"></span></span>';
+  chatEl.appendChild(typingDiv);
+  chatEl.scrollTop = chatEl.scrollHeight;
+
+  function clearTyping(){
+    var t = document.getElementById('buddy-typing');
+    if(t) t.remove();
+    buddyTyping = false;
+  }
+
+  if (window.BUDDY_PROXY_URL) {
+    callBuddyProxy(query, chatEl, clearTyping, showCoReset);
+  } else {
+    setTimeout(function(){
+      clearTyping();
+      localBuddyReply(query, chatEl);
+      showCoReset();
+    }, 400);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  renderCoPills('start');
+
   var aiInput = document.getElementById('ai-input');
   if(aiInput) aiInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') doBuddyChat(); });
   var sendBtns = document.querySelectorAll('.ai-send-btn');
   sendBtns.forEach(function(btn){ btn.addEventListener('click', function(){ doBuddyChat(); }); });
-  
+
   var sfInput = document.getElementById('sf-search-input');
   if(sfInput) sfInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') window.doSFSearchNew(); });
 });
