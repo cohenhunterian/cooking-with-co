@@ -616,7 +616,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
   </div>
 
   <!-- THREE VALUES -->
-  <div class="container" style="padding-bottom:20px;">
+  <div class="container" style="padding-bottom:36px;">
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;">
         <div style="font-family:’Fraunces’,serif;font-size:15px;font-weight:600;color:var(--accent);margin-bottom:6px;">01 · Chef-inspired</div>
@@ -635,14 +635,22 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 
   <!-- ASK CO — THE HERO -->
   <div class="container" style="padding-bottom:32px;">
+    <!-- Section label + description -->
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;">✨ Ask Co</span>
+        <span style="width:1px;height:12px;background:var(--border);display:inline-block;"></span>
+        <span style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;font-weight:600;">AI Chef Assistant</span>
+      </div>
+      <h2 style="font-family:’Fraunces’,serif;font-size:clamp(20px,2.8vw,28px);font-weight:700;color:var(--text);margin:0 0 4px;">What are you hungry for?</h2>
+      <p style="font-size:13px;color:var(--dim);margin:0;">Tell Co what you’re in the mood for — time, vibe, meal type — and get chef-caliber recipes you can actually make.</p>
+    </div>
     <div id="ai-suggestions" style="display:none;"></div>
     <div id="ai-chat-wrap" style="background:rgba(46,204,113,0.07);border:1.5px solid rgba(46,204,113,0.3);border-radius:20px;overflow:hidden;">
       <!-- Header row -->
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 14px;border-bottom:1px solid rgba(46,204,113,0.2);">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px 12px;border-bottom:1px solid rgba(46,204,113,0.2);">
         <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:10px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;">✨ Ask Co</span>
-          <span style="color:rgba(46,204,113,0.3);">·</span>
-          <span style="font-family:’Fraunces’,serif;font-size:20px;font-weight:600;color:var(--text);letter-spacing:-.01em;">I’m Hungry for:</span>
+          <span style="font-family:’Fraunces’,serif;font-size:16px;font-weight:600;color:var(--text);letter-spacing:-.01em;">I’m Hungry for:</span>
         </div>
       </div>
       <!-- Chat area -->
@@ -2345,37 +2353,30 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
       recipeBlocks.push({ name: m[1].trim(), desc: m[2].trim() });
     }
 
+    // Record current scrollHeight so we can scroll to top of new content
+    var scrollAnchor = chatEl.scrollHeight;
+
     // Show setup bubble if there's intro text
     if (setup) {
       var setupEl = document.createElement('div');
       setupEl.className = 'ai-msg ai-msg-bot';
       setupEl.textContent = setup;
       chatEl.appendChild(setupEl);
+      scrollAnchor = setupEl.offsetTop;
     }
 
     if (recipeIds.length > 0) {
-      // 2-col grid: description left, image right
+      // 2-col grid: image left, description right
       recipeIds.slice(0, 4).forEach(function(r, i) {
         var desc = recipeBlocks[i] ? recipeBlocks[i].desc : '';
 
         var row = document.createElement('div');
-        row.style.cssText = 'display:grid;grid-template-columns:1fr 160px;gap:14px;align-items:start;background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;';
+        row.style.cssText = 'display:grid;grid-template-columns:200px 1fr;gap:14px;align-items:start;background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;';
 
-        // Left: name + description
+        // Left: image + open button
         var left = document.createElement('div');
-        var nameEl = document.createElement('div');
-        nameEl.style.cssText = 'font-family:"Fraunces",serif;font-size:16px;font-weight:700;margin-bottom:6px;color:var(--text);';
-        nameEl.textContent = r.title;
-        var descEl = document.createElement('div');
-        descEl.style.cssText = 'font-size:13px;line-height:1.65;color:var(--dim);';
-        descEl.textContent = desc || (r.chef + ' · ' + r.time);
-        left.appendChild(nameEl);
-        left.appendChild(descEl);
-
-        // Right: image + open button
-        var right = document.createElement('div');
-        right.style.cssText = 'cursor:pointer;';
-        right.onclick = function(){
+        left.style.cssText = 'cursor:pointer;';
+        left.onclick = function(){
           if (r.id.indexOf('sf-') === 0 && window.openSFDetail) window.openSFDetail(r.id);
           else if (window.openBuddyRecipe) window.openBuddyRecipe(r.id);
         };
@@ -2389,12 +2390,26 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
         var openBtn = document.createElement('div');
         openBtn.style.cssText = 'font-size:12px;font-weight:600;color:var(--accent);text-align:center;';
         openBtn.textContent = 'View recipe →';
-        right.appendChild(imgWrap);
-        right.appendChild(openBtn);
+        left.appendChild(imgWrap);
+        left.appendChild(openBtn);
+
+        // Right: name + description
+        var right = document.createElement('div');
+        var nameEl = document.createElement('div');
+        nameEl.style.cssText = 'font-family:"Fraunces",serif;font-size:16px;font-weight:700;margin-bottom:6px;color:var(--text);';
+        nameEl.textContent = r.title;
+        var descEl = document.createElement('div');
+        descEl.style.cssText = 'font-size:13px;line-height:1.65;color:var(--dim);';
+        descEl.textContent = desc || (r.chef + ' · ' + r.time);
+        right.appendChild(nameEl);
+        right.appendChild(descEl);
 
         row.appendChild(left);
         row.appendChild(right);
         chatEl.appendChild(row);
+
+        // Anchor scroll to top of first recipe card
+        if (i === 0 && !setup) scrollAnchor = row.offsetTop;
       });
     } else if (!setup) {
       // Fallback: plain text if no recipes parsed
@@ -2402,9 +2417,11 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
       fallbackEl.className = 'ai-msg ai-msg-bot';
       fallbackEl.innerHTML = cleanText.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
       chatEl.appendChild(fallbackEl);
+      scrollAnchor = fallbackEl.offsetTop;
     }
 
-    chatEl.scrollTop = chatEl.scrollHeight;
+    // Scroll to top of new content, not the bottom
+    chatEl.scrollTop = scrollAnchor;
     if (typeof onComplete === 'function') onComplete();
   })
   .catch(function(err){
