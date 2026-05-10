@@ -643,35 +643,30 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     </div>
   </div>
 
-  <!-- SCHOOL FUEL MOMENT - lighter, centered -->
-  <div class="container" style="margin-bottom:56px;">
-    <div onclick="showPage('school')" style="background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:48px 32px;cursor:pointer;text-align:center;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='var(--accent)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border)'">
-      <div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:16px;">🎒 School Fuel · Where it comes together</div>
-      <h2 style="font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,56px);font-weight:600;line-height:1.05;margin:0 0 14px;letter-spacing:-.02em;color:var(--text);">School Fuel.</h2>
-      <p style="font-family:'Fraunces',serif;font-style:italic;font-size:clamp(17px,1.8vw,20px);line-height:1.4;color:var(--accent);margin:0 0 20px;font-weight:400;">Michelin at home, packed in a lunchbox.</p>
-      <p style="font-size:15px;line-height:1.65;color:var(--dim);margin:0 auto 28px;max-width:520px;">100 snacks and lunches you can pack the night before. Real ingredients, real flavor. The heart of what we do.</p>
-      <div style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;padding:13px 28px;border-radius:100px;font-size:14px;font-weight:600;">Browse School Fuel →</div>
-      <div style="margin-top:14px;font-size:12px;color:var(--dim);">100 recipes · mostly under 20 minutes</div>
+  <!-- ASK CO — I’M HUNGRY FOR HERO -->
+  <div style="text-align:center;padding:56px 24px 64px;max-width:800px;margin:0 auto;">
+    <div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:20px;">✨ Ask Co</div>
+    <h2 style="font-family:’Fraunces’,serif;font-size:clamp(52px,9vw,96px);font-weight:600;line-height:.92;letter-spacing:-.03em;color:var(--text);margin:0 0 24px;">I’m Hungry<br>for:</h2>
+    <div style="max-width:560px;margin:0 auto 20px;">
+      <input type="text" id="ai-input" placeholder="pasta, a snack, school lunch..." autocomplete="off"
+        style="width:100%;background:transparent;border:none;border-bottom:3px solid var(--accent);outline:none;font-family:’Fraunces’,serif;font-size:clamp(22px,3.5vw,30px);font-weight:400;color:var(--text);padding:8px 4px 14px;text-align:center;letter-spacing:-.01em;font-style:italic;"/>
+    </div>
+    <div id="ai-suggestions" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:24px;"></div>
+    <button class="ai-send-btn" onclick="doBuddyChat()" style="padding:14px 32px;border-radius:100px;border:none;background:var(--accent);color:white;font-size:15px;font-weight:600;cursor:pointer;font-family:’Sora’,sans-serif;box-shadow:0 4px 16px rgba(46,204,113,.25);">Find something good →</button>
+    <div id="ai-chat-wrap" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:18px;max-width:640px;margin:28px auto 0;text-align:left;">
+      <div id="ai-chat" style="max-height:420px;overflow-y:auto;"></div>
     </div>
   </div>
 
-  <!-- AI CHEF BUDDY -->
-  <div class="container" style="margin-bottom:56px;">
-    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:24px;padding:48px 32px;text-align:center;">
-      <div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:16px;">✨ Ask Co</div>
-      <h2 style="font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,56px);font-weight:600;line-height:1.05;margin:0 0 14px;letter-spacing:-.02em;color:var(--text);">Nothing sounds good?</h2>
-      <p style="font-size:15px;line-height:1.65;color:var(--dim);margin:0 auto 28px;max-width:520px;">Tell Co what you're feeling — school lunch tomorrow, a quick snack, or dinner tonight. Chef-inspired recipes, actually makeable.</p>
-      
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:18px;max-width:600px;margin:0 auto;text-align:left;">
-        <div id="ai-chat" style="max-height:380px;overflow-y:auto;margin-bottom:12px;">
-          <div class="ai-msg ai-msg-bot" style="margin-bottom:0;">What are you feeling? Pick something below and I’ll narrow it down. 🍳</div>
-        </div>
-        <div id="ai-suggestions" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;justify-content:center;"></div>
-        <div style="display:flex;gap:8px;">
-          <input type="text" id="ai-input" placeholder="Type ingredients or ask anything..." autocomplete="off" style="flex:1;background:var(--bg3);border:1.5px solid transparent;border-radius:14px;padding:12px 16px;color:var(--text);font-size:13px;outline:none;font-family:'Sora',sans-serif;"/>
-          <button class="ai-send-btn" style="padding:12px 18px;border-radius:14px;border:none;background:var(--accent);color:white;font-size:16px;font-weight:600;cursor:pointer;">→</button>
-        </div>
+  <!-- SCHOOL FUEL TEASER -->
+  <div class="container" style="margin-bottom:32px;">
+    <div onclick="showPage(‘school’)" style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:22px 28px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:transform .2s,border-color .2s;" onmouseover="this.style.transform=’translateY(-2px)’;this.style.borderColor=’var(--accent)’" onmouseout="this.style.transform=’’;this.style.borderColor=’var(--border)’">
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">🎒 School Fuel</div>
+        <div style="font-family:’Fraunces’,serif;font-size:20px;font-weight:600;color:var(--text);margin-bottom:3px;">Michelin at home, packed in a lunchbox.</div>
+        <div style="font-size:13px;color:var(--dim);">100 snacks and lunches · mostly under 20 min</div>
       </div>
+      <div style="font-size:15px;color:var(--accent);font-weight:600;flex-shrink:0;margin-left:24px;">Browse →</div>
     </div>
   </div>
 
@@ -758,10 +753,11 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 <div class="page" id="page-school">
   <div class="container" style="padding-top:28px;">
     <!-- SF Hero -->
-    <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:24px;padding:32px 28px;margin-bottom:24px;">
-      <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">🎒 School Fuel</div>
-      <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;">Lunch & snacks that<br>are <em style="color:#8bc34a;">actually good.</em></div>
-      <div style="font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;">100 recipes. Quick to make. No more sad sandwiches.</div>
+    <div style="background:var(--bg2);border:1px solid rgba(46,204,113,.2);border-radius:24px;padding:48px 32px;margin-bottom:24px;text-align:center;">
+      <div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:16px;">🎒 School Fuel · Where it comes together</div>
+      <h1 style="font-family:'Fraunces',serif;font-size:clamp(44px,6vw,72px);font-weight:600;line-height:1;margin:0 0 14px;letter-spacing:-.02em;color:var(--text);">School Fuel.</h1>
+      <p style="font-family:'Fraunces',serif;font-style:italic;font-size:clamp(17px,1.8vw,22px);line-height:1.4;color:var(--accent);margin:0 0 16px;font-weight:400;">Michelin at home, packed in a lunchbox.</p>
+      <p style="font-size:15px;line-height:1.65;color:var(--dim);margin:0 auto;max-width:480px;">100 snacks and lunches you can pack the night before. Real ingredients, real flavor. The heart of what we do.</p>
     </div>
 
     <!-- SF Search -->
@@ -2241,6 +2237,7 @@ function doBuddyChat(){
   ud.textContent = msg;
   chatEl.appendChild(ud);
   
+  showChatArea();
   var sug = document.getElementById('ai-suggestions');
   if(sug) sug.style.display = 'none';
   input.value = '';
@@ -2713,10 +2710,12 @@ var coFlow = { step: 'start', context: {} };
 
 var coSteps = {
   start: { pills: [
-    { label: '🎒 What do I pack tomorrow?', action: 'school'  },
-    { label: '⚡ I\'m starving',            action: 'hungry'  },
-    { label: '🍝 What\'s for dinner?',      action: 'dinner'  },
-    { label: '🍗 I\'m hungry',              action: 'hungry'  }
+    { label: '🍝 pasta',                action: 'direct', query: 'I\'m hungry for pasta'                                    },
+    { label: '⚡ a quick snack',         action: 'direct', query: 'I want a quick snack, under 10 minutes'                  },
+    { label: '🎒 school lunch',          action: 'direct', query: 'I need a school lunch to pack tomorrow'                  },
+    { label: '🍳 breakfast',             action: 'direct', query: 'I want to make breakfast'                                },
+    { label: '🌙 dinner tonight',        action: 'direct', query: 'I want to make dinner tonight'                           },
+    { label: '🌟 something impressive',  action: 'direct', query: 'I want to cook something chef-level that impresses people'}
   ]},
   snack_or_meal: { question: 'Snack or a full meal?', pills: [
     { label: '🍫 Just a snack', action: 'snack' },
@@ -2739,6 +2738,11 @@ var coSteps = {
   ]}
 };
 
+function showChatArea() {
+  var wrap = document.getElementById('ai-chat-wrap');
+  if (wrap) wrap.style.display = 'block';
+}
+
 function renderCoPills(step) {
   var sug = document.getElementById('ai-suggestions');
   if (!sug) return;
@@ -2750,14 +2754,41 @@ function renderCoPills(step) {
     btn.className = 'ai-prompt';
     btn.textContent = pill.label;
     btn.addEventListener('click', function() {
-      var chatEl = document.getElementById('ai-chat');
-      if (!chatEl || buddyTyping) return;
-      var ud = document.createElement('div');
-      ud.className = 'ai-msg ai-msg-user';
-      ud.textContent = pill.label;
-      chatEl.appendChild(ud);
-      chatEl.scrollTop = chatEl.scrollHeight;
-      handleCoAction(pill.action, chatEl);
+      if (buddyTyping) return;
+      if (pill.action === 'direct') {
+        // Direct-fire: show label as user bubble, send query to API
+        showChatArea();
+        var chatEl = document.getElementById('ai-chat');
+        if (!chatEl) return;
+        var ud = document.createElement('div');
+        ud.className = 'ai-msg ai-msg-user';
+        ud.textContent = pill.label;
+        chatEl.appendChild(ud);
+        chatEl.scrollTop = chatEl.scrollHeight;
+        var sug2 = document.getElementById('ai-suggestions');
+        if (sug2) sug2.style.display = 'none';
+        buddyHistory.push({role:'user', content: pill.query});
+        buddyTyping = true;
+        var typingDiv = document.createElement('div');
+        typingDiv.className = 'ai-msg ai-msg-bot';
+        typingDiv.id = 'buddy-typing';
+        typingDiv.innerHTML = '<span style="display:inline-flex;gap:4px;align-items:center;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite"></span><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite .2s"></span><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite .4s"></span></span>';
+        chatEl.appendChild(typingDiv);
+        chatEl.scrollTop = chatEl.scrollHeight;
+        function clearTyping(){ var t=document.getElementById('buddy-typing'); if(t)t.remove(); buddyTyping=false; }
+        if (window.BUDDY_PROXY_URL) callBuddyProxy(pill.query, chatEl, clearTyping, showCoReset);
+        else { setTimeout(function(){ clearTyping(); localBuddyReply(pill.query, chatEl); showCoReset(); }, 400); }
+      } else {
+        var chatEl = document.getElementById('ai-chat');
+        if (!chatEl) return;
+        showChatArea();
+        var ud = document.createElement('div');
+        ud.className = 'ai-msg ai-msg-user';
+        ud.textContent = pill.label;
+        chatEl.appendChild(ud);
+        chatEl.scrollTop = chatEl.scrollHeight;
+        handleCoAction(pill.action, chatEl);
+      }
     });
     sug.appendChild(btn);
   });
