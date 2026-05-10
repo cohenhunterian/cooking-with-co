@@ -666,40 +666,37 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     </div>
   </div>
 
-  <!-- SCHOOL FUEL TEASER -->
+  <!-- THE CHEFS — right below Ask Co -->
   <div class="container" style="margin-bottom:32px;">
-    <div onclick="showPage(‘school’)" style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:22px 28px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:transform .2s,border-color .2s;" onmouseover="this.style.transform=’translateY(-2px)’;this.style.borderColor=’var(--accent)’" onmouseout="this.style.transform=’’;this.style.borderColor=’var(--border)’">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
       <div>
-        <div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">🎒 School Fuel</div>
-        <div style="font-family:’Fraunces’,serif;font-size:20px;font-weight:600;color:var(--text);margin-bottom:3px;">Michelin at home, packed in a lunchbox.</div>
-        <div style="font-size:13px;color:var(--dim);">100 snacks and lunches · mostly under 20 min</div>
+        <div style="font-family:’Fraunces’,serif;font-size:20px;font-weight:700;">The chefs</div>
+        <div style="font-size:12px;color:var(--dim);margin-top:2px;">Michelin stars. James Beard winners. YouTube legends.</div>
       </div>
-      <div style="font-size:15px;color:var(--accent);font-weight:600;flex-shrink:0;margin-left:24px;">Browse →</div>
+      <a onclick="showPage(‘more’)" style="font-size:12px;color:var(--accent);font-weight:600;cursor:pointer;white-space:nowrap;">All 27 →</a>
     </div>
+    <div id="home-chef-row" style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;"></div>
   </div>
 
-  <!-- The full chef collection -->
+  <!-- SCHOOL FUEL + COLLECTION — side by side -->
   <div class="container" style="margin-bottom:48px;">
-    <div onclick="showPage(\'recipes\')" style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:32px 28px;cursor:pointer;display:flex;align-items:center;gap:24px;transition:transform .2s;" onmouseover="this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.transform=\'\'">
-      <div style="flex:1;">
-        <div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">The Collection</div>
-        <div style="font-family:\'Fraunces\',serif;font-size:22px;font-weight:600;line-height:1.15;margin-bottom:6px;color:var(--text);">192 chef recipes.</div>
-        <div style="font-size:13px;line-height:1.6;color:var(--dim);">From breakfast to wow-the-parents dinners. Filter by chef, cuisine, or what you’re craving.</div>
-      </div>
-      <div style="font-size:15px;color:var(--text);font-weight:600;flex-shrink:0;">Browse →</div>
-    </div>
-  </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
 
-  <!-- THE CHEFS -->
-  <div class="container" style="margin-bottom:48px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div>
-        <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:700;">The chefs</div>
-        <div style="font-size:13px;color:var(--dim);margin-top:4px;">Michelin stars. James Beard winners. YouTube legends.</div>
+      <div onclick="showPage(‘school’)" style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:18px 20px;cursor:pointer;transition:transform .2s,border-color .2s;" onmouseover="this.style.transform=’translateY(-2px)’;this.style.borderColor=’var(--accent)’" onmouseout="this.style.transform=’’;this.style.borderColor=’var(--border)’">
+        <div style="font-size:10px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">🎒 School Fuel</div>
+        <div style="font-family:’Fraunces’,serif;font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.2;">Michelin at home, packed in a lunchbox.</div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:12px;">100 snacks & lunches · under 20 min</div>
+        <div style="font-size:12px;color:var(--accent);font-weight:600;">Browse →</div>
       </div>
-      <a onclick="showPage('more')" style="font-size:12px;color:var(--accent);font-weight:600;cursor:pointer;white-space:nowrap;">All 27 →</a>
+
+      <div onclick="showPage(‘recipes’)" style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:18px 20px;cursor:pointer;transition:transform .2s,border-color .2s;" onmouseover="this.style.transform=’translateY(-2px)’;this.style.borderColor=’var(--border)’" onmouseout="this.style.transform=’’;this.style.borderColor=’var(--border)’">
+        <div style="font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">The Collection</div>
+        <div style="font-family:’Fraunces’,serif;font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.2;">192 chef recipes.</div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:12px;">Breakfast to wow-the-parents dinners.</div>
+        <div style="font-size:12px;color:var(--text);font-weight:600;">Browse →</div>
+      </div>
+
     </div>
-    <div id="home-chef-row" style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;"></div>
   </div>
 
   <div class="footer"><p>Cooking with <em>Co</em> · real food, every day</p></div>
