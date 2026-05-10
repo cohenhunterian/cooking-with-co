@@ -54,7 +54,7 @@ a{text-decoration:none;color:inherit;}
 .chef-ai-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;}
 .chef-ai-sub{font-size:13px;color:var(--dim);margin-top:4px;}
 .chef-ai-chat{max-height:320px;overflow-y:auto;margin-bottom:16px;}
-.ai-msg{background:var(--bg3);border-radius:14px;padding:10px 14px;margin-bottom:6px;font-size:13px;line-height:1.6;color:var(--text);max-width:88%;animation:fadeUp .3s ease;}
+.ai-msg{background:var(--bg3);border-radius:14px;padding:12px 16px;margin-bottom:8px;font-size:15px;line-height:1.6;color:var(--text);max-width:88%;animation:fadeUp .3s ease;}
 .ai-msg-user{background:var(--accent);color:white;margin-left:auto;text-align:right;border-radius:14px 14px 4px 14px;}
 .ai-msg-bot{border-radius:14px 14px 14px 4px;}
 .ai-loading{font-size:13px;color:var(--dim);padding:8px 16px;}
@@ -618,17 +618,17 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
   <!-- THREE VALUES -->
   <div class="container" style="padding-bottom:20px;">
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;">
-        <div style="font-family:’Fraunces’,serif;font-size:12px;font-weight:600;color:var(--accent);margin-bottom:4px;">01 · Chef-inspired</div>
-        <div style="font-size:12px;line-height:1.5;color:var(--dim);">Every recipe traces back to one of 27 world-class chefs.</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;">
+        <div style="font-family:’Fraunces’,serif;font-size:15px;font-weight:600;color:var(--accent);margin-bottom:6px;">01 · Chef-inspired</div>
+        <div style="font-size:14px;line-height:1.55;color:var(--dim);">Every recipe traces back to one of 27 world-class chefs.</div>
       </div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;">
-        <div style="font-family:’Fraunces’,serif;font-size:12px;font-weight:600;color:var(--accent);margin-bottom:4px;">02 · Home-cookable</div>
-        <div style="font-size:12px;line-height:1.5;color:var(--dim);">Real ingredients, clear steps, no pro equipment needed.</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;">
+        <div style="font-family:’Fraunces’,serif;font-size:15px;font-weight:600;color:var(--accent);margin-bottom:6px;">02 · Home-cookable</div>
+        <div style="font-size:14px;line-height:1.55;color:var(--dim);">Real ingredients, clear steps, no pro equipment needed.</div>
       </div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;">
-        <div style="font-family:’Fraunces’,serif;font-size:12px;font-weight:600;color:var(--accent);margin-bottom:4px;">03 · Worth it</div>
-        <div style="font-size:12px;line-height:1.5;color:var(--dim);">Better than cafeteria, drive-through, or frozen. Every time.</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;">
+        <div style="font-family:’Fraunces’,serif;font-size:15px;font-weight:600;color:var(--accent);margin-bottom:6px;">03 · Worth it</div>
+        <div style="font-size:14px;line-height:1.55;color:var(--dim);">Better than cafeteria, drive-through, or frozen. Every time.</div>
       </div>
     </div>
   </div>
@@ -642,15 +642,15 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
         <div style="display:flex;align-items:center;gap:10px;">
           <span style="font-size:10px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;">✨ Ask Co</span>
           <span style="color:rgba(46,204,113,0.3);">·</span>
-          <span style="font-family:’Fraunces’,serif;font-size:18px;font-weight:600;color:var(--text);letter-spacing:-.01em;">I’m Hungry for:</span>
+          <span style="font-family:’Fraunces’,serif;font-size:20px;font-weight:600;color:var(--text);letter-spacing:-.01em;">I’m Hungry for:</span>
         </div>
       </div>
       <!-- Chat area -->
-      <div id="ai-chat" style="padding:16px 20px;max-height:48vh;overflow-y:auto;"></div>
+      <div id="ai-chat" style="padding:20px 24px;min-height:200px;max-height:52vh;overflow-y:auto;"></div>
       <!-- Input row -->
-      <div style="display:flex;gap:8px;align-items:center;padding:12px 20px 14px;border-top:1px solid rgba(46,204,113,0.2);">
+      <div style="display:flex;gap:8px;align-items:center;padding:14px 24px 16px;border-top:1px solid rgba(46,204,113,0.2);">
         <input type="text" id="ai-input" placeholder="or type anything..." autocomplete="off"
-          style="flex:1;background:transparent;border:none;outline:none;font-family:’Sora’,sans-serif;font-size:13px;color:var(--text);"/>
+          style="flex:1;background:transparent;border:none;outline:none;font-family:’Sora’,sans-serif;font-size:14px;color:var(--text);"/>
         <button class="ai-send-btn" onclick="doBuddyChat()" style="padding:8px 18px;border-radius:100px;border:none;background:var(--accent);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:’Sora’,sans-serif;">→</button>
       </div>
     </div>
