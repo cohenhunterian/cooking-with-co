@@ -2400,16 +2400,49 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
         left.appendChild(imgWrap);
         left.appendChild(openBtn);
 
-        // Right: name + description
+        // Right: name + chef + structured WHAT/WHY
         var right = document.createElement('div');
+
+        // Title
         var nameEl = document.createElement('div');
-        nameEl.style.cssText = 'font-family:"Fraunces",serif;font-size:16px;font-weight:700;margin-bottom:6px;color:var(--text);';
+        nameEl.style.cssText = 'font-family:"Fraunces",serif;font-size:17px;font-weight:700;margin-bottom:4px;color:var(--text);line-height:1.2;';
         nameEl.textContent = r.title;
-        var descEl = document.createElement('div');
-        descEl.style.cssText = 'font-size:13px;line-height:1.65;color:var(--dim);';
-        descEl.textContent = desc || (r.chef + ' · ' + r.time);
+
+        // Chef + time from recipe data (reliable, never wrong)
+        var metaEl = document.createElement('div');
+        metaEl.style.cssText = 'font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;';
+        metaEl.textContent = r.chef + '  ·  ' + r.time;
+
+        // Parse WHAT and WHY from Claude's structured output
+        var whatText = '', whyText = '';
+        if (desc) {
+          var whatMatch = desc.match(/WHAT:\s*(.+?)(?=WHY:|$)/s);
+          var whyMatch  = desc.match(/WHY:\s*(.+)/s);
+          whatText = whatMatch ? whatMatch[1].trim() : desc;
+          whyText  = whyMatch  ? whyMatch[1].trim()  : '';
+        }
+
+        var whatEl = document.createElement('div');
+        whatEl.style.cssText = 'font-size:13px;line-height:1.6;color:var(--dim);margin-bottom:8px;';
+        whatEl.textContent = whatText || (r.chef + ' · ' + r.time);
+
         right.appendChild(nameEl);
-        right.appendChild(descEl);
+        right.appendChild(metaEl);
+        right.appendChild(whatEl);
+
+        if (whyText) {
+          var whyWrap = document.createElement('div');
+          whyWrap.style.cssText = 'display:flex;gap:6px;align-items:flex-start;';
+          var whyLabel = document.createElement('span');
+          whyLabel.style.cssText = 'font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;padding-top:2px;';
+          whyLabel.textContent = 'Co picks:';
+          var whyText2 = document.createElement('span');
+          whyText2.style.cssText = 'font-size:13px;line-height:1.6;color:var(--text);font-style:italic;';
+          whyText2.textContent = whyText;
+          whyWrap.appendChild(whyLabel);
+          whyWrap.appendChild(whyText2);
+          right.appendChild(whyWrap);
+        }
 
         row.appendChild(left);
         row.appendChild(right);
