@@ -2327,43 +2327,83 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
       });
     }
 
-    // Store plain text in history (no HTML) so follow-up turns are clean for Claude
+    // Store plain text in history so follow-up turns are clean for Claude
     buddyHistory.push({role:'assistant', content: cleanText});
 
-    // Convert markdown bold + newlines only for display
-    var text = cleanText.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-    
-    var d = document.createElement('div');
-    d.className = 'ai-msg ai-msg-bot';
-    d.innerHTML = text;
-    chatEl.appendChild(d);
-    
+    // Parse response: setup intro + per-recipe blocks
+    // Claude format: intro sentences... **Recipe Name** [ID:xxx]\nSentence. Sentence.
+    var setup = '';
+    var recipeBlocks = [];
+    var recipePattern = /\*\*([^*]+)\*\*\s*([\s\S]*?)(?=\*\*|$)/g;
+    var firstMatch = cleanText.search(/\*\*/);
+    if (firstMatch > 0) setup = cleanText.slice(0, firstMatch).trim();
+    else if (recipeIds.length === 0) setup = cleanText;
+
+    var m;
+    recipePattern.lastIndex = firstMatch > 0 ? firstMatch : 0;
+    while ((m = recipePattern.exec(cleanText)) !== null) {
+      recipeBlocks.push({ name: m[1].trim(), desc: m[2].trim() });
+    }
+
+    // Show setup bubble if there's intro text
+    if (setup) {
+      var setupEl = document.createElement('div');
+      setupEl.className = 'ai-msg ai-msg-bot';
+      setupEl.textContent = setup;
+      chatEl.appendChild(setupEl);
+    }
+
     if (recipeIds.length > 0) {
-      var grid = document.createElement('div');
-      grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;';
-      recipeIds.slice(0, 4).forEach(function(r){
-        var card = document.createElement('div');
-        card.style.cssText = 'background:var(--bg2);border-radius:14px;overflow:hidden;cursor:pointer;border:1px solid var(--border);';
-        card.onclick = function(){
+      // 2-col grid: description left, image right
+      recipeIds.slice(0, 4).forEach(function(r, i) {
+        var desc = recipeBlocks[i] ? recipeBlocks[i].desc : '';
+
+        var row = document.createElement('div');
+        row.style.cssText = 'display:grid;grid-template-columns:1fr 160px;gap:14px;align-items:start;background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;';
+
+        // Left: name + description
+        var left = document.createElement('div');
+        var nameEl = document.createElement('div');
+        nameEl.style.cssText = 'font-family:"Fraunces",serif;font-size:16px;font-weight:700;margin-bottom:6px;color:var(--text);';
+        nameEl.textContent = r.title;
+        var descEl = document.createElement('div');
+        descEl.style.cssText = 'font-size:13px;line-height:1.65;color:var(--dim);';
+        descEl.textContent = desc || (r.chef + ' · ' + r.time);
+        left.appendChild(nameEl);
+        left.appendChild(descEl);
+
+        // Right: image + open button
+        var right = document.createElement('div');
+        right.style.cssText = 'cursor:pointer;';
+        right.onclick = function(){
           if (r.id.indexOf('sf-') === 0 && window.openSFDetail) window.openSFDetail(r.id);
           else if (window.openBuddyRecipe) window.openBuddyRecipe(r.id);
         };
         var imgWrap = document.createElement('div');
-        imgWrap.style.cssText = 'width:100%;aspect-ratio:16/10;overflow:hidden;background:var(--bg3);';
+        imgWrap.style.cssText = 'width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:10px;background:var(--bg3);margin-bottom:6px;';
         var img = document.createElement('img');
         img.src = r.img;
         img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
         img.onerror = function(){this.style.display='none';};
         imgWrap.appendChild(img);
-        card.appendChild(imgWrap);
-        var body = document.createElement('div');
-        body.style.cssText = 'padding:8px 10px;';
-        body.innerHTML = '<div style="font-size:12px;font-weight:600;line-height:1.3;margin-bottom:4px;">' + r.title + '</div><div style="display:flex;justify-content:space-between;"><span style="font-size:10px;color:var(--dim);">' + r.chef + '</span><span style="font-size:10px;color:var(--dim);">' + r.time + (r.cost ? ' · $' + r.cost : '') + '</span></div>';
-        card.appendChild(body);
-        grid.appendChild(card);
+        var openBtn = document.createElement('div');
+        openBtn.style.cssText = 'font-size:12px;font-weight:600;color:var(--accent);text-align:center;';
+        openBtn.textContent = 'View recipe →';
+        right.appendChild(imgWrap);
+        right.appendChild(openBtn);
+
+        row.appendChild(left);
+        row.appendChild(right);
+        chatEl.appendChild(row);
       });
-      chatEl.appendChild(grid);
+    } else if (!setup) {
+      // Fallback: plain text if no recipes parsed
+      var fallbackEl = document.createElement('div');
+      fallbackEl.className = 'ai-msg ai-msg-bot';
+      fallbackEl.innerHTML = cleanText.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+      chatEl.appendChild(fallbackEl);
     }
+
     chatEl.scrollTop = chatEl.scrollHeight;
     if (typeof onComplete === 'function') onComplete();
   })
@@ -2733,11 +2773,6 @@ var coSteps = {
     { label: '☀️ Lunch',     action: 'lunch'       },
     { label: '🌙 Dinner',    action: 'dinner_meal' }
   ]},
-  snack_type: { question: 'Sweet or savory?', pills: [
-    { label: '🍫 Sweet',        action: 'sweet_snack'  },
-    { label: '🧀 Savory',       action: 'savory_snack' },
-    { label: '🤷 Either works', action: 'any_snack'    }
-  ]},
   time: { question: 'How much time do you have?', pills: [
     { label: '⚡ Under 10 min',   action: 'time_10' },
     { label: '🕐 About 20 min',   action: 'time_20' },
@@ -2809,13 +2844,6 @@ function handleCoAction(pill, chatEl) {
   var action = pill.action;
   var ctx = coFlow.context;
   if (action === 'snack') {
-    // Ask sweet or savory before time
-    coFlow.step = 'snack_type'; showCoQuestion('snack_type', chatEl);
-  } else if (action === 'sweet_snack') {
-    ctx.meal = 'a sweet snack'; coFlow.step = 'time'; showCoQuestion('time', chatEl);
-  } else if (action === 'savory_snack') {
-    ctx.meal = 'a savory snack'; coFlow.step = 'time'; showCoQuestion('time', chatEl);
-  } else if (action === 'any_snack') {
     ctx.meal = 'a snack'; coFlow.step = 'time'; showCoQuestion('time', chatEl);
   } else if (action === 'breakfast') {
     ctx.meal = 'breakfast'; coFlow.step = 'time'; showCoQuestion('time', chatEl);
