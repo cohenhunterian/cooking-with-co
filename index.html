@@ -655,7 +655,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
         <h2 style="font-family:’Fraunces’,serif;font-size:clamp(28px,4vw,44px);font-weight:700;color:var(--text);margin:0;line-height:1.1;letter-spacing:-.02em;">What are you hungry for?</h2>
       </div>
       <div id="ai-suggestions" style="display:none;"></div>
-      <div id="ai-chat-wrap" style="background:rgba(46,204,113,0.07);border:1.5px solid rgba(46,204,113,0.3);border-radius:24px;overflow:hidden;max-width:780px;margin:0 auto;">
+      <div id="ai-chat-wrap" style="background:rgba(46,204,113,0.07);border:1.5px solid rgba(46,204,113,0.3);border-radius:24px;overflow:hidden;">
         <div style="padding:18px 26px 16px;border-bottom:1px solid rgba(46,204,113,0.2);">
           <span style="font-family:’Fraunces’,serif;font-size:16px;font-weight:600;color:var(--text);letter-spacing:-.01em;">I’m Hungry for:</span>
         </div>
@@ -2359,7 +2359,9 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
       recipeBlocks.push({ name: m[1].trim(), desc: m[2].trim() });
     }
 
-    // Record current scrollHeight so we can scroll to top of new content
+    // Snapshot scrollHeight BEFORE appending — this is the exact pixel
+    // position where new content will start, so scrollTop = this value
+    // shows the top of the new response, not the bottom.
     var scrollAnchor = chatEl.scrollHeight;
 
     // Show setup bubble if there's intro text
@@ -2368,7 +2370,6 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
       setupEl.className = 'ai-msg ai-msg-bot';
       setupEl.textContent = setup;
       chatEl.appendChild(setupEl);
-      scrollAnchor = setupEl.offsetTop;
     }
 
     if (recipeIds.length > 0) {
@@ -2413,9 +2414,6 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
         row.appendChild(left);
         row.appendChild(right);
         chatEl.appendChild(row);
-
-        // Anchor scroll to top of first recipe card
-        if (i === 0 && !setup) scrollAnchor = row.offsetTop;
       });
     } else if (!setup) {
       // Fallback: plain text if no recipes parsed
@@ -2423,10 +2421,10 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
       fallbackEl.className = 'ai-msg ai-msg-bot';
       fallbackEl.innerHTML = cleanText.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
       chatEl.appendChild(fallbackEl);
-      scrollAnchor = fallbackEl.offsetTop;
     }
 
-    // Scroll to top of new content, not the bottom
+    // scrollAnchor = scrollHeight snapshot taken BEFORE appending,
+    // so this lands exactly at the top of the new content
     chatEl.scrollTop = scrollAnchor;
     if (typeof onComplete === 'function') onComplete();
   })
