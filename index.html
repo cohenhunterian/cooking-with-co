@@ -2307,30 +2307,36 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
   .then(function(data){
     clearTyping();
     if (data.error) {
-      console.warn('Proxy error, falling back to local:', data.error);
-      localBuddyReply(buddyHistory[buddyHistory.length-1].content, chatEl);
+      console.warn('Proxy error:', data.error);
+      var errDiv = document.createElement('div');
+      errDiv.className = 'ai-msg ai-msg-bot';
+      errDiv.textContent = "Hmm, having trouble connecting right now. Try a refinement below or retype your question.";
+      chatEl.appendChild(errDiv);
+      chatEl.scrollTop = chatEl.scrollHeight;
+      if (typeof onComplete === 'function') onComplete();
       return;
     }
     
-    var text = data.text || '';
+    var rawText = data.text || '';
     var recipeIds = [];
-    
-    // Parse [ID:xxx] markers
-    var idMatches = text.match(/\[ID:([^\]]+)\]/g);
+
+    // Parse [ID:xxx] markers (strip before storing in history)
+    var cleanText = rawText.replace(/\s*\[ID:[^\]]+\]/g, '').trim();
+    var idMatches = rawText.match(/\[ID:([^\]]+)\]/g);
     if(idMatches){
       idMatches.forEach(function(m){
         var id = m.replace('[ID:','').replace(']','');
-        var r = recipes.find(function(x){return x.id === id;}) 
+        var r = recipes.find(function(x){return x.id === id;})
           || (typeof sfRecipes !== 'undefined' ? sfRecipes.find(function(x){return x.id === id;}) : null);
         if(r) recipeIds.push(r);
       });
-      text = text.replace(/\s*\[ID:[^\]]+\]/g, '');
     }
-    
-    // Convert markdown bold + newlines
-    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-    
-    buddyHistory.push({role:'assistant', content:text});
+
+    // Store plain text in history (no HTML) so follow-up turns are clean for Claude
+    buddyHistory.push({role:'assistant', content: cleanText});
+
+    // Convert markdown bold + newlines only for display
+    var text = cleanText.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
     
     var d = document.createElement('div');
     d.className = 'ai-msg ai-msg-bot';
@@ -2368,8 +2374,12 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
   })
   .catch(function(err){
     clearTyping();
-    console.warn('Proxy failed, falling back to local:', err);
-    localBuddyReply(buddyHistory[buddyHistory.length-1].content, chatEl);
+    console.warn('Proxy failed:', err);
+    var errDiv = document.createElement('div');
+    errDiv.className = 'ai-msg ai-msg-bot';
+    errDiv.textContent = "Hmm, having trouble connecting right now. Try a refinement below or retype your question.";
+    chatEl.appendChild(errDiv);
+    chatEl.scrollTop = chatEl.scrollHeight;
     if (typeof onComplete === 'function') onComplete();
   });
 }
@@ -2629,23 +2639,24 @@ function localBuddyReply(msg, chatEl){
   if (/more|another|other|different|else/.test(q) && state.lastShownIds.length > 0) {
     var more = findRecipes();
     if (more.length > 0) {
-      reply('Here are some more options for you 👇', more);
+      reply('Here are some more options 👇', more);
       return;
     }
   }
-  
-  // Check if user is reacting to something we showed
-  if (/love|like|good|perfect|great|yes|yeah|yep|sure|sounds good/i.test(q) && state.lastShownIds.length > 0 && state.msgCount > 1) {
-    reply('Awesome! 🔥 Tap the recipe card to see ingredients and step-by-step instructions. Want suggestions for tomorrow too?');
-    return;
-  }
-  
-  if (/no|nah|don'?t like|skip|next/i.test(q) && state.lastShownIds.length > 0 && state.msgCount > 1) {
+
+  // NEGATIVE reaction — check BEFORE positive so "dont like" doesn't match "like"
+  if (/don'?t like|not (this|these|it)|hate|nope|nah|no thanks|none|skip|next|something else/i.test(q) && state.lastShownIds.length > 0 && state.msgCount > 1) {
     var alternatives = findRecipes();
     if (alternatives.length > 0) {
       reply('No worries — try one of these instead 👇', alternatives);
       return;
     }
+  }
+
+  // POSITIVE reaction — only after ruling out negative phrasing
+  if (/^(love|like|good|perfect|great|yes|yeah|yep|sure|sounds good|i like|i love|that works)/i.test(q) && state.lastShownIds.length > 0 && state.msgCount > 1) {
+    reply('Nice pick! 🔥 Tap the recipe card to see ingredients and step-by-step instructions.');
+    return;
   }
   
   // SCHOOL LUNCH - always SF
@@ -2904,15 +2915,15 @@ function showCoReset() {
   var existing = chatEl.querySelector('.co-pills-row');
   if (existing) existing.remove();
 
+  // Co's follow-up message
+  var coMsg = document.createElement('div');
+  coMsg.className = 'ai-msg ai-msg-bot';
+  coMsg.textContent = 'Not quite right? Narrow it down ↓';
+  chatEl.appendChild(coMsg);
+
   var row = document.createElement('div');
   row.className = 'co-pills-row';
-  row.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;padding-bottom:4px;';
-
-  // "Not quite?" label
-  var label = document.createElement('div');
-  label.style.cssText = 'width:100%;font-size:11px;color:var(--dim);font-family:Sora,sans-serif;margin-bottom:2px;';
-  label.textContent = 'Not quite right? Narrow it down:';
-  row.appendChild(label);
+  row.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;padding-bottom:4px;';
 
   // Refinement pills
   REFINEMENTS.forEach(function(r) {
