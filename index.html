@@ -1668,12 +1668,20 @@ window.scoreFilter = function scoreFilter(el,score){
 }
 
 window.renderHomeGrid = function renderHomeGrid(filter){
-  // filter can be: 0 (all), a number 1-5 (health score), or a string like 'all', 'quick', 'pasta', 'steak'
+  // filter can be: 0 (all), a number 1-5 (health score), a string like 'all'/'quick'/'pasta', or an array of strings
   var filtered;
   if (filter === 0 || filter === 'all' || filter === undefined || filter === null) {
     filtered = recipes;
   } else if (typeof filter === 'number') {
     filtered = recipes.filter(function(r){ return r.hs === filter; });
+  } else if (Array.isArray(filter)) {
+    if (filter.length === 0) {
+      filtered = recipes;
+    } else {
+      filtered = recipes.filter(function(r){
+        return filter.some(function(cat){ return (r.tags || []).indexOf(cat) >= 0; });
+      });
+    }
   } else {
     // String category - match against tags
     filtered = recipes.filter(function(r){
@@ -2092,7 +2100,11 @@ window.openBuddyRecipe = function(recipeId){
     : chef && (chef.tags||[]).indexOf('youtube')>=0 ? 'YouTube' : 'Pro Chef';
   var hsRating = r.hs ? r.hs : 4;
   var healthColor = hsRating >= 4 ? '#2ECC71' : hsRating >= 3 ? '#F39C12' : '#E74C3C';
-  var videoUrl = r.video || 'https://www.youtube.com/results?search_query=' + encodeURIComponent(r.chef + ' ' + r.title);
+  // Build a clean YouTube search URL filtered to videos only (sp=EgIQAQ== = video filter)
+  var rawVideoSearch = r.video
+    ? r.video.replace('https://www.youtube.com/results?search_query=', '')
+    : encodeURIComponent(r.chef + ' ' + r.title + ' recipe');
+  var videoUrl = 'https://www.youtube.com/results?search_query=' + rawVideoSearch + '&sp=EgIQAQ%3D%3D';
   var cost = r.cost || '?';
   var time = r.time || '15 mins';
   
@@ -2160,7 +2172,7 @@ window.openBuddyRecipe = function(recipeId){
   btns.style.cssText = 'padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:10px;';
   
   var ytBtn = document.createElement('button');
-  ytBtn.innerHTML = '▶️ Watch tutorial';
+  ytBtn.innerHTML = '▶️ Watch on YouTube';
   ytBtn.style.cssText = 'padding:12px;border-radius:14px;border:1.5px solid #FF0000;background:transparent;color:#FF0000;font-size:13px;font-weight:600;cursor:pointer;font-family:Sora,sans-serif;';
   ytBtn.onclick = function(){window.open(videoUrl, '_blank');};
   btns.appendChild(ytBtn);
@@ -2908,11 +2920,36 @@ window.switchMoreSection = function(section){
 
 window.toggleTheme = function(){ document.body.classList.toggle('dark'); };
 
+var activeHomeCategories = [];
+
 window.filterHome = function(el, cat){
-  var tabs = document.querySelectorAll('#home-tabs .cat-tab');
-  tabs.forEach(function(t){t.classList.remove('active');});
-  if(el) el.classList.add('active');
-  if(typeof renderHomeGrid === 'function') renderHomeGrid(cat);
+  if (cat === 'all') {
+    // Clear all — show everything
+    activeHomeCategories = [];
+    var tabs = document.querySelectorAll('#home-tabs .cat-tab');
+    tabs.forEach(function(t){ t.classList.remove('active'); });
+    var allTab = document.querySelector('#home-tabs .cat-tab');
+    if (allTab) allTab.classList.add('active');
+  } else {
+    // Toggle this category on/off
+    var idx = activeHomeCategories.indexOf(cat);
+    if (idx >= 0) {
+      activeHomeCategories.splice(idx, 1);
+      if (el) el.classList.remove('active');
+    } else {
+      activeHomeCategories.push(cat);
+      if (el) el.classList.add('active');
+    }
+    // Sync "All" tab — active only when nothing else is selected
+    var allTab = document.querySelector('#home-tabs .cat-tab');
+    if (allTab) {
+      if (activeHomeCategories.length === 0) allTab.classList.add('active');
+      else allTab.classList.remove('active');
+    }
+  }
+  if (typeof renderHomeGrid === 'function') {
+    renderHomeGrid(activeHomeCategories.length ? activeHomeCategories : 'all');
+  }
 };
 
 window.closePicker = function(){
