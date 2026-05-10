@@ -2424,8 +2424,11 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
     }
 
     // scrollAnchor = scrollHeight snapshot taken BEFORE appending,
-    // so this lands exactly at the top of the new content
-    chatEl.scrollTop = scrollAnchor;
+    // so this lands exactly at the top of the new content.
+    // Use rAF to ensure DOM has painted before we set scrollTop.
+    requestAnimationFrame(function(){
+      chatEl.scrollTop = scrollAnchor;
+    });
     if (typeof onComplete === 'function') onComplete();
   })
   .catch(function(err){
