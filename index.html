@@ -2998,7 +2998,7 @@ document.addEventListener('DOMContentLoaded', function(){
   if (chatEl) {
     var d = document.createElement('div');
     d.className = 'ai-msg ai-msg-bot';
-    d.textContent = 'What are you hungry for?';
+    d.innerHTML = '<strong>What are you hungry for?</strong><br><span style="font-size:13px;opacity:.7;">Tap one of the options below — or just type anything in the box at the bottom.</span>';
     chatEl.appendChild(d);
     renderCoPillsInChat('start', chatEl);
   }
