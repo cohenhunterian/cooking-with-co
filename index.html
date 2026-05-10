@@ -2310,7 +2310,7 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
       console.warn('Proxy error:', data.error);
       var errDiv = document.createElement('div');
       errDiv.className = 'ai-msg ai-msg-bot';
-      errDiv.textContent = "Hmm, having trouble connecting right now. Try a refinement below or retype your question.";
+      errDiv.textContent = "⚠️ AI error: " + data.error;
       chatEl.appendChild(errDiv);
       chatEl.scrollTop = chatEl.scrollHeight;
       if (typeof onComplete === 'function') onComplete();

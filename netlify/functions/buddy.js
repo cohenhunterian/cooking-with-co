@@ -115,6 +115,11 @@ ${sfList}
 Respond now. Lead with the setup. Name the chef for every recipe. Give the Co POV. Keep it tight.`;
 
     // Call Anthropic API
+    // Model: claude-haiku-4-5-20251001 is fast + cheap for recipe suggestions
+    // If you want richer responses, swap to claude-sonnet-4-6 (costs ~5x more per call)
+    const MODEL = 'claude-haiku-4-5-20251001';
+    console.log(`[buddy] calling model=${MODEL} messages=${messages.length}`);
+
     const apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -123,7 +128,7 @@ Respond now. Lead with the setup. Name the chef for every recipe. Give the Co PO
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: MODEL,
         max_tokens: 600,
         system: systemPrompt,
         messages: messages
@@ -132,11 +137,11 @@ Respond now. Lead with the setup. Name the chef for every recipe. Give the Co PO
 
     if (!apiResponse.ok) {
       const errText = await apiResponse.text();
-      console.error('Anthropic error:', errText);
+      console.error('[buddy] Anthropic error status=' + apiResponse.status, errText);
       return {
         statusCode: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'API call failed: ' + apiResponse.status })
+        body: JSON.stringify({ error: 'API call failed: ' + apiResponse.status + ' — ' + errText.slice(0, 200) })
       };
     }
 
