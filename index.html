@@ -2711,11 +2711,11 @@ var coFlow = { step: 'start', context: {} };
 var coSteps = {
   start: { pills: [
     { label: '🍝 pasta',                action: 'direct', query: 'I\'m hungry for pasta'                                    },
-    { label: '⚡ a quick snack',         action: 'direct', query: 'I want a quick snack, under 10 minutes'                  },
-    { label: '🎒 school lunch',          action: 'direct', query: 'I need a school lunch to pack tomorrow'                  },
-    { label: '🍳 breakfast',             action: 'direct', query: 'I want to make breakfast'                                },
-    { label: '🌙 dinner tonight',        action: 'direct', query: 'I want to make dinner tonight'                           },
-    { label: '🌟 something impressive',  action: 'direct', query: 'I want to cook something chef-level that impresses people'}
+    { label: '⚡ a quick snack',        action: 'meal_set', meal: 'a quick snack'                        },
+    { label: '🎒 school lunch',         action: 'meal_set', meal: 'a school lunch to pack tomorrow'       },
+    { label: '🍳 breakfast',            action: 'meal_set', meal: 'breakfast'                             },
+    { label: '🌙 dinner tonight',       action: 'meal_set', meal: 'dinner tonight'                        },
+    { label: '🌟 something impressive', action: 'meal_set', meal: 'something chef-level and impressive'   }
   ]},
   snack_or_meal: { question: 'Snack or a full meal?', pills: [
     { label: '🍫 Just a snack', action: 'snack' },
@@ -2726,7 +2726,7 @@ var coSteps = {
     { label: '🧀 Savory',       action: 'savory_snack' },
     { label: '🤷 Either works', action: 'any_snack'    }
   ]},
-  meal_type: { question: 'Which one?', pills: [
+  meal_type: { question: 'Which meal?', pills: [
     { label: '🌅 Breakfast', action: 'breakfast'   },
     { label: '☀️ Lunch',     action: 'lunch'       },
     { label: '🌙 Dinner',    action: 'dinner_meal' }
@@ -2734,7 +2734,13 @@ var coSteps = {
   time: { question: 'How much time do you have?', pills: [
     { label: '⚡ Under 10 min',   action: 'time_10' },
     { label: '🕐 About 20 min',   action: 'time_20' },
-    { label: '🍳 I\'ve got time', action: 'time_30' }
+    { label: '🍳 30+ min',        action: 'time_30' }
+  ]},
+  food_type: { question: 'What are you feeling?', pills: [
+    { label: '🥗 Healthy & light',   action: 'food_healthy'  },
+    { label: '🍔 Comfort food',       action: 'food_comfort'  },
+    { label: '🌶 Bold & flavorful',   action: 'food_bold'     },
+    { label: '🤷 Anything goes',      action: 'food_any'      }
   ]}
 };
 
@@ -2755,40 +2761,15 @@ function renderCoPills(step) {
     btn.textContent = pill.label;
     btn.addEventListener('click', function() {
       if (buddyTyping) return;
-      if (pill.action === 'direct') {
-        // Direct-fire: show label as user bubble, send query to API
-        showChatArea();
-        var chatEl = document.getElementById('ai-chat');
-        if (!chatEl) return;
-        var ud = document.createElement('div');
-        ud.className = 'ai-msg ai-msg-user';
-        ud.textContent = pill.label;
-        chatEl.appendChild(ud);
-        chatEl.scrollTop = chatEl.scrollHeight;
-        var sug2 = document.getElementById('ai-suggestions');
-        if (sug2) sug2.style.display = 'none';
-        buddyHistory.push({role:'user', content: pill.query});
-        buddyTyping = true;
-        var typingDiv = document.createElement('div');
-        typingDiv.className = 'ai-msg ai-msg-bot';
-        typingDiv.id = 'buddy-typing';
-        typingDiv.innerHTML = '<span style="display:inline-flex;gap:4px;align-items:center;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite"></span><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite .2s"></span><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite .4s"></span></span>';
-        chatEl.appendChild(typingDiv);
-        chatEl.scrollTop = chatEl.scrollHeight;
-        function clearTyping(){ var t=document.getElementById('buddy-typing'); if(t)t.remove(); buddyTyping=false; }
-        if (window.BUDDY_PROXY_URL) callBuddyProxy(pill.query, chatEl, clearTyping, showCoReset);
-        else { setTimeout(function(){ clearTyping(); localBuddyReply(pill.query, chatEl); showCoReset(); }, 400); }
-      } else {
-        var chatEl = document.getElementById('ai-chat');
-        if (!chatEl) return;
-        showChatArea();
-        var ud = document.createElement('div');
-        ud.className = 'ai-msg ai-msg-user';
-        ud.textContent = pill.label;
-        chatEl.appendChild(ud);
-        chatEl.scrollTop = chatEl.scrollHeight;
-        handleCoAction(pill.action, chatEl);
-      }
+      var chatEl = document.getElementById('ai-chat');
+      if (!chatEl) return;
+      showChatArea();
+      var ud = document.createElement('div');
+      ud.className = 'ai-msg ai-msg-user';
+      ud.textContent = pill.label;
+      chatEl.appendChild(ud);
+      chatEl.scrollTop = chatEl.scrollHeight;
+      handleCoAction(pill, chatEl);
     });
     sug.appendChild(btn);
   });
@@ -2805,14 +2786,11 @@ function showCoQuestion(stepKey, chatEl) {
   renderCoPills(stepKey);
 }
 
-function handleCoAction(action, chatEl) {
+function handleCoAction(pill, chatEl) {
+  var action = pill.action;
   var ctx = coFlow.context;
-  if (action === 'school') {
-    ctx.meal = 'a school lunch to pack tomorrow';
-    coFlow.step = 'time'; showCoQuestion('time', chatEl);
-  } else if (action === 'dinner') {
-    ctx.meal = 'dinner';
-    coFlow.step = 'time'; showCoQuestion('time', chatEl);
+  if (action === 'meal_set') {
+    ctx.meal = pill.meal; coFlow.step = 'time'; showCoQuestion('time', chatEl);
   } else if (action === 'hungry') {
     coFlow.step = 'snack_or_meal'; showCoQuestion('snack_or_meal', chatEl);
   } else if (action === 'snack') {
@@ -2832,11 +2810,19 @@ function handleCoAction(action, chatEl) {
   } else if (action === 'dinner_meal') {
     ctx.meal = 'dinner'; coFlow.step = 'time'; showCoQuestion('time', chatEl);
   } else if (action === 'time_10') {
-    ctx.time = 'under 10 minutes'; fireCoQuery(chatEl);
+    ctx.time = 'under 10 minutes'; coFlow.step = 'food_type'; showCoQuestion('food_type', chatEl);
   } else if (action === 'time_20') {
-    ctx.time = 'about 20 minutes'; fireCoQuery(chatEl);
+    ctx.time = 'about 20 minutes'; coFlow.step = 'food_type'; showCoQuestion('food_type', chatEl);
   } else if (action === 'time_30') {
-    ctx.time = 'no rush, 30+ minutes'; fireCoQuery(chatEl);
+    ctx.time = '30+ minutes'; coFlow.step = 'food_type'; showCoQuestion('food_type', chatEl);
+  } else if (action === 'food_healthy') {
+    ctx.foodType = 'healthy and light'; fireCoQuery(chatEl);
+  } else if (action === 'food_comfort') {
+    ctx.foodType = 'comfort food, hearty and satisfying'; fireCoQuery(chatEl);
+  } else if (action === 'food_bold') {
+    ctx.foodType = 'bold and flavorful'; fireCoQuery(chatEl);
+  } else if (action === 'food_any') {
+    fireCoQuery(chatEl);
   }
 }
 
@@ -2857,7 +2843,10 @@ function showCoReset() {
 
 function fireCoQuery(chatEl) {
   var ctx = coFlow.context;
-  var query = 'I want ' + (ctx.meal || 'something to eat') + (ctx.time ? '. I have ' + ctx.time + '.' : '.');
+  var parts = ['I want ' + (ctx.meal || 'something to eat') + '.'];
+  if (ctx.time) parts.push('I have ' + ctx.time + '.');
+  if (ctx.foodType) parts.push('I\'m in the mood for something ' + ctx.foodType + '.');
+  var query = parts.join(' ');
   coFlow = { step: 'start', context: {} };
 
   var sug = document.getElementById('ai-suggestions');
