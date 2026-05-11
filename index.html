@@ -990,6 +990,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
         <input type="text" id="comm-name" placeholder="Your name (optional)" style="padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;outline:none;"/>
         <input type="text" id="comm-recipe" placeholder="What did you make? *" style="padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;outline:none;"/>
         <input type="text" id="comm-caption" placeholder="Caption (optional)" style="padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;outline:none;grid-column:1/-1;"/>
+        <textarea id="comm-recipe-text" placeholder="Share your recipe (optional) — ingredients, steps, tips..." rows="4" style="padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;outline:none;grid-column:1/-1;resize:vertical;line-height:1.6;"></textarea>
       </div>
 
       <!-- Rating -->
@@ -3991,6 +3992,7 @@ window.commSubmit = function() {
     var photoUrl = SUPA_URL + '/storage/v1/object/public/community-photos/' + fileName;
     var name = (document.getElementById('comm-name') || {}).value || '';
     var caption = (document.getElementById('comm-caption') || {}).value || '';
+    var recipeText = (document.getElementById('comm-recipe-text') || {}).value || '';
     // Step 2: insert row
     return fetch(SUPA_URL + '/rest/v1/community_posts', {
       method: 'POST',
@@ -3999,6 +4001,7 @@ window.commSubmit = function() {
         name: name.trim() || 'Anonymous',
         recipe_name: recipe.value.trim(),
         caption: caption.trim(),
+        recipe: recipeText.trim(),
         rating: commRating,
         photo_url: photoUrl
       })
@@ -4012,6 +4015,7 @@ window.commSubmit = function() {
     recipe.value = '';
     if (document.getElementById('comm-name')) document.getElementById('comm-name').value = '';
     if (document.getElementById('comm-caption')) document.getElementById('comm-caption').value = '';
+    if (document.getElementById('comm-recipe-text')) document.getElementById('comm-recipe-text').value = '';
     window.commSetRating(4);
     btn.disabled = false;
     btn.textContent = 'Post it';
@@ -4060,12 +4064,15 @@ window.commLoadGallery = function() {
         + '<span style="font-size:10px;color:var(--dim);">by ' + commEsc(p.name) + ' · ' + ago + '</span>'
         + '<span>' + fires + '</span>'
         + '</div>'
-        + '<div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;">'
+        + '<div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;display:flex;align-items:center;gap:8px;">'
         + '<button id="react-btn-' + p.id + '" onclick="commReact(\'' + p.id + '\')" '
         + (reacted ? 'disabled ' : '')
         + 'style="background:none;border:1.5px solid var(--border);border-radius:100px;padding:4px 12px;font-size:12px;cursor:pointer;color:var(--text);font-family:Sora,sans-serif;' + (reacted ? 'opacity:.5;' : '') + '">'
         + '🔥 <span id="react-count-' + p.id + '">' + (p.reactions || 0) + '</span></button>'
-        + '</div></div></div>';
+        + (p.recipe ? '<button onclick="commToggleRecipe(\'' + p.id + '\')" style="background:none;border:1.5px solid var(--border);border-radius:100px;padding:4px 12px;font-size:12px;cursor:pointer;color:var(--accent);font-family:Sora,sans-serif;font-weight:600;">📋 Recipe</button>' : '')
+        + '</div>'
+        + (p.recipe ? '<div id="recipe-' + p.id + '" style="display:none;margin-top:10px;padding:10px 12px;background:var(--bg);border-radius:10px;font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap;">' + commEsc(p.recipe) + '</div>' : '')
+        + '</div></div>';
     }).join('');
   })
   .catch(function(err) {
@@ -4104,6 +4111,11 @@ window.commReact = function(id) {
     });
   })
   .catch(function(e){ console.warn('React failed:', e); });
+};
+
+window.commToggleRecipe = function(id) {
+  var el = document.getElementById('recipe-' + id);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
 };
 
 function commTimeAgo(ts) {
