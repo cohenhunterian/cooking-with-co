@@ -233,6 +233,11 @@ body.dark .ai-input-row input{background:var(--bg3);color:var(--text);}
   /* School Fuel + Collection — stack */
   .home-sf-collection-grid{grid-template-columns:1fr!important;}
 
+  /* Community gallery — 2 col on mobile */
+  #comm-gallery{grid-template-columns:repeat(2,1fr)!important;}
+  #comm-form-fields{grid-template-columns:1fr!important;}
+  #comm-form-fields input{grid-column:auto!important;}
+
   /* Chat recipe cards — stack vertically */
   .buddy-recipe-row{
     grid-template-columns:1fr!important;
@@ -687,9 +692,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 /* Planner day expand animation */
 .planner-day-meals.open{animation:fadeIn .2s ease;}
 </style>
-</head>
-
-</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -703,6 +706,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     <a onclick="showPage('battle');closeMobileNav();" id="nav-battle">Battle</a>
     <a onclick="showPage('more');closeMobileNav();" id="nav-more">Chefs</a>
     <a onclick="showPage('recipes');closeMobileNav();" id="nav-recipes">Recipes</a>
+    <a onclick="showPage('community');closeMobileNav();" id="nav-community">Community</a>
     <a onclick="showPage('about');closeMobileNav();" id="nav-about">About</a>
     <button style="background:none;border:none;font-size:18px;cursor:pointer;" onclick="toggleTheme()" title="Toggle theme">☀️</button>
   </div>
@@ -996,6 +1000,62 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 
   </div>
   <div class="footer"><p>Cooking with <em>Co</em> · real food, every day</p></div>
+</div>
+
+<div class="page" id="page-community">
+  <div style="max-width:860px;margin:0 auto;padding:48px 20px 80px;">
+
+    <!-- Header -->
+    <div style="margin-bottom:36px;">
+      <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;">📸 Community</div>
+      <div style="font-family:'Fraunces',serif;font-size:36px;font-weight:700;line-height:1.1;margin-bottom:10px;">What you made.</div>
+      <div style="font-size:14px;color:var(--dim);line-height:1.6;">Real people, real kitchens, real food. Post your creation and show the world what you cooked.</div>
+    </div>
+
+    <!-- Upload card -->
+    <div style="background:var(--bg2);border:1.5px dashed var(--border);border-radius:20px;padding:28px;margin-bottom:36px;">
+      <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:18px;">Share what you made</div>
+
+      <!-- Photo pick -->
+      <div id="comm-drop-zone" onclick="document.getElementById('comm-file-input').click()" style="background:var(--bg);border:1.5px dashed var(--border);border-radius:14px;padding:28px;text-align:center;cursor:pointer;margin-bottom:16px;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+        <input type="file" id="comm-file-input" accept="image/*" style="display:none;" onchange="commHandlePhoto(event)"/>
+        <div id="comm-drop-inner">
+          <div style="font-size:36px;margin-bottom:8px;">📷</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">Tap to add a photo</div>
+          <div style="font-size:11px;color:var(--dim);">JPG or PNG · max 5MB</div>
+        </div>
+        <img id="comm-preview" style="display:none;width:100%;max-height:260px;object-fit:cover;border-radius:10px;" />
+      </div>
+
+      <!-- Form fields -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;" id="comm-form-fields">
+        <input type="text" id="comm-name" placeholder="Your name (optional)" style="padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;outline:none;"/>
+        <input type="text" id="comm-recipe" placeholder="What did you make? *" style="padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;outline:none;"/>
+        <input type="text" id="comm-caption" placeholder="Caption (optional)" style="padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;outline:none;grid-column:1/-1;"/>
+      </div>
+
+      <!-- Rating -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <span style="font-size:12px;color:var(--dim);">How did it turn out?</span>
+        <div id="comm-stars" style="display:flex;gap:4px;">
+          <span class="comm-star" data-v="1" onclick="commSetRating(1)" style="font-size:22px;cursor:pointer;opacity:.3;">🔥</span>
+          <span class="comm-star" data-v="2" onclick="commSetRating(2)" style="font-size:22px;cursor:pointer;opacity:.3;">🔥</span>
+          <span class="comm-star" data-v="3" onclick="commSetRating(3)" style="font-size:22px;cursor:pointer;opacity:.3;">🔥</span>
+          <span class="comm-star" data-v="4" onclick="commSetRating(4)" style="font-size:22px;cursor:pointer;opacity:.3;">🔥</span>
+          <span class="comm-star" data-v="5" onclick="commSetRating(5)" style="font-size:22px;cursor:pointer;opacity:.3;">🔥</span>
+        </div>
+      </div>
+
+      <button onclick="commSubmit()" id="comm-submit-btn" style="padding:12px 28px;border-radius:100px;border:none;background:var(--accent);color:white;font-size:13px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:opacity .2s;">Post it</button>
+      <div id="comm-submit-msg" style="display:none;font-size:13px;color:var(--accent);font-weight:600;margin-top:10px;"></div>
+    </div>
+
+    <!-- Gallery -->
+    <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;" id="comm-gallery-title">From the community</div>
+    <div id="comm-gallery" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;"></div>
+    <div id="comm-loading" style="text-align:center;padding:40px;color:var(--dim);font-size:13px;">Loading posts...</div>
+
+  </div>
 </div>
 
 <div class="page" id="page-about">
@@ -3943,6 +4003,9 @@ window.showPage = function(id){
   if (id === 'more') {
     if (window.switchMoreSection) window.switchMoreSection('chefs');
   }
+  if (id === 'community') {
+    commLoadGallery();
+  }
   if (id === 'featured' && window.renderFeaturedPage) {
     try { window.renderFeaturedPage(); } catch(e) {}
   }
@@ -3954,6 +4017,156 @@ window.showPage = function(id){
 
 // Render the home chef row now that all functions are defined
 if (typeof window.renderHomeChefRow === "function") window.renderHomeChefRow();
+
+// ═══════════════════════════════════════════════════════
+// COMMUNITY PAGE — Supabase
+// ═══════════════════════════════════════════════════════
+var SUPA_URL = 'https://kstdkrmzafqjwamaaqah.supabase.co';
+var SUPA_KEY = 'sb_publishable_-NjJIlKSwG35fKIVx32FnQ_9YzrmB4N';
+var supabase = null;
+
+function commInit() {
+  if (supabase) return;
+  if (window.supabase && window.supabase.createClient) {
+    supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+  }
+}
+
+var commRating = 4;
+var commImgFile = null;
+
+window.commSetRating = function(v) {
+  commRating = v;
+  document.querySelectorAll('.comm-star').forEach(function(s) {
+    s.style.opacity = parseInt(s.dataset.v) <= v ? '1' : '.3';
+  });
+};
+// default 4 stars lit
+setTimeout(function(){ window.commSetRating(4); }, 100);
+
+window.commHandlePhoto = function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { alert('Photo must be under 5MB'); return; }
+  commImgFile = file;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var preview = document.getElementById('comm-preview');
+    var inner = document.getElementById('comm-drop-inner');
+    if (preview) { preview.src = ev.target.result; preview.style.display = 'block'; }
+    if (inner) inner.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+};
+
+window.commSubmit = function() {
+  commInit();
+  if (!supabase) { alert('Still loading — try again in a second.'); return; }
+  var recipe = document.getElementById('comm-recipe');
+  if (!recipe || !recipe.value.trim()) { alert('Tell us what you made!'); return; }
+  if (!commImgFile) { alert('Add a photo first!'); return; }
+
+  var btn = document.getElementById('comm-submit-btn');
+  var msg = document.getElementById('comm-submit-msg');
+  btn.disabled = true;
+  btn.textContent = 'Posting...';
+
+  var ext = commImgFile.name.split('.').pop() || 'jpg';
+  var fileName = 'post-' + Date.now() + '.' + ext;
+
+  supabase.storage.from('community-photos').upload(fileName, commImgFile, { contentType: commImgFile.type })
+    .then(function(res) {
+      if (res.error) throw res.error;
+      var publicUrl = SUPA_URL + '/storage/v1/object/public/community-photos/' + fileName;
+      var name = (document.getElementById('comm-name') || {}).value || '';
+      var caption = (document.getElementById('comm-caption') || {}).value || '';
+      return supabase.from('community_posts').insert({
+        name: name.trim() || 'Anonymous',
+        recipe_name: recipe.value.trim(),
+        caption: caption.trim(),
+        rating: commRating,
+        photo_url: publicUrl
+      });
+    })
+    .then(function(res) {
+      if (res.error) throw res.error;
+      // Reset form
+      commImgFile = null;
+      document.getElementById('comm-preview').style.display = 'none';
+      document.getElementById('comm-drop-inner').style.display = '';
+      document.getElementById('comm-recipe').value = '';
+      if (document.getElementById('comm-name')) document.getElementById('comm-name').value = '';
+      if (document.getElementById('comm-caption')) document.getElementById('comm-caption').value = '';
+      window.commSetRating(4);
+      btn.disabled = false;
+      btn.textContent = 'Post it';
+      msg.textContent = 'Posted! 🎉';
+      msg.style.display = 'block';
+      setTimeout(function(){ msg.style.display = 'none'; }, 3000);
+      commLoadGallery();
+    })
+    .catch(function(err) {
+      console.error('Community post failed:', err);
+      btn.disabled = false;
+      btn.textContent = 'Post it';
+      alert('Something went wrong: ' + (err.message || 'try again'));
+    });
+};
+
+window.commLoadGallery = function() {
+  commInit();
+  if (!supabase) { setTimeout(commLoadGallery, 500); return; }
+  var loading = document.getElementById('comm-loading');
+  var gallery = document.getElementById('comm-gallery');
+  if (loading) loading.style.display = 'block';
+  if (gallery) gallery.innerHTML = '';
+
+  supabase.from('community_posts')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(60)
+    .then(function(res) {
+      if (loading) loading.style.display = 'none';
+      if (res.error) { if (gallery) gallery.innerHTML = '<div style="color:var(--dim);text-align:center;padding:40px;">Could not load posts.</div>'; return; }
+      var posts = res.data || [];
+      if (!gallery) return;
+      if (posts.length === 0) {
+        gallery.style.gridTemplateColumns = '1fr';
+        gallery.innerHTML = '<div style="padding:48px 24px;text-align:center;background:var(--bg2);border-radius:20px;border:1px solid var(--border);"><div style="font-size:48px;margin-bottom:12px;">📸</div><div style="font-family:Fraunces,serif;font-size:18px;font-weight:600;margin-bottom:6px;">No posts yet</div><div style="font-size:13px;color:var(--dim);">Be the first to share what you cooked!</div></div>';
+        return;
+      }
+      gallery.style.gridTemplateColumns = '';
+      gallery.innerHTML = posts.map(function(p) {
+        var fires = [1,2,3,4,5].map(function(i){ return '<span style="font-size:11px;' + (i <= p.rating ? '' : 'opacity:.2') + '">🔥</span>'; }).join('');
+        var ago = commTimeAgo(p.created_at);
+        return '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;">'
+          + '<img src="' + p.photo_url + '" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" onerror="this.parentElement.style.display=\'none\'"/>'
+          + '<div style="padding:10px 12px;">'
+          + '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">' + commEsc(p.recipe_name) + '</div>'
+          + (p.caption ? '<div style="font-size:11px;color:var(--dim);margin-bottom:4px;line-height:1.4;">' + commEsc(p.caption) + '</div>' : '')
+          + '<div style="display:flex;justify-content:space-between;align-items:center;">'
+          + '<span style="font-size:10px;color:var(--dim);">by ' + commEsc(p.name) + ' · ' + ago + '</span>'
+          + '<span>' + fires + '</span>'
+          + '</div></div></div>';
+      }).join('');
+    })
+    .catch(function(err) {
+      if (loading) loading.style.display = 'none';
+      console.error('Gallery load failed:', err);
+    });
+};
+
+function commTimeAgo(ts) {
+  if (!ts) return '';
+  var diff = Math.floor((Date.now() - new Date(ts).getTime()) / 1000);
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  return Math.floor(diff/86400) + 'd ago';
+}
+function commEsc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 </script>
 </div></div>
 
