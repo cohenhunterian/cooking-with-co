@@ -925,7 +925,6 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     <div style="display:flex;gap:8px;margin-bottom:28px;overflow-x:auto;scrollbar-width:none;">
       <button class="more-nav active" id="mn-chefs" onclick="window.switchMoreSection('chefs')">👨‍🍳 Chefs</button>
       <button class="more-nav" id="mn-planner" onclick="window.switchMoreSection('planner')">📅 Meal Planner</button>
-      <button class="more-nav" id="mn-gallery" onclick="window.switchMoreSection('gallery')">📸 Gallery</button>
     </div>
 
     <!-- === CHEFS SECTION === -->
@@ -956,46 +955,6 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
       <div id="planner-total-card" style="margin-top:20px;"></div>
     </div>
 
-    <!-- === GALLERY SECTION === -->
-    <div id="more-sec-gallery" class="more-sec" style="display:none;">
-      <div style="margin-bottom:20px;">
-        <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:6px;">Community Gallery 📸</div>
-        <div style="font-size:13px;color:var(--dim);line-height:1.6;">Show off what you made! Upload a photo of your dish and inspire others.</div>
-      </div>
-
-      <!-- Upload area -->
-      <div style="background:var(--bg2);border-radius:20px;padding:24px;border:2px dashed var(--border);text-align:center;margin-bottom:24px;cursor:pointer;" onclick="document.getElementById('gallery-file-input').click()">
-        <input type="file" id="gallery-file-input" accept="image/*" style="display:none;" onchange="window.handleGalleryUpload(event)"/>
-        <div style="font-size:40px;margin-bottom:10px;">📷</div>
-        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Tap to upload your creation</div>
-        <div style="font-size:12px;color:var(--dim);">Share what you cooked with the community</div>
-      </div>
-
-      <!-- Upload form (hidden until photo selected) -->
-      <div id="gallery-upload-form" style="display:none;background:var(--bg2);border-radius:20px;padding:24px;margin-bottom:24px;border:1px solid var(--border);">
-        <div style="display:flex;gap:16px;align-items:flex-start;">
-          <div style="width:120px;height:120px;border-radius:14px;overflow:hidden;flex-shrink:0;background:var(--bg3);">
-            <img id="gallery-preview-img" style="width:100%;height:100%;object-fit:cover;"/>
-          </div>
-          <div style="flex:1;">
-            <input type="text" id="gallery-dish-name" placeholder="What did you make?" style="width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;margin-bottom:8px;outline:none;box-sizing:border-box;"/>
-            <input type="text" id="gallery-chef-name" placeholder="Your name (optional)" style="width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;margin-bottom:8px;outline:none;box-sizing:border-box;"/>
-            <select id="gallery-rating" style="width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;margin-bottom:12px;outline:none;">
-              <option value="">How did it turn out?</option>
-              <option value="5">🔥🔥🔥🔥🔥 Incredible</option>
-              <option value="4">🔥🔥🔥🔥 Really good</option>
-              <option value="3">🔥🔥🔥 Pretty good</option>
-              <option value="2">🔥🔥 Needs work</option>
-              <option value="1">🔥 First attempt!</option>
-            </select>
-            <button onclick="postToGallery()" style="padding:10px 20px;border-radius:10px;border:none;background:var(--accent);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;">Share with community</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Gallery grid -->
-      <div id="gallery-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;"></div>
-    </div>
 
   </div>
   <div class="footer"><p>Cooking with <em>Co</em> · real food, every day</p></div>
@@ -2427,7 +2386,6 @@ window.switchMoreSection = function(section){
   if(section==='chefs') window.renderChefsNew('all');
   if(section==='battle') window.renderBattleArena();
   if(section==='planner') window.renderPlannerNew();
-  if(section==='gallery') window.renderGalleryGrid();
 };
 
 // === AI CHEF BUDDY CHAT ===
@@ -3575,7 +3533,6 @@ window.switchMoreSection = function(section){
   if(section==='chefs') window.renderChefsNew('all');
   if(section==='battle') window.renderBattleArena();
   if(section==='planner') window.renderPlannerNew();
-  if(section==='gallery') window.renderGalleryGrid();
 };
 
 window.toggleTheme = function(){ document.body.classList.toggle('dark'); };
@@ -3912,50 +3869,6 @@ window.removePlannerMeal = function(day, i){
   window.renderPlannerNew();
 };
 
-// === GALLERY ===
-var galleryPosts = [];
-
-window.handleGalleryUpload = function(event){
-  var file = event.target.files[0];
-  if(!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e){
-    document.getElementById('gallery-preview-img').src = e.target.result;
-    document.getElementById('gallery-upload-form').style.display = 'block';
-    window._galleryImgData = e.target.result;
-  };
-  reader.readAsDataURL(file);
-};
-
-window.postToGallery = function(){
-  var dish = document.getElementById('gallery-dish-name');
-  if(!dish||!dish.value.trim()){alert('Name your dish!');return;}
-  if(!window._galleryImgData){alert('Upload a photo!');return;}
-  var who = document.getElementById('gallery-chef-name');
-  var rating = document.getElementById('gallery-rating');
-  galleryPosts.unshift({img:window._galleryImgData,dish:dish.value.trim(),who:(who&&who.value.trim())||'Anonymous',rating:rating?parseInt(rating.value)||4:4,date:'Just now'});
-  document.getElementById('gallery-upload-form').style.display='none';
-  dish.value='';if(who)who.value='';if(rating)rating.value='';
-  window.renderGalleryGrid();
-};
-
-window.renderGalleryGrid = function(){
-  var grid = document.getElementById('gallery-grid');
-  if(!grid) return;
-  if (galleryPosts.length === 0) {
-    grid.style.gridTemplateColumns = '1fr';
-    grid.innerHTML = '<div style="padding:48px 24px;text-align:center;color:var(--dim);background:var(--bg2);border-radius:20px;border:1px solid var(--border);"><div style="font-size:48px;margin-bottom:12px;">📸</div><div style="font-family:Fraunces,serif;font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px;">No posts yet</div><div style="font-size:13px;line-height:1.6;">Be the first to share what you cooked!</div></div>';
-    return;
-  }
-  grid.style.gridTemplateColumns = 'repeat(3,1fr)';
-  grid.innerHTML = galleryPosts.map(function(p){
-    var fires='';for(var i=0;i<5;i++) fires+='<span style="'+(i<p.rating?'':'opacity:.2')+'">🔥</span>';
-    return '<div class="gallery-card"><img src="'+p.img+'" onerror="this.src=\'\'" style="width:100%;aspect-ratio:1;object-fit:cover;"/>'
-      + '<div style="padding:10px 12px;"><div style="font-size:13px;font-weight:600;margin-bottom:2px;">'+p.dish+'</div>'
-      + '<div style="display:flex;justify-content:space-between;"><span style="font-size:10px;color:var(--dim);">by '+p.who+'</span><span style="font-size:10px;">'+fires+'</span></div>'
-      + '<div style="font-size:9px;color:var(--dim);margin-top:4px;">'+p.date+'</div></div></div>';
-  }).join('');
-};
 
 // SF detail modal
 window.openSFDetail = function(id){
