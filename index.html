@@ -2385,6 +2385,12 @@ var sfSteps = {
     { label: '🍿 A snack',  action: 'sf_snack'  },
     { label: '🥪 Lunch',    action: 'sf_lunch'   }
   ]},
+  ingredient: { question: 'What are you working with?', pills: [
+    { label: '🥦 Veggie',      action: 'sf_veggie'   },
+    { label: '🥩 Meat',        action: 'sf_meat'     },
+    { label: '🍝 Pasta',       action: 'sf_pasta'    },
+    { label: '🎲 Surprise me', action: 'sf_surprise' }
+  ]},
   vibe: { question: 'What\'s the vibe?', pills: [
     { label: '⚡ Super quick',       action: 'sf_quick'   },
     { label: '💪 Something filling', action: 'sf_filling' },
@@ -2438,8 +2444,15 @@ function renderSFPills(step, chatEl) {
 function handleSFAction(pill, chatEl) {
   var action = pill.action;
   var ctx = sfFlow.context;
-  if (action === 'sf_snack')   { ctx.type = 'snack';  sfFlow.step = 'vibe'; showSFQuestion('vibe', chatEl); }
-  else if (action === 'sf_lunch')   { ctx.type = 'lunch';  sfFlow.step = 'vibe'; showSFQuestion('vibe', chatEl); }
+  // Step 1 — what are you packing?
+  if (action === 'sf_snack')      { ctx.type = 'snack'; sfFlow.step = 'ingredient'; showSFQuestion('ingredient', chatEl); }
+  else if (action === 'sf_lunch') { ctx.type = 'lunch'; sfFlow.step = 'ingredient'; showSFQuestion('ingredient', chatEl); }
+  // Step 2 — what are you working with?
+  else if (action === 'sf_veggie')   { ctx.ingredient = 'vegetarian, no meat';        sfFlow.step = 'vibe'; showSFQuestion('vibe', chatEl); }
+  else if (action === 'sf_meat')     { ctx.ingredient = 'with meat (chicken, turkey, or deli)'; sfFlow.step = 'vibe'; showSFQuestion('vibe', chatEl); }
+  else if (action === 'sf_pasta')    { ctx.ingredient = 'pasta-based';                sfFlow.step = 'vibe'; showSFQuestion('vibe', chatEl); }
+  else if (action === 'sf_surprise') { ctx.ingredient = '';                            sfFlow.step = 'vibe'; showSFQuestion('vibe', chatEl); }
+  // Step 3 — what's the vibe?
   else if (action === 'sf_quick')   { ctx.vibe = 'super quick, under 5 minutes';   fireSFQuery(chatEl); }
   else if (action === 'sf_filling') { ctx.vibe = 'filling and satisfying';          fireSFQuery(chatEl); }
   else if (action === 'sf_bold')    { ctx.vibe = 'bold and flavorful';              fireSFQuery(chatEl); }
@@ -2458,9 +2471,25 @@ function showSFQuestion(step, chatEl) {
   renderSFPills(step, chatEl);
 }
 
+// ── SF seen-IDs helpers (localStorage, capped at 20) ──────────────────────
+function sfGetSeenIds() {
+  try { return JSON.parse(localStorage.getItem('sf_seen_ids') || '[]'); } catch(e) { return []; }
+}
+function sfAddSeenIds(newIds) {
+  try {
+    var seen = sfGetSeenIds().concat(newIds);
+    // keep last 20 so older ones eventually cycle back
+    if (seen.length > 20) seen = seen.slice(seen.length - 20);
+    localStorage.setItem('sf_seen_ids', JSON.stringify(seen));
+  } catch(e) {}
+}
+
 function fireSFQuery(chatEl) {
   var ctx = sfFlow.context;
-  var query = 'I need a school ' + (ctx.type || 'snack or lunch') + ' that is ' + (ctx.vibe || 'good') + '. Only suggest School Fuel recipes.';
+  var ingredientPart = ctx.ingredient ? ', ' + ctx.ingredient : '';
+  var seenIds = sfGetSeenIds();
+  var avoidPart = seenIds.length ? ' Do NOT suggest any of these IDs (already seen recently): ' + seenIds.join(', ') + '.' : '';
+  var query = 'I need a school ' + (ctx.type || 'snack or lunch') + ingredientPart + ' that is ' + (ctx.vibe || 'good') + '. Only suggest School Fuel recipes.' + avoidPart;
   sfBuddyHistory.push({ role: 'user', content: query });
   callBuddyProxy(query, chatEl,
     function clearSFTyping() {
@@ -2468,7 +2497,10 @@ function fireSFQuery(chatEl) {
       if (t) t.remove();
       sfBuddyTyping = false;
     },
-    function onSFComplete() { showSFReset(chatEl); },
+    function onSFComplete(suggestedIds) {
+      if (suggestedIds && suggestedIds.length) sfAddSeenIds(suggestedIds.map(function(r){ return r.id; }));
+      showSFReset(chatEl);
+    },
     true // schoolFuel mode
   );
   // Show typing indicator
@@ -2812,7 +2844,7 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete, schoolFuelMode){
     requestAnimationFrame(function(){
       chatEl.scrollTop = scrollAnchor;
     });
-    if (typeof onComplete === 'function') onComplete();
+    if (typeof onComplete === 'function') onComplete(recipeIds);
   })
   .catch(function(err){
     clearTyping();
