@@ -2367,24 +2367,83 @@ function fireSFQuery(chatEl) {
   chatEl.scrollTop = chatEl.scrollHeight;
 }
 
+var SF_REFINEMENTS = [
+  { label: '⚡ Even faster',      msg: 'Those take too long. Give me something under 5 minutes.'         },
+  { label: '🥗 Lighter',          msg: 'Too heavy. I want something lighter.'                             },
+  { label: '💪 More filling',     msg: 'I need something more filling that keeps me going until 3pm.'    },
+  { label: '💰 Cheaper',          msg: 'Too expensive. Show me something cheaper to pack.'               },
+  { label: '🌶 Bolder flavor',    msg: 'I want something with bolder, more interesting flavors.'         },
+  { label: '🥕 Veggie option',    msg: 'Show me a vegetarian option instead.'                           },
+  { label: '😎 Impress the table',msg: 'I want something that makes people ask what I packed.'           }
+];
+
+function fireSFRefinement(label, msg, chatEl) {
+  if (sfBuddyTyping) return;
+  var row = chatEl.querySelector('.co-pills-row');
+  if (row) row.remove();
+
+  var ud = document.createElement('div');
+  ud.className = 'ai-msg ai-msg-user';
+  ud.textContent = label;
+  chatEl.appendChild(ud);
+  chatEl.scrollTop = chatEl.scrollHeight;
+
+  sfBuddyHistory.push({ role: 'user', content: msg });
+  sfBuddyTyping = true;
+
+  var typingDiv = document.createElement('div');
+  typingDiv.className = 'ai-msg ai-msg-bot';
+  typingDiv.id = 'sf-buddy-typing';
+  typingDiv.innerHTML = '<span class="typing-dots"><span>●</span><span>●</span><span>●</span></span>';
+  chatEl.appendChild(typingDiv);
+  chatEl.scrollTop = chatEl.scrollHeight;
+
+  callBuddyProxy(msg, chatEl,
+    function() { var t = document.getElementById('sf-buddy-typing'); if(t) t.remove(); sfBuddyTyping = false; },
+    function() { showSFReset(chatEl); },
+    true
+  );
+}
+
 function showSFReset(chatEl) {
-  var wrap = document.createElement('div');
-  wrap.style.cssText = 'margin-top:10px;padding-top:12px;border-top:1px solid var(--border);';
+  if (!chatEl) return;
+  var existing = chatEl.querySelector('.co-pills-row');
+  if (existing) existing.remove();
+
+  // Follow-up nudge
+  var coMsg = document.createElement('div');
+  coMsg.className = 'ai-msg ai-msg-bot';
+  coMsg.textContent = 'Not quite right? Narrow it down ↓';
+  chatEl.appendChild(coMsg);
+
+  // Refinement pills
+  var row = document.createElement('div');
+  row.className = 'co-pills-row';
+  row.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;padding-bottom:2px;';
+  SF_REFINEMENTS.forEach(function(r) {
+    var btn = document.createElement('button');
+    btn.className = 'ai-prompt';
+    btn.textContent = r.label;
+    btn.addEventListener('click', function() { fireSFRefinement(r.label, r.msg, chatEl); });
+    row.appendChild(btn);
+  });
+  chatEl.appendChild(row);
+
+  // Divider + start over
+  var divider = document.createElement('div');
+  divider.style.cssText = 'height:1px;background:var(--border);margin:10px 0;';
   var resetBtn = document.createElement('button');
   resetBtn.className = 'ai-prompt';
-  resetBtn.textContent = '🔄 Start over';
   resetBtn.style.cssText = 'background:var(--bg2);';
+  resetBtn.textContent = '🔄 Start over';
   resetBtn.onclick = function() {
-    var chatEl = document.getElementById('sf-chat');
-    if (chatEl) {
-      chatEl.innerHTML = '';
-      delete chatEl.dataset.inited;
-      sfBuddyHistory = [];
-      initSFChat();
-    }
+    chatEl.innerHTML = '';
+    delete chatEl.dataset.inited;
+    sfBuddyHistory = [];
+    initSFChat();
   };
-  wrap.appendChild(resetBtn);
-  chatEl.appendChild(wrap);
+  chatEl.appendChild(divider);
+  chatEl.appendChild(resetBtn);
   chatEl.scrollTop = chatEl.scrollHeight;
 }
 
