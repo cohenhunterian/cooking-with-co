@@ -4023,12 +4023,12 @@ if (typeof window.renderHomeChefRow === "function") window.renderHomeChefRow();
 // ═══════════════════════════════════════════════════════
 var SUPA_URL = 'https://kstdkrmzafqjwamaaqah.supabase.co';
 var SUPA_KEY = 'sb_publishable_-NjJIlKSwG35fKIVx32FnQ_9YzrmB4N';
-var supabase = null;
+var _supaClient = null;
 
 function commInit() {
-  if (supabase) return;
+  if (_supaClient) return;
   if (window.supabase && window.supabase.createClient) {
-    supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+    _supaClient = window.supabase.createClient(SUPA_URL, SUPA_KEY);
   }
 }
 
@@ -4074,13 +4074,13 @@ window.commSubmit = function() {
   var ext = commImgFile.name.split('.').pop() || 'jpg';
   var fileName = 'post-' + Date.now() + '.' + ext;
 
-  supabase.storage.from('community-photos').upload(fileName, commImgFile, { contentType: commImgFile.type })
+  _supaClient.storage.from('community-photos').upload(fileName, commImgFile, { contentType: commImgFile.type })
     .then(function(res) {
       if (res.error) throw res.error;
       var publicUrl = SUPA_URL + '/storage/v1/object/public/community-photos/' + fileName;
       var name = (document.getElementById('comm-name') || {}).value || '';
       var caption = (document.getElementById('comm-caption') || {}).value || '';
-      return supabase.from('community_posts').insert({
+      return _supaClient.from('community_posts').insert({
         name: name.trim() || 'Anonymous',
         recipe_name: recipe.value.trim(),
         caption: caption.trim(),
@@ -4121,7 +4121,7 @@ window.commLoadGallery = function() {
   if (loading) loading.style.display = 'block';
   if (gallery) gallery.innerHTML = '';
 
-  supabase.from('community_posts')
+  _supaClient.from('community_posts')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(60)
