@@ -185,6 +185,100 @@ body.dark .ai-input-row input{background:var(--bg3);color:var(--text);}
 .home-stat-strip span.dot{opacity:.25;}
 .why-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 @media(max-width:640px){.why-cols{grid-template-columns:1fr;gap:12px;}}
+
+/* ── HAMBURGER (hidden on desktop) ── */
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .25s;}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-hamburger.open span:nth-child(2){opacity:0;}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* ── BUDDY RECIPE ROW (JS adds this class) ── */
+.buddy-recipe-row{display:grid;grid-template-columns:200px 1fr;gap:14px;align-items:start;background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;}
+
+/* ══════════════════════════════════════
+   MOBILE — everything ≤640px
+══════════════════════════════════════ */
+@media(max-width:640px){
+
+  /* Nav: hide links, show hamburger */
+  .nav{padding:12px 16px;}
+  .nav-hamburger{display:flex;}
+  .nav-links{
+    display:none;
+    flex-direction:column;
+    position:fixed;
+    top:52px;left:0;right:0;bottom:0;
+    background:var(--bg);
+    padding:28px 24px;
+    gap:0;
+    z-index:99;
+    overflow-y:auto;
+  }
+  .nav-links.mobile-open{display:flex;}
+  .nav-links a{
+    font-size:17px;font-weight:600;
+    padding:16px 0;
+    border-bottom:1px solid var(--border);
+    color:var(--text);
+  }
+  .nav-links button{margin-top:16px;align-self:flex-start;}
+
+  /* Container tighter on phone */
+  .container{padding:0 16px;}
+
+  /* Home hero */
+  .home-section{padding:40px 0!important;}
+
+  /* School Fuel + Collection — stack */
+  .home-sf-collection-grid{grid-template-columns:1fr!important;}
+
+  /* Chat recipe cards — stack vertically */
+  .buddy-recipe-row{
+    grid-template-columns:1fr!important;
+  }
+  .buddy-recipe-row .buddy-img-left{
+    width:100%!important;
+  }
+
+  /* AI chat area */
+  #ai-chat{padding:16px 14px!important;min-height:160px!important;max-height:55vh!important;}
+  #sf-chat{padding:14px 12px!important;min-height:120px!important;max-height:50vh!important;}
+  #ai-chat-wrap{border-radius:16px!important;}
+  #sf-chat-wrap{border-radius:16px!important;}
+
+  /* Chat input rows */
+  #ai-chat-wrap [style*="padding:16px 28px"],
+  #ai-chat-wrap [style*="padding:18px 26px"]{padding:12px 14px!important;}
+  #sf-chat-wrap [style*="padding:12px 22px"],
+  #sf-chat-wrap [style*="padding:14px 22px"]{padding:10px 12px!important;}
+
+  /* Bigger touch targets for pills */
+  .ai-prompt{padding:10px 14px!important;font-size:13px!important;}
+  .sf-pill{padding:10px 14px!important;}
+
+  /* Why section label */
+  .why-cols>div{padding:20px 16px!important;}
+
+  /* School Fuel hero padding */
+  #page-school .container > div:first-child{padding:32px 20px!important;}
+
+  /* SF search row */
+  #page-school [style*="display:flex;gap:8px;margin-bottom:16px"]{flex-wrap:wrap;}
+
+  /* Home chef row — 3 cols */
+  #home-chef-row{grid-template-columns:repeat(3,1fr)!important;}
+
+  /* Ask Co section — tighter */
+  #ai-chat-wrap [style*="padding:18px 26px 16px"]{padding:14px 16px 12px!important;}
+
+  /* Refinement pills wrap better */
+  .co-pills-row{gap:6px!important;}
+
+  /* Modal full screen on mobile */
+  .modal{border-radius:16px 16px 0 0!important;margin-top:auto!important;}
+  .modal-overlay{align-items:flex-end!important;}
+}
 *{-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;}.typing-dots{display:inline-flex;gap:3px;}.typing-dots span{animation:blink 1.4s infinite both;font-size:24px;line-height:1;}.typing-dots span:nth-child(2){animation-delay:.2s;}.typing-dots span:nth-child(3){animation-delay:.4s;}@keyframes blink{0%,80%,100%{opacity:.2;}40%{opacity:1;}}
 
@@ -603,15 +697,18 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 <!-- NAV -->
 <nav class="nav">
   <div class="logo">Cooking with <em>Co</em></div>
-  <div class="nav-links">
-    <a onclick="showPage('home')" class="active" id="nav-home">Home</a>
-    <a onclick="showPage('school')" id="nav-school">School Fuel</a>
-    <a onclick="showPage('recipes')" id="nav-recipes">Recipes</a>
-    <a onclick="showPage('battle')" id="nav-battle">Battle</a>
-    <a onclick="showPage('more')" id="nav-more">More</a>
-    <a onclick="showPage('about')" id="nav-about">About</a>
+  <div class="nav-links" id="nav-links">
+    <a onclick="showPage('home');closeMobileNav();" class="active" id="nav-home">Home</a>
+    <a onclick="showPage('school');closeMobileNav();" id="nav-school">School Fuel</a>
+    <a onclick="showPage('recipes');closeMobileNav();" id="nav-recipes">Recipes</a>
+    <a onclick="showPage('battle');closeMobileNav();" id="nav-battle">Battle</a>
+    <a onclick="showPage('more');closeMobileNav();" id="nav-more">More</a>
+    <a onclick="showPage('about');closeMobileNav();" id="nav-about">About</a>
     <button style="background:none;border:none;font-size:18px;cursor:pointer;" onclick="toggleTheme()" title="Toggle theme">☀️</button>
   </div>
+  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- =============== HOME =============== -->
@@ -684,7 +781,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 
   <!-- SCHOOL FUEL + COLLECTION — side by side -->
   <div class="container reveal" style="margin-bottom:48px;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+    <div class="home-sf-collection-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
 
       <div onclick="showPage(‘school’)" style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:18px 20px;cursor:pointer;transition:transform .2s,border-color .2s;" onmouseover="this.style.transform=’translateY(-2px)’;this.style.borderColor=’var(--accent)’" onmouseout="this.style.transform=’’;this.style.borderColor=’var(--border)’">
         <div style="font-size:10px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">🎒 School Fuel</div>
@@ -1614,6 +1711,23 @@ const weekChef=chefs[weekNum%chefs.length];
 // ===========================================
 // PAGE NAVIGATION
 // ===========================================
+function toggleMobileNav(){
+  var nav = document.getElementById('nav-links');
+  var burger = document.getElementById('nav-hamburger');
+  if(!nav) return;
+  var isOpen = nav.classList.toggle('mobile-open');
+  burger.classList.toggle('open', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+function closeMobileNav(){
+  var nav = document.getElementById('nav-links');
+  var burger = document.getElementById('nav-hamburger');
+  if(!nav) return;
+  nav.classList.remove('mobile-open');
+  if(burger) burger.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 window.showPage = function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
@@ -2613,10 +2727,11 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete, schoolFuelMode){
         var desc = recipeBlocks[i] ? recipeBlocks[i].desc : '';
 
         var row = document.createElement('div');
-        row.style.cssText = 'display:grid;grid-template-columns:200px 1fr;gap:14px;align-items:start;background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;';
+        row.className = 'buddy-recipe-row';
 
         // Left: image + open button
         var left = document.createElement('div');
+        left.className = 'buddy-img-left';
         left.style.cssText = 'cursor:pointer;';
         left.onclick = function(){
           if (r.id.indexOf('sf-') === 0 && window.openSFDetail) window.openSFDetail(r.id);
@@ -3333,6 +3448,15 @@ document.addEventListener('DOMContentLoaded', function(){
 
   var sfChatInput = document.getElementById('sf-chat-input');
   if(sfChatInput) sfChatInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') doSFBuddyChat(); });
+
+  // Close mobile nav when tapping outside
+  document.addEventListener('click', function(e){
+    var nav = document.getElementById('nav-links');
+    var burger = document.getElementById('nav-hamburger');
+    if(nav && nav.classList.contains('mobile-open') && !nav.contains(e.target) && !burger.contains(e.target)){
+      closeMobileNav();
+    }
+  });
 
   // Init SF chat if landing directly on school page
   if (document.getElementById('page-school') && document.getElementById('page-school').classList.contains('active')) {
