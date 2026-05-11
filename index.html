@@ -769,6 +769,22 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
       <p style="font-size:15px;line-height:1.65;color:var(--dim);margin:0 auto;max-width:480px;">100 snacks and lunches you can pack the night before. Real ingredients, real flavor. The heart of what we do.</p>
     </div>
 
+    <!-- SF Ask Co -->
+    <div style="margin-bottom:24px;">
+      <div id="sf-chat-wrap" style="background:rgba(46,204,113,0.07);border:1.5px solid rgba(46,204,113,0.3);border-radius:20px;overflow:hidden;">
+        <div style="padding:14px 22px 12px;border-bottom:1px solid rgba(46,204,113,0.2);">
+          <span style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;">✨ Ask Co</span>
+          <span style="font-size:10px;color:var(--dim);margin-left:8px;">What should I pack?</span>
+        </div>
+        <div id="sf-chat" style="padding:18px 22px;min-height:140px;max-height:44vh;overflow-y:auto;"></div>
+        <div style="display:flex;gap:8px;align-items:center;padding:12px 22px 14px;border-top:1px solid rgba(46,204,113,0.2);">
+          <input type="text" id="sf-chat-input" placeholder="or type anything..." autocomplete="off"
+            style="flex:1;background:transparent;border:none;outline:none;font-family:'Sora',sans-serif;font-size:14px;color:var(--text);"/>
+          <button id="sf-chat-send" onclick="doSFBuddyChat()" style="padding:8px 18px;border-radius:100px;border:none;background:var(--accent);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;">→</button>
+        </div>
+      </div>
+    </div>
+
     <!-- SF Search -->
     <div style="display:flex;gap:8px;margin-bottom:16px;">
       <input type="text" id="sf-search-input" placeholder="Search snacks & lunches..." autocomplete="off" style="flex:1;background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:12px 16px;color:var(--text);font-size:13px;outline:none;font-family:'Sora',sans-serif;"/>
@@ -2245,6 +2261,164 @@ window.switchMoreSection = function(section){
 var buddyHistory = [];
 var buddyTyping = false;
 
+// ─── SCHOOL FUEL BUDDY ───────────────────────────────────────────────
+var sfBuddyHistory = [];
+var sfBuddyTyping  = false;
+var sfFlow = { step: 'start', context: {} };
+
+var sfSteps = {
+  start: { question: 'What are you packing?', pills: [
+    { label: '🍿 A snack',  action: 'sf_snack'  },
+    { label: '🥪 Lunch',    action: 'sf_lunch'   }
+  ]},
+  vibe: { question: 'What\'s the vibe?', pills: [
+    { label: '⚡ Super quick',       action: 'sf_quick'   },
+    { label: '💪 Something filling', action: 'sf_filling' },
+    { label: '🌶 Bold flavors',      action: 'sf_bold'    },
+    { label: '🥗 Light & healthy',   action: 'sf_light'   },
+    { label: '🤩 Impress the table', action: 'sf_impress' }
+  ]}
+};
+
+function initSFChat() {
+  var chatEl = document.getElementById('sf-chat');
+  if (!chatEl || chatEl.dataset.inited) return;
+  chatEl.dataset.inited = '1';
+  sfBuddyHistory = [];
+  sfFlow = { step: 'start', context: {} };
+  var d = document.createElement('div');
+  d.className = 'ai-msg ai-msg-bot';
+  d.innerHTML = '<strong>What should you pack today?</strong><br><span style="font-size:13px;opacity:.7;">Pick one below — or just type what you\'re in the mood for.</span>';
+  chatEl.appendChild(d);
+  renderSFPills('start', chatEl);
+}
+
+function renderSFPills(step, chatEl) {
+  var old = chatEl.querySelector('.co-pills-row');
+  if (old) old.remove();
+  var stepData = sfSteps[step];
+  if (!stepData) return;
+  var row = document.createElement('div');
+  row.className = 'co-pills-row';
+  row.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;padding-bottom:2px;';
+  stepData.pills.forEach(function(pill) {
+    var btn = document.createElement('button');
+    btn.className = 'ai-prompt';
+    btn.textContent = pill.label;
+    btn.addEventListener('click', function() {
+      if (sfBuddyTyping) return;
+      row.remove();
+      var ud = document.createElement('div');
+      ud.className = 'ai-msg ai-msg-user';
+      ud.textContent = pill.label;
+      chatEl.appendChild(ud);
+      chatEl.scrollTop = chatEl.scrollHeight;
+      handleSFAction(pill, chatEl);
+    });
+    row.appendChild(btn);
+  });
+  chatEl.appendChild(row);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function handleSFAction(pill, chatEl) {
+  var action = pill.action;
+  var ctx = sfFlow.context;
+  if (action === 'sf_snack')   { ctx.type = 'snack';  sfFlow.step = 'vibe'; showSFQuestion('vibe', chatEl); }
+  else if (action === 'sf_lunch')   { ctx.type = 'lunch';  sfFlow.step = 'vibe'; showSFQuestion('vibe', chatEl); }
+  else if (action === 'sf_quick')   { ctx.vibe = 'super quick, under 5 minutes';   fireSFQuery(chatEl); }
+  else if (action === 'sf_filling') { ctx.vibe = 'filling and satisfying';          fireSFQuery(chatEl); }
+  else if (action === 'sf_bold')    { ctx.vibe = 'bold and flavorful';              fireSFQuery(chatEl); }
+  else if (action === 'sf_light')   { ctx.vibe = 'light and healthy';               fireSFQuery(chatEl); }
+  else if (action === 'sf_impress') { ctx.vibe = 'impressive, something that makes people ask what you packed'; fireSFQuery(chatEl); }
+}
+
+function showSFQuestion(step, chatEl) {
+  var stepData = sfSteps[step];
+  if (!stepData) return;
+  var q = document.createElement('div');
+  q.className = 'ai-msg ai-msg-bot';
+  q.textContent = stepData.question;
+  chatEl.appendChild(q);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  renderSFPills(step, chatEl);
+}
+
+function fireSFQuery(chatEl) {
+  var ctx = sfFlow.context;
+  var query = 'I need a school ' + (ctx.type || 'snack or lunch') + ' that is ' + (ctx.vibe || 'good') + '. Only suggest School Fuel recipes.';
+  sfBuddyHistory.push({ role: 'user', content: query });
+  callBuddyProxy(query, chatEl,
+    function clearSFTyping() {
+      var t = document.getElementById('sf-buddy-typing');
+      if (t) t.remove();
+      sfBuddyTyping = false;
+    },
+    function onSFComplete() { showSFReset(chatEl); },
+    true // schoolFuel mode
+  );
+  // Show typing indicator
+  sfBuddyTyping = true;
+  var typingDiv = document.createElement('div');
+  typingDiv.className = 'ai-msg ai-msg-bot';
+  typingDiv.id = 'sf-buddy-typing';
+  typingDiv.innerHTML = '<span class="typing-dots"><span>●</span><span>●</span><span>●</span></span>';
+  chatEl.appendChild(typingDiv);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function showSFReset(chatEl) {
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'margin-top:10px;padding-top:12px;border-top:1px solid var(--border);';
+  var resetBtn = document.createElement('button');
+  resetBtn.className = 'ai-prompt';
+  resetBtn.textContent = '🔄 Start over';
+  resetBtn.style.cssText = 'background:var(--bg2);';
+  resetBtn.onclick = function() {
+    var chatEl = document.getElementById('sf-chat');
+    if (chatEl) {
+      chatEl.innerHTML = '';
+      delete chatEl.dataset.inited;
+      sfBuddyHistory = [];
+      initSFChat();
+    }
+  };
+  wrap.appendChild(resetBtn);
+  chatEl.appendChild(wrap);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function doSFBuddyChat() {
+  var input = document.getElementById('sf-chat-input');
+  if (!input || sfBuddyTyping) return;
+  var msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  var chatEl = document.getElementById('sf-chat');
+  if (!chatEl) return;
+  var old = chatEl.querySelector('.co-pills-row');
+  if (old) old.remove();
+  var ud = document.createElement('div');
+  ud.className = 'ai-msg ai-msg-user';
+  ud.textContent = msg;
+  chatEl.appendChild(ud);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  sfBuddyHistory.push({ role: 'user', content: msg });
+  sfBuddyTyping = true;
+  var typingDiv = document.createElement('div');
+  typingDiv.className = 'ai-msg ai-msg-bot';
+  typingDiv.id = 'sf-buddy-typing';
+  typingDiv.innerHTML = '<span class="typing-dots"><span>●</span><span>●</span><span>●</span></span>';
+  chatEl.appendChild(typingDiv);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  callBuddyProxy(msg, chatEl,
+    function() { var t = document.getElementById('sf-buddy-typing'); if(t) t.remove(); sfBuddyTyping = false; },
+    function() { showSFReset(chatEl); },
+    true // schoolFuel mode
+  );
+}
+// ─── END SCHOOL FUEL BUDDY ───────────────────────────────────────────
+
 function doBuddyChat(){
   var input = document.getElementById('ai-input');
   if(!input || buddyTyping) return;
@@ -2294,22 +2468,24 @@ function doBuddyChat(){
 
 // Call your backend proxy (Cloudflare Worker, Vercel function, etc.)
 // Set window.BUDDY_PROXY_URL = 'https://your-proxy.workers.dev' to enable
-function callBuddyProxy(msg, chatEl, clearTyping, onComplete){
-  // Build minimal context: recipes + chefs (just titles + IDs to keep payload small)
-  var recipeCtx = recipes.map(function(r){
+function callBuddyProxy(msg, chatEl, clearTyping, onComplete, schoolFuelMode){
+  // Build context — in SF mode send only SF recipes; in normal mode send both
+  var recipeCtx = schoolFuelMode ? [] : recipes.map(function(r){
     return {id:r.id, title:r.title, chef:r.chef, time:r.time, cost:r.cost, hs:r.hs, tags:r.tags};
   });
   var sfCtx = (typeof sfRecipes !== 'undefined' ? sfRecipes : []).map(function(r){
     return {id:r.id, title:r.title, chef:r.chef, time:r.time, cost:r.cost, type:r.type};
   });
-  
+  var historyToSend = schoolFuelMode ? sfBuddyHistory : buddyHistory;
+
   fetch(window.BUDDY_PROXY_URL, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({
-      messages: buddyHistory,
+      messages: historyToSend,
       recipes: recipeCtx,
-      sfRecipes: sfCtx
+      sfRecipes: sfCtx,
+      mode: schoolFuelMode ? 'schoolfuel' : 'default'
     })
   })
   .then(function(r){return r.json();})
@@ -3096,6 +3272,14 @@ document.addEventListener('DOMContentLoaded', function(){
   var sfInput = document.getElementById('sf-search-input');
   if(sfInput) sfInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') window.doSFSearchNew(); });
 
+  var sfChatInput = document.getElementById('sf-chat-input');
+  if(sfChatInput) sfChatInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') doSFBuddyChat(); });
+
+  // Init SF chat if landing directly on school page
+  if (document.getElementById('page-school') && document.getElementById('page-school').classList.contains('active')) {
+    initSFChat();
+  }
+
   // Scroll reveal — fade sections up as they enter viewport
   var revealObserver = new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
@@ -3539,6 +3723,7 @@ window.showPage = function(id){
   }
   if (id === 'school') {
     if (window.sfFilterNew) window.sfFilterNew(null, 'all');
+    initSFChat();
   }
   if (id === 'more') {
     if (window.switchMoreSection) window.switchMoreSection('chefs');

@@ -38,7 +38,8 @@ export const handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const { messages, recipes, sfRecipes } = body;
+    const { messages, recipes, sfRecipes, mode } = body;
+    const isSchoolFuel = mode === 'schoolfuel';
 
     // Build the system prompt with recipe context
     const recipeList = (recipes || []).map(r =>
@@ -48,6 +49,45 @@ export const handler = async (event) => {
     const sfList = (sfRecipes || []).map(r =>
       `${r.title} by ${r.chef} (${r.time}, ${r.type}) [ID:${r.id}]`
     ).join('\n');
+
+    // ── SCHOOL FUEL PROMPT ──────────────────────────────────────────────
+    const sfSystemPrompt = `You are Co — the AI on the School Fuel section of Cooking with Co, a recipe site built by a 5th grader and his dad. School Fuel is the heart of the site: 100 snacks and lunches kids can pack themselves — chef-inspired, real ingredients, under 20 minutes.
+
+WHO YOU ARE
+- A friend helping someone pack something they'll actually want to eat at lunch.
+- Direct, warm, a little personality. Never condescending.
+- You have opinions. Use them. Don't just list — recommend.
+
+HOW YOU TALK
+- Tight. 1 sentence of setup max before the recipes.
+- Say things like "this packs perfectly", "still tastes great cold", "takes 3 minutes the night before".
+- Never: "delicious," "scrumptious," "yummy."
+
+═══ RESPONSE FORMAT — NON-NEGOTIABLE ═══
+
+1. ONE setup sentence — why these specifically for school.
+
+2. FOR EACH RECIPE (2-3 picks, never more):
+
+**Recipe Name** [ID:exact-sf-id]
+WHAT: [One sentence. What it is and what makes this chef's version worth packing.]
+WHY: [One sentence. Why Co recommends it for school specifically — packability, cold taste, ease, wow factor.]
+
+EXAMPLE:
+**PB&J roll-ups** [ID:sf-s1]
+WHAT: Jamie Oliver's take on the classic — rolled tight so it doesn't fall apart in a bag and hits way better than a sad sandwich.
+WHY: Three ingredients, two minutes, and it actually travels — still perfect at noon.
+
+3. Only use IDs from the SCHOOL FUEL LIBRARY below (all start with sf-). Never use main recipe IDs.
+
+═══ CHEF NAME RULE ═══
+Always use the chef's full name in WHAT (e.g. "Jamie Oliver", "The Happy Pear", "Nick DiGiovanni").
+Never use pronouns only or first names only.
+
+SCHOOL FUEL LIBRARY (100 recipes — ONLY use these IDs):
+${sfList}
+
+Respond now. Lead with the setup. Keep it tight.`;
 
     const systemPrompt = `You are Co — the AI on Cooking with Co, a recipe site built by a 5th grader (also named Co) and his dad. The whole mission of this site: take what the world's best chefs do — Michelin stars, James Beard winners, YouTube legends — and make it real food that kids can actually cook. Not dumbed down. Just made possible. School Fuel is the heart of it: kids packing chef-inspired food instead of sad cafeteria stuff.
 
@@ -119,11 +159,12 @@ ${sfList}
 
 Respond now. Lead with the setup. Name the chef for every recipe. Give the Co POV. Keep it tight.`;
 
+    // Select prompt based on mode
+    const activePrompt = isSchoolFuel ? sfSystemPrompt : systemPrompt;
+
     // Call Anthropic API
-    // Model: claude-haiku-4-5-20251001 is fast + cheap for recipe suggestions
-    // If you want richer responses, swap to claude-sonnet-4-6 (costs ~5x more per call)
     const MODEL = 'claude-haiku-4-5-20251001';
-    console.log(`[buddy] calling model=${MODEL} messages=${messages.length}`);
+    console.log(`[buddy] mode=${mode||'default'} model=${MODEL} messages=${messages.length}`);
 
     const apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -135,7 +176,7 @@ Respond now. Lead with the setup. Name the chef for every recipe. Give the Co PO
       body: JSON.stringify({
         model: MODEL,
         max_tokens: 600,
-        system: systemPrompt,
+        system: activePrompt,
         messages: messages
       })
     });
