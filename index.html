@@ -4144,16 +4144,55 @@ window.commLoadGallery = function() {
           + '<div style="padding:10px 12px;">'
           + '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">' + commEsc(p.recipe_name) + '</div>'
           + (p.caption ? '<div style="font-size:11px;color:var(--dim);margin-bottom:4px;line-height:1.4;">' + commEsc(p.caption) + '</div>' : '')
-          + '<div style="display:flex;justify-content:space-between;align-items:center;">'
+          + '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">'
           + '<span style="font-size:10px;color:var(--dim);">by ' + commEsc(p.name) + ' · ' + ago + '</span>'
           + '<span>' + fires + '</span>'
-          + '</div></div></div>';
+          + '</div>'
+          + '<div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;">'
+          + '<button id="react-btn-' + p.id + '" onclick="commReact(\'' + p.id + '\')" style="background:none;border:1.5px solid var(--border);border-radius:100px;padding:4px 12px;font-size:12px;cursor:pointer;color:var(--text);font-family:Sora,sans-serif;transition:all .15s;" '
+          + (commHasReacted(p.id) ? 'disabled style="background:var(--bg3);border-color:transparent;opacity:.6;"' : '')
+          + '>🔥 <span id="react-count-' + p.id + '">' + (p.reactions || 0) + '</span></button>'
+          + '</div>'
+          + '</div></div>';
       }).join('');
     })
     .catch(function(err) {
       if (loading) loading.style.display = 'none';
       console.error('Gallery load failed:', err);
     });
+};
+
+function commHasReacted(id) {
+  try { return JSON.parse(localStorage.getItem('comm_reacted') || '[]').indexOf(id) > -1; } catch(e) { return false; }
+}
+function commMarkReacted(id) {
+  try {
+    var arr = JSON.parse(localStorage.getItem('comm_reacted') || '[]');
+    if (arr.indexOf(id) === -1) arr.push(id);
+    localStorage.setItem('comm_reacted', JSON.stringify(arr));
+  } catch(e) {}
+}
+
+window.commReact = function(id) {
+  if (commHasReacted(id)) return;
+  commMarkReacted(id);
+  var btn = document.getElementById('react-btn-' + id);
+  var countEl = document.getElementById('react-count-' + id);
+  if (btn) { btn.disabled = true; btn.style.background = 'var(--bg3)'; btn.style.borderColor = 'transparent'; btn.style.opacity = '.6'; }
+  if (countEl) countEl.textContent = parseInt(countEl.textContent || 0) + 1;
+  commInit();
+  if (!_supaClient) return;
+  _supaClient.rpc('increment_reactions', { post_id: id })
+    .then(function(res) {
+      if (res.error) {
+        // fallback: manual increment
+        return _supaClient.from('community_posts').select('reactions').eq('id', id).single()
+          .then(function(r) {
+            if (r.data) return _supaClient.from('community_posts').update({ reactions: (r.data.reactions || 0) + 1 }).eq('id', id);
+          });
+      }
+    })
+    .catch(function(e) { console.warn('React failed:', e); });
 };
 
 function commTimeAgo(ts) {
