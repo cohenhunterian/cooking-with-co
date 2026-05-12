@@ -774,9 +774,9 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
           <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span>
           <span style="font-family:’Outfit’,sans-serif;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.04em;">Made by a 5th grader &amp; his dad</span>
         </div>
-        <h1 style="font-family:’Outfit’,sans-serif;font-size:clamp(52px,8vw,96px);font-weight:900;line-height:.9;letter-spacing:-.04em;margin:0 0 4px;color:var(--text);">Michelin chefs.</h1>
-        <h1 style="font-family:’Outfit’,sans-serif;font-size:clamp(52px,8vw,96px);font-weight:900;line-height:.95;letter-spacing:-.04em;margin:0 0 28px;color:var(--accent);">Your kitchen.</h1>
-        <p style="font-family:’Sora’,sans-serif;font-size:clamp(14px,1.6vw,18px);font-weight:400;line-height:1.6;color:var(--dim);margin:0 0 32px;max-width:420px;">192 recipes from 27 of the world’s best chefs — made actually cookable at home. No culinary school required.</p>
+        <h1 style="font-family:’Outfit’,sans-serif;font-size:clamp(38px,5.5vw,68px);font-weight:900;line-height:.92;letter-spacing:-.04em;margin:0 0 4px;color:var(--text);">Michelin chefs.</h1>
+        <h1 style="font-family:’Outfit’,sans-serif;font-size:clamp(38px,5.5vw,68px);font-weight:900;line-height:1;letter-spacing:-.04em;margin:0 0 24px;color:var(--accent);">Your kitchen.</h1>
+        <p style="font-family:’Sora’,sans-serif;font-size:clamp(14px,1.5vw,17px);font-weight:400;line-height:1.65;color:var(--dim);margin:0 0 32px;max-width:400px;">Real chefs. Real ingredients. Made actually cookable at home — no culinary school required.</p>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
           <button id="hero-btn-ask" style="background:var(--accent);color:white;border:none;font-family:’Outfit’,sans-serif;font-size:15px;font-weight:700;padding:14px 28px;border-radius:100px;cursor:pointer;transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform=’scale(1.03)’;this.style.boxShadow=’0 8px 24px rgba(0,201,106,.35)’" onmouseout="this.style.transform=’’;this.style.boxShadow=’’">Ask Co what to make ✨</button>
           <button id="hero-btn-browse" style="background:var(--bg2);color:var(--text);border:1.5px solid var(--border);font-family:’Outfit’,sans-serif;font-size:15px;font-weight:600;padding:14px 28px;border-radius:100px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor=’var(--accent)’" onmouseout="this.style.borderColor=’var(--border)’">Browse recipes →</button>
@@ -795,23 +795,30 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
   </div>
 
   <!-- ═══ MISSION STRIP ═══ -->
-  <div style="background:var(--text);padding:0;" class="reveal">
+  <div style="background:var(--text);padding:52px 0 0;" class="reveal">
     <div class="container">
-      <div class="why-cols" style="gap:0;">
-        <div style="padding:28px 24px;border-right:1px solid rgba(255,255,255,.1);">
-          <div style="font-size:22px;margin-bottom:8px;">⭐</div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:5px;">Chef-sourced</div>
-          <div style="font-size:13px;line-height:1.55;color:rgba(255,255,255,.55);">Every recipe traces back to a real world-class chef. No invented dishes.</div>
+      <!-- Mission header -->
+      <div style="margin-bottom:40px;">
+        <div style="font-family:’Outfit’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:12px;">Our Mission</div>
+        <h2 style="font-family:’Outfit’,sans-serif;font-size:clamp(26px,4vw,44px);font-weight:900;color:#ffffff;margin:0;line-height:1;letter-spacing:-.03em;">Chef-level food.<br><span style="color:var(--accent);">Your kitchen. Your rules.</span></h2>
+        <p style="font-family:’Sora’,sans-serif;font-size:14px;color:rgba(255,255,255,.45);margin-top:14px;max-width:520px;line-height:1.65;">We took recipes from Gordon Ramsay, Julia Child, David Chang, and 24 more of the world’s best chefs — and figured out how to make every single one work in a home kitchen. No restaurant equipment. No impossible ingredients. Just real food that’s actually better than anything boxed or frozen.</p>
+      </div>
+      <!-- 3 pillars -->
+      <div class="why-cols" style="gap:0;border-top:1px solid rgba(255,255,255,.08);">
+        <div style="padding:28px 24px;border-right:1px solid rgba(255,255,255,.08);">
+          <div style="font-size:22px;margin-bottom:10px;">⭐</div>
+          <div style="font-family:’Outfit’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;">Chef-sourced</div>
+          <div style="font-size:13px;line-height:1.6;color:rgba(255,255,255,.5);">Every recipe traces back to a real world-class chef. Nothing invented.</div>
         </div>
-        <div style="padding:28px 24px;border-right:1px solid rgba(255,255,255,.1);">
-          <div style="font-size:22px;margin-bottom:8px;">🏠</div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:5px;">Home-cookable</div>
-          <div style="font-size:13px;line-height:1.55;color:rgba(255,255,255,.55);">Real ingredients from any grocery. Clear steps. No pro gear needed.</div>
+        <div style="padding:28px 24px;border-right:1px solid rgba(255,255,255,.08);">
+          <div style="font-size:22px;margin-bottom:10px;">🏠</div>
+          <div style="font-family:’Outfit’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;">Home-cookable</div>
+          <div style="font-size:13px;line-height:1.6;color:rgba(255,255,255,.5);">Any grocery store. Clear steps. No pro gear or fancy techniques.</div>
         </div>
         <div style="padding:28px 24px;">
-          <div style="font-size:22px;margin-bottom:8px;">🔥</div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:5px;">Actually worth it</div>
-          <div style="font-size:13px;line-height:1.55;color:rgba(255,255,255,.55);">Better than anything frozen, boxed, or drive-through. Every single time.</div>
+          <div style="font-size:22px;margin-bottom:10px;">🔥</div>
+          <div style="font-family:’Outfit’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;">Actually worth it</div>
+          <div style="font-size:13px;line-height:1.6;color:rgba(255,255,255,.5);">Better than frozen, boxed, or drive-through. Every single time.</div>
         </div>
       </div>
     </div>
@@ -3651,13 +3658,13 @@ document.addEventListener('DOMContentLoaded', function(){
       img.alt = r.title;
       img.loading = 'lazy';
       var overlay = document.createElement('div');
-      overlay.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));padding:18px 14px 13px;';
+      overlay.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));padding:18px 14px 13px;pointer-events:none;';
       overlay.innerHTML = '<div style="font-family:\'Outfit\',sans-serif;font-size:12px;font-weight:700;color:white;line-height:1.2;">' + r.title + '</div>'
         + '<div style="font-size:10px;color:rgba(255,255,255,.65);margin-top:3px;">' + r.chef + '</div>';
       div.appendChild(img);
       div.appendChild(overlay);
       div.style.cursor = 'pointer';
-      div.onclick = function(){ openRecipe(r.id); };
+      (function(recipeId){ div.addEventListener('click', function(){ if(window.openRecipe) window.openRecipe(recipeId); }); })(r.id);
       mosaic.appendChild(div);
     });
   })();
@@ -3693,7 +3700,7 @@ document.addEventListener('DOMContentLoaded', function(){
         + '<span style="font-size:10px;background:var(--bg3);padding:3px 9px;border-radius:100px;color:var(--dim);font-weight:500;">$' + (r.cost||'?') + '</span>'
         + '</div>'
         + '</div>';
-      card.onclick = function(){ openRecipe(r.id); };
+      (function(recipeId){ card.addEventListener('click', function(){ if(window.openRecipe) window.openRecipe(recipeId); }); })(r.id);
       strip.appendChild(card);
     });
   })();
