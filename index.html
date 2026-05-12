@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="theme-color" content="#ffffff"/>
   <title>Cooking with Co — real food, every day</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,700;1,400&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
 :root{
   --bg:#FFFFFF;
@@ -38,20 +38,20 @@ a{text-decoration:none;color:inherit;}
 .hero{padding:48px 0 32px;text-align:center;}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;background:rgba(46,204,113,.08);padding:6px 16px;border-radius:100px;margin-bottom:20px;}
 .hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);}
-.hero h1{font-family:'Fraunces',serif;font-size:clamp(36px,6vw,56px);line-height:1.05;font-weight:700;margin-bottom:16px;color:var(--text);}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(36px,6vw,56px);line-height:1.05;font-weight:700;margin-bottom:16px;color:var(--text);}
 .hero h1 em{color:var(--accent);font-style:italic;font-weight:400;}
 .hero p{font-size:16px;color:var(--dim);line-height:1.6;max-width:500px;margin:0 auto 28px;}
 .stats{display:flex;gap:0;justify-content:center;}
 .stat{text-align:center;padding:0 28px;}
 .stat:not(:last-child){border-right:1.5px solid var(--border);}
-.stat-num{font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--accent);}
+.stat-num{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:var(--accent);}
 .stat-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;font-weight:500;}
 
 /* AI ASSISTANT */
 .chef-ai{max-width:600px;margin:0 auto 40px;background:var(--bg2);border-radius:24px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.04);border:1px solid var(--border);}
 .chef-ai-header{text-align:center;margin-bottom:20px;}
 .chef-ai-avatar{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#2ECC71,#27AE60);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 10px;box-shadow:0 4px 12px rgba(46,204,113,.2);}
-.chef-ai-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;}
+.chef-ai-name{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;}
 .chef-ai-sub{font-size:13px;color:var(--dim);margin-top:4px;}
 .chef-ai-chat{max-height:320px;overflow-y:auto;margin-bottom:16px;}
 .ai-msg{background:var(--bg3);border-radius:14px;padding:12px 16px;margin-bottom:8px;font-size:15px;line-height:1.6;color:var(--text);max-width:88%;animation:fadeUp .3s ease;}
@@ -73,7 +73,7 @@ a{text-decoration:none;color:inherit;}
 
 /* HOW IT WORKS */
 .how-section{margin-bottom:48px;}
-.how-title{font-family:'Fraunces',serif;font-size:24px;font-weight:700;text-align:center;margin-bottom:24px;}
+.how-title{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;text-align:center;margin-bottom:24px;}
 .how-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 @media(max-width:640px){.how-cards{grid-template-columns:1fr;}}
 @media(max-width:640px){#home-chef-row{grid-template-columns:repeat(3,1fr)!important;}}
@@ -84,11 +84,11 @@ a{text-decoration:none;color:inherit;}
 .how-card:nth-child(1) .how-num{background:var(--accent);}
 .how-card:nth-child(2) .how-num{background:var(--accent2);}
 .how-card:nth-child(3) .how-num{background:var(--accent3);}
-.how-card-title{font-family:'Fraunces',serif;font-size:16px;font-weight:700;margin-bottom:6px;}
+.how-card-title{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px;}
 .how-card-desc{font-size:12px;color:var(--dim);line-height:1.5;}
 
 /* BROWSE */
-.browse-header{font-family:'Fraunces',serif;font-size:24px;font-weight:700;margin-bottom:16px;}
+.browse-header{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin-bottom:16px;}
 .cat-tabs{display:flex;gap:8px;padding:0;margin-bottom:20px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
 .cat-tabs::-webkit-scrollbar{display:none;}
 .cat-tab{padding:8px 18px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;border:1.5px solid var(--border);background:var(--bg);color:var(--dim);transition:all .2s;font-family:'Sora',sans-serif;}
@@ -122,7 +122,7 @@ a{text-decoration:none;color:inherit;}
 .sf-banner{max-width:600px;margin:32px auto;background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border-radius:20px;padding:24px;cursor:pointer;transition:transform .2s,box-shadow .2s;border:1px solid rgba(46,204,113,.12);}
 .sf-banner:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(46,204,113,.12);}
 .sf-banner-label{font-size:11px;font-weight:600;color:var(--accent2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
-.sf-banner-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.sf-banner-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;}
 .sf-banner-desc{font-size:13px;color:#555;line-height:1.5;}
 
 /* FOOTER */
@@ -136,7 +136,7 @@ a{text-decoration:none;color:inherit;}
 /* SECTIONS */
 .section{padding:0;margin-bottom:24px;}
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.section-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;}
 .no-results-msg{padding:28px 0;text-align:center;display:none;}
 .no-results-msg p{font-size:13px;color:var(--dim);}
 
@@ -192,15 +192,15 @@ body.dark .hero-btn-browse{background:var(--bg2)!important;}
 @media(max-width:640px){.why-cols{grid-template-columns:1fr;gap:12px;}}
 
 /* HOME HERO — SPLIT */
-.home-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;min-height:88vh;padding:80px 0 64px;}
+.home-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;min-height:92vh;padding:88px 0 72px;}
 @media(max-width:860px){.home-hero-grid{grid-template-columns:1fr;min-height:auto;padding:72px 0 40px;}}
 
 /* HERO MOSAIC */
-.hero-mosaic{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:200px 200px;gap:10px;height:420px;}
-.hero-mosaic-item{border-radius:18px;overflow:hidden;position:relative;}
-.hero-mosaic-item:first-child{grid-row:1/3;} /* tall left panel */
-.hero-mosaic-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;}
-.hero-mosaic-item:hover img{transform:scale(1.04);}
+.hero-mosaic{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:240px 240px;gap:12px;height:492px;}
+.hero-mosaic-item{border-radius:20px;overflow:hidden;position:relative;}
+.hero-mosaic-item:first-child{grid-row:1/3;}
+.hero-mosaic-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s;}
+.hero-mosaic-item:hover img{transform:scale(1.05);}
 @media(max-width:860px){.hero-mosaic{display:none;}}
 
 /* TONIGHT STRIP */
@@ -354,7 +354,7 @@ html{scroll-behavior:smooth;}.typing-dots{display:inline-flex;gap:3px;}.typing-d
 .battle-chef:hover{transform:scale(1.03);}
 .battle-chef.voted{opacity:.5;}
 .battle-chef.winner{opacity:1;transform:scale(1.05);}
-.battle-vs{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--dim);}
+.battle-vs{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--dim);}
 .battle-vote-btn{padding:8px 20px;border-radius:100px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font-size:12px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;margin-top:8px;}
 .battle-vote-btn:hover{background:var(--accent);color:white;}
 .battle-vote-btn.voted{background:var(--accent);color:white;}
@@ -681,24 +681,24 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 .news-chef-tag{font-size:10px;padding:2px 9px;border-radius:20px;background:var(--gold-dim);color:var(--gold);border:0.5px solid var(--gold-border);}
 .about-hero{padding:64px 24px 32px;text-align:center;max-width:680px;margin:0 auto;}
 .about-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;background:rgba(46,204,113,.08);padding:6px 16px;border-radius:100px;margin-bottom:20px;}
-.about-hero h2{font-family:'Fraunces',serif;font-size:clamp(36px,6vw,52px);line-height:1.05;font-weight:700;margin-bottom:16px;color:var(--text);}
+.about-hero h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(36px,6vw,52px);line-height:1.05;font-weight:700;margin-bottom:16px;color:var(--text);}
 .about-hero h2 em{color:var(--accent);font-style:italic;font-weight:400;}
 .about-hero p{font-size:16px;color:var(--dim);line-height:1.6;max-width:520px;margin:0 auto;}
 .story-section{padding:32px 24px;max-width:680px;margin:0 auto;}
-.story-label{font-family:'Fraunces',serif;font-size:13px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;margin-top:32px;}
+.story-label{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;margin-top:32px;}
 .story-section .story-label:first-child{margin-top:0;}
 .story-text{font-family:'Sora',sans-serif;font-size:15px;line-height:1.7;color:var(--text);margin-bottom:24px;}
 .story-text strong{font-weight:600;color:var(--text);}
-.story-text em{font-style:italic;color:var(--accent);font-family:'Fraunces',serif;}
+.story-text em{font-style:italic;color:var(--accent);font-family:'Space Grotesk',sans-serif;}
 .caf-card{padding:28px 24px;max-width:680px;margin:24px auto;background:var(--bg2);border-radius:20px;border:1px solid var(--border);text-align:center;}
 .caf-emoji{font-size:36px;display:block;margin-bottom:12px;}
-.caf-quote{font-family:'Fraunces',serif;font-size:20px;line-height:1.4;font-weight:500;color:var(--text);margin-bottom:12px;font-style:italic;}
+.caf-quote{font-family:'Space Grotesk',sans-serif;font-size:20px;line-height:1.4;font-weight:500;color:var(--text);margin-bottom:12px;font-style:italic;}
 .caf-sub{font-size:13px;color:var(--dim);line-height:1.6;}
 .pillars{padding:32px 24px 64px;max-width:680px;margin:0 auto;}
 .pillar{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--border);}
 .pillar:last-child{border-bottom:none;}
 .pillar-icon{width:44px;height:44px;border-radius:12px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:1px solid var(--border);}
-.pillar h3{font-family:'Fraunces',serif;font-size:16px;font-weight:600;margin-bottom:4px;color:var(--text);}
+.pillar h3{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;margin-bottom:4px;color:var(--text);}
 .pillar p{font-size:13px;color:var(--dim);line-height:1.5;}
 .pillars .story-label{margin-bottom:20px;}
 .about-cta{margin:0 24px 32px;background:var(--gold);border-radius:14px;padding:16px 18px;cursor:pointer;transition:opacity .2s;}
@@ -772,20 +772,20 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
       <div>
         <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,201,106,.12);border-radius:100px;padding:6px 14px;margin-bottom:24px;">
           <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span>
-          <span style="font-family:’Outfit’,sans-serif;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.04em;">Made by a 5th grader &amp; his dad</span>
+          <span style="font-family:‘Space Grotesk’,sans-serif;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.04em;">Made by a 5th grader &amp; his dad</span>
         </div>
-        <h1 style="font-family:’Outfit’,sans-serif;font-size:clamp(38px,5.5vw,68px);font-weight:900;line-height:.92;letter-spacing:-.04em;margin:0 0 4px;color:var(--text);">Michelin chefs.</h1>
-        <h1 style="font-family:’Outfit’,sans-serif;font-size:clamp(38px,5.5vw,68px);font-weight:900;line-height:1;letter-spacing:-.04em;margin:0 0 24px;color:var(--accent);">Your kitchen.</h1>
+        <h1 style="font-family:’Space Grotesk’,sans-serif;font-size:clamp(44px,6.5vw,80px);font-weight:700;line-height:.93;letter-spacing:-.04em;margin:0 0 6px;color:var(--text);">Michelin chefs.</h1>
+        <h1 style="font-family:’Space Grotesk’,sans-serif;font-size:clamp(44px,6.5vw,80px);font-weight:700;line-height:1;letter-spacing:-.04em;margin:0 0 26px;color:var(--accent);">Your kitchen.</h1>
         <p style="font-family:’Sora’,sans-serif;font-size:clamp(14px,1.5vw,17px);font-weight:400;line-height:1.65;color:var(--dim);margin:0 0 32px;max-width:400px;">Real chefs. Real ingredients. Made actually cookable at home — no culinary school required.</p>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <button id="hero-btn-ask" style="background:var(--accent);color:white;border:none;font-family:’Outfit’,sans-serif;font-size:15px;font-weight:700;padding:14px 28px;border-radius:100px;cursor:pointer;transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform=’scale(1.03)’;this.style.boxShadow=’0 8px 24px rgba(0,201,106,.35)’" onmouseout="this.style.transform=’’;this.style.boxShadow=’’">Ask Co what to make ✨</button>
-          <button id="hero-btn-browse" style="background:var(--bg2);color:var(--text);border:1.5px solid var(--border);font-family:’Outfit’,sans-serif;font-size:15px;font-weight:600;padding:14px 28px;border-radius:100px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor=’var(--accent)’" onmouseout="this.style.borderColor=’var(--border)’">Browse recipes →</button>
+          <button id="hero-btn-ask" style="background:var(--accent);color:white;border:none;font-family:‘Space Grotesk’,sans-serif;font-size:15px;font-weight:700;padding:14px 28px;border-radius:100px;cursor:pointer;transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform=’scale(1.03)’;this.style.boxShadow=’0 8px 24px rgba(0,201,106,.35)’" onmouseout="this.style.transform=’’;this.style.boxShadow=’’">Ask Co what to make ✨</button>
+          <button id="hero-btn-browse" style="background:var(--bg2);color:var(--text);border:1.5px solid var(--border);font-family:‘Space Grotesk’,sans-serif;font-size:15px;font-weight:600;padding:14px 28px;border-radius:100px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor=’var(--accent)’" onmouseout="this.style.borderColor=’var(--border)’">Browse recipes →</button>
         </div>
         <!-- Stats -->
         <div style="display:flex;gap:28px;margin-top:36px;padding-top:24px;border-top:1px solid var(--border);">
-          <div><div style="font-family:’Outfit’,sans-serif;font-size:28px;font-weight:800;color:var(--text);line-height:1;">192</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">Recipes</div></div>
-          <div><div style="font-family:’Outfit’,sans-serif;font-size:28px;font-weight:800;color:var(--text);line-height:1;">27</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">World chefs</div></div>
-          <div><div style="font-family:’Outfit’,sans-serif;font-size:28px;font-weight:800;color:var(--text);line-height:1;">100</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">School Fuel</div></div>
+          <div><div style="font-family:‘Space Grotesk’,sans-serif;font-size:28px;font-weight:800;color:var(--text);line-height:1;">192</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">Recipes</div></div>
+          <div><div style="font-family:‘Space Grotesk’,sans-serif;font-size:28px;font-weight:800;color:var(--text);line-height:1;">27</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">World chefs</div></div>
+          <div><div style="font-family:‘Space Grotesk’,sans-serif;font-size:28px;font-weight:800;color:var(--text);line-height:1;">100</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">School Fuel</div></div>
         </div>
       </div>
 
@@ -799,26 +799,26 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     <div class="container">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:20px;">
         <div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:14px;">✨ Your AI chef</div>
-          <h2 style="font-family:’Outfit’,sans-serif;font-size:clamp(30px,5vw,58px);font-weight:900;color:#ffffff;margin:0;line-height:.95;letter-spacing:-.03em;">What are you<br><span style="color:var(--accent);">hungry for?</span></h2>
+          <div style="font-family:‘Space Grotesk’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:14px;">✨ Your AI chef</div>
+          <h2 style="font-family:‘Space Grotesk’,sans-serif;font-size:clamp(30px,5vw,58px);font-weight:900;color:#ffffff;margin:0;line-height:.95;letter-spacing:-.03em;">What are you<br><span style="color:var(--accent);">hungry for?</span></h2>
           <p style="font-family:’Sora’,sans-serif;font-size:14px;color:rgba(255,255,255,.45);margin-top:14px;max-width:380px;line-height:1.6;">Tell Co what’s in your fridge, how much time you have, or just what sounds good. Co’s tried it all.</p>
         </div>
         <!-- Sticky note -->
         <div class="co-sticky-note" style="background:#fffde7;color:#1a1a1a;border:none;border-radius:12px;padding:14px 18px;max-width:210px;box-shadow:4px 6px 20px rgba(0,0,0,.3);transform:rotate(2deg);flex-shrink:0;margin-top:8px;">
-          <div style="font-family:’Outfit’,sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">Co says 👋</div>
+          <div style="font-family:‘Space Grotesk’,sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">Co says 👋</div>
           <div style="font-size:12px;line-height:1.55;font-family:’Sora’,sans-serif;color:#333;">Ask me anything — what’s in your fridge, how much time, or just a vibe.</div>
         </div>
       </div>
       <div id="ai-suggestions" style="display:none;"></div>
       <div id="ai-chat-wrap" style="background:rgba(255,255,255,.05);border:1.5px solid rgba(0,201,106,.35);border-radius:24px;overflow:hidden;">
         <div style="padding:18px 26px 16px;border-bottom:1px solid rgba(0,201,106,.2);">
-          <span style="font-family:’Outfit’,sans-serif;font-size:16px;font-weight:700;color:#ffffff;letter-spacing:-.01em;">I’m hungry for:</span>
+          <span style="font-family:‘Space Grotesk’,sans-serif;font-size:16px;font-weight:700;color:#ffffff;letter-spacing:-.01em;">I’m hungry for:</span>
         </div>
         <div id="ai-chat" style="padding:24px 28px;min-height:220px;max-height:52vh;overflow-y:auto;"></div>
         <div style="display:flex;gap:8px;align-items:center;padding:16px 28px 18px;border-top:1px solid rgba(0,201,106,.2);">
           <input type="text" id="ai-input" placeholder="pasta, something quick, bold flavors..." autocomplete="off"
             style="flex:1;background:transparent;border:none;outline:none;font-family:’Sora’,sans-serif;font-size:14px;color:#ffffff;"/>
-          <button class="ai-send-btn" onclick="doBuddyChat()" style="padding:10px 22px;border-radius:100px;border:none;background:var(--accent);color:white;font-size:13px;font-weight:700;cursor:pointer;font-family:’Outfit’,sans-serif;">→</button>
+          <button class="ai-send-btn" onclick="doBuddyChat()" style="padding:10px 22px;border-radius:100px;border:none;background:var(--accent);color:white;font-size:13px;font-weight:700;cursor:pointer;font-family:‘Space Grotesk’,sans-serif;">→</button>
         </div>
       </div>
     </div>
@@ -829,10 +829,10 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     <div class="container">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:12px;flex-wrap:wrap;">
         <div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px;">Co’s current obsession</div>
-          <h2 style="font-family:’Outfit’,sans-serif;font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--text);margin:0;line-height:1;letter-spacing:-.02em;">Cook this tonight.</h2>
+          <div style="font-family:‘Space Grotesk’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px;">Co’s current obsession</div>
+          <h2 style="font-family:‘Space Grotesk’,sans-serif;font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--text);margin:0;line-height:1;letter-spacing:-.02em;">Cook this tonight.</h2>
         </div>
-        <a onclick="window.showPage(‘recipes’)" style="font-family:’Outfit’,sans-serif;font-size:13px;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;border:1.5px solid var(--accent);padding:8px 16px;border-radius:100px;">See all 192 →</a>
+        <a onclick="window.showPage(‘recipes’)" style="font-family:‘Space Grotesk’,sans-serif;font-size:13px;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;border:1.5px solid var(--accent);padding:8px 16px;border-radius:100px;">See all 192 →</a>
       </div>
       <div class="tonight-strip-wrap">
         <div class="tonight-strip" id="home-tonight-strip"></div>
@@ -845,25 +845,25 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     <div class="container">
       <!-- Mission header -->
       <div style="margin-bottom:40px;">
-        <div style="font-family:’Outfit’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:12px;">Our Mission</div>
-        <h2 style="font-family:’Outfit’,sans-serif;font-size:clamp(26px,4vw,44px);font-weight:900;color:#ffffff;margin:0;line-height:1;letter-spacing:-.03em;">Chef-level food.<br><span style="color:var(--accent);">Your kitchen. Your rules.</span></h2>
+        <div style="font-family:‘Space Grotesk’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:12px;">Our Mission</div>
+        <h2 style="font-family:‘Space Grotesk’,sans-serif;font-size:clamp(26px,4vw,44px);font-weight:900;color:#ffffff;margin:0;line-height:1;letter-spacing:-.03em;">Chef-level food.<br><span style="color:var(--accent);">Your kitchen. Your rules.</span></h2>
         <p style="font-family:’Sora’,sans-serif;font-size:14px;color:rgba(255,255,255,.45);margin-top:14px;max-width:520px;line-height:1.65;">We took recipes from Gordon Ramsay, Julia Child, David Chang, and 24 more of the world’s best chefs — and figured out how to make every single one work in a home kitchen. No restaurant equipment. No impossible ingredients. Just real food that’s actually better than anything boxed or frozen.</p>
       </div>
       <!-- 3 pillars -->
       <div class="why-cols" style="gap:0;border-top:1px solid rgba(255,255,255,.08);">
         <div style="padding:28px 24px;border-right:1px solid rgba(255,255,255,.08);">
           <div style="font-size:22px;margin-bottom:10px;">⭐</div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;">Chef-sourced</div>
+          <div style="font-family:‘Space Grotesk’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;">Chef-sourced</div>
           <div style="font-size:13px;line-height:1.6;color:rgba(255,255,255,.5);">Every recipe traces back to a real world-class chef. Nothing invented.</div>
         </div>
         <div style="padding:28px 24px;border-right:1px solid rgba(255,255,255,.08);">
           <div style="font-size:22px;margin-bottom:10px;">🏠</div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;">Home-cookable</div>
+          <div style="font-family:‘Space Grotesk’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;">Home-cookable</div>
           <div style="font-size:13px;line-height:1.6;color:rgba(255,255,255,.5);">Any grocery store. Clear steps. No pro gear or fancy techniques.</div>
         </div>
         <div style="padding:28px 24px;">
           <div style="font-size:22px;margin-bottom:10px;">🔥</div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;">Actually worth it</div>
+          <div style="font-family:‘Space Grotesk’,sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;">Actually worth it</div>
           <div style="font-size:13px;line-height:1.6;color:rgba(255,255,255,.5);">Better than frozen, boxed, or drive-through. Every single time.</div>
         </div>
       </div>
@@ -874,10 +874,10 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
   <div class="container reveal" style="padding-top:72px;margin-bottom:24px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
       <div>
-        <div style="font-family:’Outfit’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px;">Who’s behind it</div>
-        <h3 style="font-family:’Outfit’,sans-serif;font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--text);margin:0;line-height:1;letter-spacing:-.02em;">The chefs.</h3>
+        <div style="font-family:‘Space Grotesk’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px;">Who’s behind it</div>
+        <h3 style="font-family:‘Space Grotesk’,sans-serif;font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--text);margin:0;line-height:1;letter-spacing:-.02em;">The chefs.</h3>
       </div>
-      <a onclick="window.showPage(‘more’)" style="font-family:’Outfit’,sans-serif;font-size:13px;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;border:1.5px solid var(--accent);padding:8px 16px;border-radius:100px;">All 27 →</a>
+      <a onclick="window.showPage(‘more’)" style="font-family:‘Space Grotesk’,sans-serif;font-size:13px;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;border:1.5px solid var(--accent);padding:8px 16px;border-radius:100px;">All 27 →</a>
     </div>
     <p style="font-size:13px;color:var(--dim);margin-bottom:20px;">Michelin stars. James Beard winners. YouTube legends. All in one place.</p>
     <div id="home-chef-row" style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;"></div>
@@ -885,18 +885,18 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 
   <!-- ═══ BROWSE CARDS ═══ -->
   <div class="container reveal" style="margin-top:64px;margin-bottom:80px;">
-    <div style="font-family:’Outfit’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px;">Where to start</div>
-    <h3 style="font-family:’Outfit’,sans-serif;font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--text);margin:0 0 24px;letter-spacing:-.02em;line-height:1;">Pick your format.</h3>
+    <div style="font-family:‘Space Grotesk’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px;">Where to start</div>
+    <h3 style="font-family:‘Space Grotesk’,sans-serif;font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--text);margin:0 0 24px;letter-spacing:-.02em;line-height:1;">Pick your format.</h3>
     <div class="home-sf-collection-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
 
       <div id="home-card-school" style="background:var(--bg2);border:1.5px solid var(--border);border-radius:22px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s;" onmouseover="this.style.transform=’translateY(-4px)’;this.style.boxShadow=’0 16px 40px rgba(0,201,106,.15)’;this.style.borderColor=’var(--accent)’" onmouseout="this.style.transform=’’;this.style.boxShadow=’’;this.style.borderColor=’var(--border)’">
         <div style="height:5px;background:linear-gradient(90deg,var(--accent),#00e87a);"></div>
         <div style="padding:26px 24px 28px;">
           <div style="font-size:36px;margin-bottom:14px;">🎒</div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;">School Fuel</div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:clamp(17px,2.2vw,22px);font-weight:800;color:var(--text);margin-bottom:8px;line-height:1.15;letter-spacing:-.02em;">Michelin chefs,<br>packed in your lunchbox.</div>
+          <div style="font-family:‘Space Grotesk’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;">School Fuel</div>
+          <div style="font-family:‘Space Grotesk’,sans-serif;font-size:clamp(17px,2.2vw,22px);font-weight:800;color:var(--text);margin-bottom:8px;line-height:1.15;letter-spacing:-.02em;">Michelin chefs,<br>packed in your lunchbox.</div>
           <div style="font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.6;">100 snacks &amp; lunches · under 20 min · pack it yourself</div>
-          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,201,106,.12);border-radius:100px;padding:9px 18px;font-family:’Outfit’,sans-serif;font-size:13px;font-weight:700;color:var(--accent);">Browse School Fuel →</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,201,106,.12);border-radius:100px;padding:9px 18px;font-family:‘Space Grotesk’,sans-serif;font-size:13px;font-weight:700;color:var(--accent);">Browse School Fuel →</div>
         </div>
       </div>
 
@@ -904,10 +904,10 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
         <div style="height:5px;background:linear-gradient(90deg,var(--accent3),#a78bfa);"></div>
         <div style="padding:26px 24px 28px;">
           <div style="font-size:36px;margin-bottom:14px;">📖</div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:11px;font-weight:700;color:var(--accent3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;">The Collection</div>
-          <div style="font-family:’Outfit’,sans-serif;font-size:clamp(17px,2.2vw,22px);font-weight:800;color:var(--text);margin-bottom:8px;line-height:1.15;letter-spacing:-.02em;">192 recipes.<br>27 world-class chefs.</div>
+          <div style="font-family:‘Space Grotesk’,sans-serif;font-size:11px;font-weight:700;color:var(--accent3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;">The Collection</div>
+          <div style="font-family:‘Space Grotesk’,sans-serif;font-size:clamp(17px,2.2vw,22px);font-weight:800;color:var(--text);margin-bottom:8px;line-height:1.15;letter-spacing:-.02em;">192 recipes.<br>27 world-class chefs.</div>
           <div style="font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.6;">Breakfast to wow-the-parents dinners · filter by time, chef, or vibe</div>
-          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(124,58,237,.1);border-radius:100px;padding:9px 18px;font-family:’Outfit’,sans-serif;font-size:13px;font-weight:700;color:var(--accent3);">Browse The Collection →</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(124,58,237,.1);border-radius:100px;padding:9px 18px;font-family:‘Space Grotesk’,sans-serif;font-size:13px;font-weight:700;color:var(--accent3);">Browse The Collection →</div>
         </div>
       </div>
 
@@ -958,7 +958,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 <div class="page" id="page-battle">
   <div style="text-align:center;padding:64px 24px 32px;max-width:880px;margin:0 auto;">
     <div style="font-size:11px;font-weight:500;color:var(--dim);text-transform:uppercase;letter-spacing:.14em;margin-bottom:24px;">⚔️ Two chefs. One dish. You decide.</div>
-    <h1 style="font-family:'Fraunces',serif;font-size:clamp(56px,9vw,96px);font-weight:600;line-height:.95;margin:0 0 24px;letter-spacing:-.03em;">The <em style="color:var(--accent);font-style:italic;font-weight:600;">battle.</em></h1>
+    <h1 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(56px,9vw,96px);font-weight:600;line-height:.95;margin:0 0 24px;letter-spacing:-.03em;">The <em style="color:var(--accent);font-style:italic;font-weight:600;">battle.</em></h1>
     <p style="font-size:16px;color:var(--dim);max-width:520px;margin:0 auto;line-height:1.6;">Same dish. Two world-class chefs. Cook one (or both) and vote which is better. New battle every week.</p>
   </div>
   
@@ -975,8 +975,8 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     <!-- SF Hero -->
     <div style="background:var(--bg2);border:1px solid rgba(46,204,113,.2);border-radius:24px;padding:48px 32px;margin-bottom:24px;text-align:center;">
       <div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:16px;">🎒 School Fuel · Where it comes together</div>
-      <h1 style="font-family:'Fraunces',serif;font-size:clamp(44px,6vw,72px);font-weight:600;line-height:1;margin:0 0 14px;letter-spacing:-.02em;color:var(--text);">School Fuel.</h1>
-      <p style="font-family:'Fraunces',serif;font-style:italic;font-size:clamp(17px,1.8vw,22px);line-height:1.4;color:var(--accent);margin:0 0 16px;font-weight:400;">Michelin at home, packed in a lunchbox.</p>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(44px,6vw,72px);font-weight:600;line-height:1;margin:0 0 14px;letter-spacing:-.02em;color:var(--text);">School Fuel.</h1>
+      <p style="font-family:'Space Grotesk',sans-serif;font-style:italic;font-size:clamp(17px,1.8vw,22px);line-height:1.4;color:var(--accent);margin:0 0 16px;font-weight:400;">Michelin at home, packed in a lunchbox.</p>
       <p style="font-size:15px;line-height:1.65;color:var(--dim);margin:0 auto;max-width:480px;">100 snacks and lunches you can pack the night before. Real ingredients, real flavor. The heart of what we do.</p>
     </div>
 
@@ -1041,7 +1041,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     <!-- === CHEFS SECTION === -->
     <div id="more-sec-chefs" class="more-sec">
       <div style="margin-bottom:20px;">
-        <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:6px;">The chefs</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;margin-bottom:6px;">The chefs</div>
         <div style="font-size:13px;color:var(--dim);line-height:1.6;">27 world-class chefs. Michelin-starred legends, James Beard winners, and YouTube icons. Every recipe on this site traces back to one of them.</div>
       </div>
       <!-- Chef Filters -->
@@ -1058,10 +1058,10 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 <!-- === MEAL PLANNER SECTION === -->
     <div id="more-sec-planner" class="more-sec" style="display:none;">
       <div style="margin-bottom:20px;">
-        <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:6px;">Meal Planner 📅</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;margin-bottom:6px;">Meal Planner 📅</div>
         <div style="font-size:13px;color:var(--dim);line-height:1.6;">Plan your meals for the week. See the total cost. Know exactly what to buy.</div>
       </div>
-      <div id="planner-cost-counter" style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:20px;padding:24px;margin-bottom:20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center;"><div><div style="font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:#fff;" id="pc-meals">0</div><div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;">Meals</div></div><div><div style="font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:#8bc34a;" id="pc-cost">$0</div><div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;">This week</div></div><div><div style="font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:#fff;" id="pc-avg">$0</div><div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;">Per meal</div></div></div>
+      <div id="planner-cost-counter" style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:20px;padding:24px;margin-bottom:20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center;"><div><div style="font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:#fff;" id="pc-meals">0</div><div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;">Meals</div></div><div><div style="font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:#8bc34a;" id="pc-cost">$0</div><div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;">This week</div></div><div><div style="font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:#fff;" id="pc-avg">$0</div><div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;">Per meal</div></div></div>
     <div id="planner-days" style="display:grid;gap:10px;"></div>
       <div id="planner-total-card" style="margin-top:20px;"></div>
     </div>
@@ -1077,7 +1077,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     <!-- Header -->
     <div style="margin-bottom:36px;">
       <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;">📸 Community</div>
-      <div style="font-family:'Fraunces',serif;font-size:36px;font-weight:700;line-height:1.1;margin-bottom:10px;">What you made.</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;line-height:1.1;margin-bottom:10px;">What you made.</div>
       <div style="font-size:14px;color:var(--dim);line-height:1.6;">Real people, real kitchens, real food. Post your creation and show the world what you cooked.</div>
     </div>
 
@@ -2399,7 +2399,7 @@ window.openBuddyRecipe = function(recipeId){
   heroOverlay.style.cssText = 'position:absolute;bottom:0;left:0;right:0;padding:16px 20px;background:linear-gradient(transparent,rgba(0,0,0,.7));';
   heroOverlay.innerHTML = '<div style="font-size:10px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.06em;">' 
     + tagLabel + '</div>'
-    + '<div style="font-family:Fraunces,serif;font-size:22px;font-weight:700;color:#fff;">' + r.title + '</div>';
+    + '<div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:#fff;">' + r.title + '</div>';
   hero.appendChild(heroOverlay);
   content.appendChild(hero);
   
@@ -2461,13 +2461,13 @@ window.openBuddyRecipe = function(recipeId){
     var detailsEl = document.getElementById('recipe-details-section');
     if (!detailsEl) return;
     
-    var html = '<div style="font-family:Fraunces,serif;font-size:15px;font-weight:700;margin-bottom:10px;">Ingredients</div>';
+    var html = '<div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:10px;">Ingredients</div>';
     data.ingredients.forEach(function(ing){
       html += '<div style="font-size:12px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;">'
         + '<span style="color:#2ECC71;">&#10003;</span> ' + ing + '</div>';
     });
     
-    html += '<div style="font-family:Fraunces,serif;font-size:15px;font-weight:700;margin:16px 0 10px;">Steps</div>';
+    html += '<div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin:16px 0 10px;">Steps</div>';
     data.steps.forEach(function(step, i){
       var cleanStep = step.replace(/^Step \d+:\s*/i, '');
       html += '<div style="display:flex;gap:12px;margin-bottom:12px;">'
@@ -2915,7 +2915,7 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete, schoolFuelMode){
 
         // Title
         var nameEl = document.createElement('div');
-        nameEl.style.cssText = 'font-family:"Fraunces",serif;font-size:17px;font-weight:700;margin-bottom:4px;color:var(--text);line-height:1.2;';
+        nameEl.style.cssText = 'font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;margin-bottom:4px;color:var(--text);line-height:1.2;';
         nameEl.textContent = r.title;
 
         // Chef + time from recipe data (reliable, never wrong)
@@ -3664,7 +3664,7 @@ document.addEventListener('DOMContentLoaded', function(){
       div.appendChild(img);
       div.appendChild(overlay);
       div.style.cursor = 'pointer';
-      (function(recipeId){ div.addEventListener('click', function(){ if(window.openRecipe) window.openRecipe(recipeId); }); })(r.id);
+      (function(recipeId){ div.addEventListener('click', function(){ if(window.openBuddyRecipe) window.openBuddyRecipe(recipeId); }); })(r.id);
       mosaic.appendChild(div);
     });
   })();
@@ -3700,7 +3700,7 @@ document.addEventListener('DOMContentLoaded', function(){
         + '<span style="font-size:10px;background:var(--bg3);padding:3px 9px;border-radius:100px;color:var(--dim);font-weight:500;">$' + (r.cost||'?') + '</span>'
         + '</div>'
         + '</div>';
-      (function(recipeId){ card.addEventListener('click', function(){ if(window.openRecipe) window.openRecipe(recipeId); }); })(r.id);
+      (function(recipeId){ card.addEventListener('click', function(){ if(window.openBuddyRecipe) window.openBuddyRecipe(recipeId); }); })(r.id);
       strip.appendChild(card);
     });
   })();
@@ -3843,7 +3843,7 @@ window.renderHomeChefRow = function(){
     var initials = c.name.split(' ').slice(0,2).map(function(w){return w[0];}).join('');
     return '<div onclick="showPage(\'more\')" style="cursor:pointer;text-align:center;transition:transform .15s;" onmouseover="this.style.transform=\'translateY(-3px)\'" onmouseout="this.style.transform=\'\'">'
       + '<div style="position:relative;width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;background:var(--bg2);border:1px solid var(--border);margin-bottom:10px;">'
-      +   '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:\'Fraunces\',serif;font-size:32px;font-weight:600;color:var(--dim);">' + initials + '</div>'
+      +   '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:\'Space Grotesk\',sans-serif;font-size:32px;font-weight:600;color:var(--dim);">' + initials + '</div>'
       +   (c.img ? '<img src="' + c.img + '" style="position:relative;width:100%;height:100%;object-fit:cover;z-index:2;" onerror="this.style.display=\'none\'"/>' : '')
       + '</div>'
       + '<div style="font-size:12px;font-weight:600;color:var(--text);line-height:1.2;margin-bottom:2px;">' + c.name + '</div>'
@@ -3947,7 +3947,7 @@ window.renderBattleArena = function(){
         + '<div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;">' + m.week + '</div>'
         + '<div style="font-size:11px;color:var(--dim);">' + (m.votes1 + m.votes2) + ' votes</div>'
       + '</div>'
-      + '<div style="font-family:\'Fraunces\',serif;font-size:32px;font-weight:600;line-height:1.1;margin-bottom:8px;letter-spacing:-.015em;">' + m.dish + '</div>'
+      + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:32px;font-weight:600;line-height:1.1;margin-bottom:8px;letter-spacing:-.015em;">' + m.dish + '</div>'
       + '<p style="font-size:14px;color:var(--dim);line-height:1.6;margin:0 0 24px;max-width:560px;">' + m.description + '</p>'
       
       + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch;">'
@@ -3957,7 +3957,7 @@ window.renderBattleArena = function(){
           + '<div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg3);">' + (r1.img ? '<img src="' + r1.img + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>' : '') + '</div>'
           + '<div style="padding:14px 16px;flex:1;display:flex;flex-direction:column;">'
             + '<div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">' + m.chef1 + '</div>'
-            + '<div style="font-family:\'Fraunces\',serif;font-size:16px;font-weight:600;line-height:1.25;margin-bottom:8px;flex:1;">' + r1.title + '</div>'
+            + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:16px;font-weight:600;line-height:1.25;margin-bottom:8px;flex:1;">' + r1.title + '</div>'
             + '<div style="font-size:11px;color:var(--dim);">' + r1.time + (r1.cost ? ' · $' + r1.cost : '') + '</div>'
           + '</div>'
         + '</div>'
@@ -3967,7 +3967,7 @@ window.renderBattleArena = function(){
           + '<div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg3);">' + (r2.img ? '<img src="' + r2.img + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>' : '') + '</div>'
           + '<div style="padding:14px 16px;flex:1;display:flex;flex-direction:column;">'
             + '<div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">' + m.chef2 + '</div>'
-            + '<div style="font-family:\'Fraunces\',serif;font-size:16px;font-weight:600;line-height:1.25;margin-bottom:8px;flex:1;">' + r2.title + '</div>'
+            + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:16px;font-weight:600;line-height:1.25;margin-bottom:8px;flex:1;">' + r2.title + '</div>'
             + '<div style="font-size:11px;color:var(--dim);">' + r2.time + (r2.cost ? ' · $' + r2.cost : '') + '</div>'
           + '</div>'
         + '</div>'
@@ -4253,7 +4253,7 @@ window.commLoadGallery = function() {
     if (!gallery) return;
     if (!Array.isArray(posts) || posts.length === 0) {
       gallery.style.gridTemplateColumns = '1fr';
-      gallery.innerHTML = '<div style="padding:48px 24px;text-align:center;background:var(--bg2);border-radius:20px;border:1px solid var(--border);"><div style="font-size:48px;margin-bottom:12px;">📸</div><div style="font-family:Fraunces,serif;font-size:18px;font-weight:600;margin-bottom:6px;">No posts yet</div><div style="font-size:13px;color:var(--dim);">Be the first to share what you cooked!</div></div>';
+      gallery.innerHTML = '<div style="padding:48px 24px;text-align:center;background:var(--bg2);border-radius:20px;border:1px solid var(--border);"><div style="font-size:48px;margin-bottom:12px;">📸</div><div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;margin-bottom:6px;">No posts yet</div><div style="font-size:13px;color:var(--dim);">Be the first to share what you cooked!</div></div>';
       return;
     }
     gallery.style.gridTemplateColumns = '';
