@@ -158,6 +158,7 @@ body.dark .sf-banner{background:linear-gradient(135deg,#0e1a0e,#1a2810);}
 body.dark .how-section-bg{background:#1a1a12!important;}
 body.dark .cat-tab.active{background:var(--text);color:var(--bg);}
 body.dark .ai-input-row input{background:var(--bg3);color:var(--text);}
+body.dark .co-sticky-note{background:var(--bg3)!important;color:var(--text)!important;border-color:var(--border)!important;}
 
 /* ANIMATIONS */
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -229,6 +230,13 @@ body.dark .ai-input-row input{background:var(--bg3);color:var(--text);}
 
   /* Home hero */
   .home-section{padding:40px 0!important;}
+
+  /* Co sticky note — hide on small screens to avoid layout clash */
+  .co-sticky-note{display:none!important;}
+
+  /* Ask Co header — stack on mobile */
+  #page-home #ai-chat-wrap ~ div,
+  #page-home .home-section [style*="display:flex;align-items:flex-end;justify-content:space-between"]{flex-direction:column!important;align-items:flex-start!important;}
 
   /* School Fuel + Collection — stack */
   .home-sf-collection-grid{grid-template-columns:1fr!important;}
@@ -718,46 +726,64 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 <div class="page active" id="page-home">
 
   <!-- ═══ SECTION 1: HERO ═══ -->
-  <div class="home-section" style="text-align:center;padding-top:90px;padding-bottom:80px;">
-    <h1 style="font-family:’Fraunces’,serif;font-size:clamp(42px,7vw,72px);font-weight:700;line-height:1;letter-spacing:-.03em;margin:0 0 20px;color:var(--text);">Cooking <em style="color:var(--accent);font-style:italic;">with Co.</em></h1>
-    <p style="font-family:’Fraunces’,serif;font-size:clamp(16px,2.2vw,22px);font-weight:500;line-height:1.4;color:var(--dim);margin:0 auto;max-width:500px;">Michelin chef inspiration, meets food kids actually make.</p>
+  <div class="home-section" style="text-align:center;padding-top:100px;padding-bottom:72px;position:relative;">
+    <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:22px;opacity:.8;">A recipe site by a 5th grader &amp; his dad</div>
+    <h1 style="font-family:’Fraunces’,serif;font-size:clamp(54px,10vw,96px);font-weight:700;line-height:.95;letter-spacing:-.04em;margin:0 0 28px;color:var(--text);">Cooking<br><em style="color:var(--accent);font-style:italic;">with Co.</em></h1>
+    <p style="font-family:’Fraunces’,serif;font-size:clamp(17px,2.4vw,24px);font-weight:400;font-style:italic;line-height:1.4;color:var(--dim);margin:0 auto;max-width:460px;">Real chefs. Real ingredients.<br>Food kids actually make.</p>
+    <!-- Co’s note -->
+    <div style="display:inline-block;margin-top:36px;background:var(--accent);color:white;font-size:12px;font-weight:600;padding:8px 18px;border-radius:100px;opacity:.9;letter-spacing:.01em;">↓ Scroll to explore</div>
   </div>
 
-  <!-- ═══ SECTION 2: THE WHY ═══ -->
-  <div class="home-section home-section-why reveal" style="padding-top:48px;padding-bottom:48px;">
-    <div class="container">
-      <div style="text-align:center;margin-bottom:28px;">
-        <p style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.16em;margin:0 0 10px;">What makes it different</p>
-        <p style="font-family:'Fraunces',serif;font-size:clamp(15px,1.8vw,18px);font-weight:500;color:var(--dim);margin:0;">A recipe site built by a 5th grader and his dad — where real chefs meet food kids actually cook.</p>
+  <!-- ═══ SECTION 2: CO’S NOTE ═══ -->
+  <div class="home-section reveal" style="padding-top:0;padding-bottom:72px;">
+    <div class="container" style="max-width:780px;">
+      <!-- Co’s annotation bar -->
+      <div style="display:flex;align-items:flex-start;gap:20px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:26px 28px;position:relative;">
+        <div style="flex-shrink:0;width:36px;height:36px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:2px;">👨‍🍳</div>
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px;">Co’s note</div>
+          <p style="font-family:’Fraunces’,serif;font-size:clamp(16px,2vw,20px);font-weight:500;font-style:italic;color:var(--text);margin:0;line-height:1.5;">"I wanted to cook what chefs actually make — not the dumbed-down version. So my dad and I figured out how to make it work at home. 192 recipes later, here we are."</p>
+        </div>
       </div>
-      <div class="why-cols">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:24px 22px;">
-          <div style="font-family:’Fraunces’,serif;font-size:15px;font-weight:600;color:var(--accent);margin-bottom:8px;">01 · Chef-inspired</div>
-          <div style="font-size:14px;line-height:1.6;color:var(--dim);">Every recipe traces back to one of 27 world-class chefs.</div>
+      <!-- 3 pillars, compact -->
+      <div class="why-cols" style="margin-top:16px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 18px;">
+          <div style="font-size:18px;margin-bottom:6px;">⭐</div>
+          <div style="font-family:’Fraunces’,serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Chef-sourced</div>
+          <div style="font-size:12px;line-height:1.55;color:var(--dim);">27 world-class chefs. Every recipe traces back to the real thing.</div>
         </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:24px 22px;">
-          <div style="font-family:’Fraunces’,serif;font-size:15px;font-weight:600;color:var(--accent);margin-bottom:8px;">02 · Home-cookable</div>
-          <div style="font-size:14px;line-height:1.6;color:var(--dim);">Real ingredients, clear steps, no pro equipment needed.</div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 18px;">
+          <div style="font-size:18px;margin-bottom:6px;">🏠</div>
+          <div style="font-family:’Fraunces’,serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Home-cookable</div>
+          <div style="font-size:12px;line-height:1.55;color:var(--dim);">Real ingredients. No pro gear. Clear steps that actually work.</div>
         </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:24px 22px;">
-          <div style="font-family:’Fraunces’,serif;font-size:15px;font-weight:600;color:var(--accent);margin-bottom:8px;">03 · Worth it</div>
-          <div style="font-size:14px;line-height:1.6;color:var(--dim);">Better than cafeteria, drive-through, or frozen. Every time.</div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 18px;">
+          <div style="font-size:18px;margin-bottom:6px;">🔥</div>
+          <div style="font-family:’Fraunces’,serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Worth making</div>
+          <div style="font-size:12px;line-height:1.55;color:var(--dim);">Better than anything frozen, boxed, or drive-through. Every time.</div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- ═══ SECTION 3: ASK CO ═══ -->
-  <div class="home-section reveal" style="padding-top:88px;padding-bottom:88px;">
+  <div class="home-section reveal" style="padding-top:72px;padding-bottom:88px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
     <div class="container">
-      <div style="text-align:center;margin-bottom:44px;">
-        <p style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.16em;margin:0 0 16px;">✨ Ask Co</p>
-        <h2 style="font-family:’Fraunces’,serif;font-size:clamp(28px,4vw,44px);font-weight:700;color:var(--text);margin:0;line-height:1.1;letter-spacing:-.02em;">What are you hungry for?</h2>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:12px;">✨ The AI Chef</div>
+          <h2 style="font-family:’Fraunces’,serif;font-size:clamp(32px,5vw,56px);font-weight:700;color:var(--text);margin:0;line-height:1;letter-spacing:-.03em;">What are you<br><em style="color:var(--accent);font-style:italic;">hungry for?</em></h2>
+        </div>
+        <!-- Co’s margin note -->
+        <div class="co-sticky-note" style="background:var(--bg2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:12px 16px;max-width:200px;box-shadow:2px 3px 12px rgba(0,0,0,.08);transform:rotate(1.5deg);flex-shrink:0;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:4px;">Co says</div>
+          <div style="font-size:12px;line-height:1.5;font-family:’Fraunces’,serif;font-style:italic;color:var(--dim);">Ask me anything — what’s in your fridge, how much time you have, whatever.</div>
+        </div>
       </div>
       <div id="ai-suggestions" style="display:none;"></div>
-      <div id="ai-chat-wrap" style="background:rgba(46,204,113,0.07);border:1.5px solid rgba(46,204,113,0.3);border-radius:24px;overflow:hidden;">
+      <div id="ai-chat-wrap" style="background:var(--bg);border:1.5px solid rgba(46,204,113,0.35);border-radius:24px;overflow:hidden;box-shadow:0 4px 24px rgba(46,204,113,0.08);">
         <div style="padding:18px 26px 16px;border-bottom:1px solid rgba(46,204,113,0.2);">
-          <span style="font-family:’Fraunces’,serif;font-size:16px;font-weight:600;color:var(--text);letter-spacing:-.01em;">I’m Hungry for:</span>
+          <span style="font-family:’Fraunces’,serif;font-size:16px;font-weight:600;color:var(--text);letter-spacing:-.01em;">I’m hungry for:</span>
         </div>
         <div id="ai-chat" style="padding:24px 28px;min-height:220px;max-height:52vh;overflow-y:auto;"></div>
         <div style="display:flex;gap:8px;align-items:center;padding:16px 28px 18px;border-top:1px solid rgba(46,204,113,0.2);">
@@ -771,33 +797,46 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 
   <!-- ═══ SECTION 4: EXPLORE ═══ -->
   <!-- THE CHEFS -->
-  <div class="container reveal" style="padding-top:64px;margin-bottom:32px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+  <div class="container reveal" style="padding-top:80px;margin-bottom:24px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-family:’Fraunces’,serif;font-size:20px;font-weight:700;">The chefs</div>
-        <div style="font-size:12px;color:var(--dim);margin-top:2px;">Michelin stars. James Beard winners. YouTube legends.</div>
+        <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:10px;">Who’s behind it</div>
+        <div style="font-family:’Fraunces’,serif;font-size:clamp(22px,3.5vw,32px);font-weight:700;color:var(--text);line-height:1;letter-spacing:-.02em;">The chefs.</div>
       </div>
-      <a onclick="showPage(‘more’)" style="font-size:12px;color:var(--accent);font-weight:600;cursor:pointer;white-space:nowrap;">All 27 →</a>
+      <a onclick="showPage(‘more’)" style="font-size:12px;color:var(--accent);font-weight:600;cursor:pointer;white-space:nowrap;padding-bottom:4px;">All 27 →</a>
     </div>
+    <div style="font-size:13px;color:var(--dim);margin-bottom:20px;font-style:italic;">Michelin stars. James Beard winners. YouTube legends. All in one place.</div>
     <div id="home-chef-row" style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;"></div>
   </div>
 
-  <!-- SCHOOL FUEL + COLLECTION — side by side -->
-  <div class="container reveal" style="margin-bottom:48px;">
+  <!-- SCHOOL FUEL + COLLECTION -->
+  <div class="container reveal" style="margin-top:56px;margin-bottom:64px;">
+    <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:10px;">Start cooking</div>
+    <h3 style="font-family:’Fraunces’,serif;font-size:clamp(22px,3.5vw,32px);font-weight:700;color:var(--text);margin:0 0 20px;letter-spacing:-.02em;line-height:1;">Pick your format.</h3>
     <div class="home-sf-collection-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
 
-      <div id="home-card-school" style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:18px 20px;cursor:pointer;transition:transform .2s,border-color .2s;" onmouseover="this.style.transform=’translateY(-2px)’;this.style.borderColor=’var(--accent)’" onmouseout="this.style.transform=’’;this.style.borderColor=’var(--border)’">
-        <div style="font-size:10px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">🎒 School Fuel</div>
-        <div style="font-family:’Fraunces’,serif;font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.2;">Michelin at home, packed in a lunchbox.</div>
-        <div style="font-size:12px;color:var(--dim);margin-bottom:12px;">100 snacks & lunches · under 20 min</div>
-        <div style="font-size:12px;color:var(--accent);font-weight:600;">Browse →</div>
+      <div id="home-card-school" style="background:var(--bg2);border:1.5px solid var(--border);border-radius:20px;padding:24px 22px;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;position:relative;overflow:hidden;" onmouseover="this.style.transform=’translateY(-3px)’;this.style.borderColor=’var(--accent)’;this.style.boxShadow=’0 8px 28px rgba(46,204,113,0.15)’" onmouseout="this.style.transform=’’;this.style.borderColor=’var(--border)’;this.style.boxShadow=’’">
+        <div style="font-size:28px;margin-bottom:12px;">🎒</div>
+        <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;">School Fuel</div>
+        <div style="font-family:’Fraunces’,serif;font-size:clamp(15px,2vw,20px);font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.2;">Michelin, packed in a lunchbox.</div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:16px;line-height:1.5;">100 snacks &amp; lunches · under 20 min · pack it yourself</div>
+        <!-- Co’s sticky note -->
+        <div style="background:rgba(46,204,113,0.12);border-radius:8px;padding:8px 10px;margin-bottom:16px;">
+          <span style="font-size:11px;font-style:italic;color:var(--dim);">"This is the one I use every morning."</span>
+        </div>
+        <div style="font-size:13px;color:var(--accent);font-weight:700;">Browse School Fuel →</div>
       </div>
 
-      <div id="home-card-recipes" style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:18px 20px;cursor:pointer;transition:transform .2s,border-color .2s;" onmouseover="this.style.transform=’translateY(-2px)’;this.style.borderColor=’var(--accent)’" onmouseout="this.style.transform=’’;this.style.borderColor=’var(--border)’">
-        <div style="font-size:10px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">📖 The Collection</div>
-        <div style="font-family:’Fraunces’,serif;font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.2;">192 chef recipes.</div>
-        <div style="font-size:12px;color:var(--dim);margin-bottom:12px;">Breakfast to wow-the-parents dinners.</div>
-        <div style="font-size:12px;color:var(--accent);font-weight:600;">Browse →</div>
+      <div id="home-card-recipes" style="background:var(--bg2);border:1.5px solid var(--border);border-radius:20px;padding:24px 22px;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;position:relative;overflow:hidden;" onmouseover="this.style.transform=’translateY(-3px)’;this.style.borderColor=’var(--accent)’;this.style.boxShadow=’0 8px 28px rgba(46,204,113,0.15)’" onmouseout="this.style.transform=’’;this.style.borderColor=’var(--border)’;this.style.boxShadow=’’">
+        <div style="font-size:28px;margin-bottom:12px;">📖</div>
+        <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;">The Collection</div>
+        <div style="font-family:’Fraunces’,serif;font-size:clamp(15px,2vw,20px);font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.2;">192 recipes from 27 chefs.</div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:16px;line-height:1.5;">Breakfast to wow-the-parents dinners · filter by time, chef, or vibe</div>
+        <!-- Co’s sticky note -->
+        <div style="background:rgba(46,204,113,0.12);border-radius:8px;padding:8px 10px;margin-bottom:16px;">
+          <span style="font-size:11px;font-style:italic;color:var(--dim);">"Find something good for tonight."</span>
+        </div>
+        <div style="font-size:13px;color:var(--accent);font-weight:700;">Browse The Collection →</div>
       </div>
 
     </div>
