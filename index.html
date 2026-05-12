@@ -159,6 +159,9 @@ body.dark .how-section-bg{background:#1a1a12!important;}
 body.dark .cat-tab.active{background:var(--text);color:var(--bg);}
 body.dark .ai-input-row input{background:var(--bg3);color:var(--text);}
 body.dark .co-sticky-note{background:var(--bg3)!important;color:var(--text)!important;border-color:var(--border)!important;}
+body.dark .tonight-card{background:var(--bg2);border-color:var(--border);}
+body.dark #ai-input{color:#e8f5e8!important;}
+body.dark .home-dark-section{background:#0a130a;}
 
 /* ANIMATIONS */
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -186,6 +189,37 @@ body.dark .co-sticky-note{background:var(--bg3)!important;color:var(--text)!impo
 .home-stat-strip span.dot{opacity:.25;}
 .why-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 @media(max-width:640px){.why-cols{grid-template-columns:1fr;gap:12px;}}
+
+/* HOME HERO — SPLIT */
+.home-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;min-height:88vh;padding:80px 0 64px;}
+@media(max-width:860px){.home-hero-grid{grid-template-columns:1fr;min-height:auto;padding:72px 0 40px;}}
+
+/* HERO MOSAIC */
+.hero-mosaic{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:200px 200px;gap:10px;height:420px;}
+.hero-mosaic-item{border-radius:18px;overflow:hidden;position:relative;}
+.hero-mosaic-item:first-child{grid-row:1/3;} /* tall left panel */
+.hero-mosaic-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;}
+.hero-mosaic-item:hover img{transform:scale(1.04);}
+@media(max-width:860px){.hero-mosaic{display:none;}}
+
+/* TONIGHT STRIP */
+.tonight-strip-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;}
+.tonight-strip-wrap::-webkit-scrollbar{display:none;}
+.tonight-strip{display:flex;gap:14px;width:max-content;}
+.tonight-card{flex-shrink:0;width:210px;border-radius:18px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s;}
+.tonight-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.1);}
+.tonight-card-img{height:150px;overflow:hidden;}
+.tonight-card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s;}
+.tonight-card:hover .tonight-card-img img{transform:scale(1.06);}
+.tonight-card-body{padding:13px 15px 15px;}
+
+/* DARK ASK CO SECTION */
+.home-dark-section{background:#0d1a0d;border-top:none;border-bottom:none;}
+.home-dark-section *{--border:rgba(255,255,255,.1);}
+
+/* FEATURED RECIPE CARD */
+.feat-recipe-card{display:grid;grid-template-columns:1fr 1fr;border-radius:24px;overflow:hidden;background:var(--bg2);border:1.5px solid var(--border);}
+@media(max-width:680px){.feat-recipe-card{grid-template-columns:1fr;}}
 
 /* ── HAMBURGER (hidden on desktop) ── */
 .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
@@ -230,13 +264,17 @@ body.dark .co-sticky-note{background:var(--bg3)!important;color:var(--text)!impo
 
   /* Home hero */
   .home-section{padding:40px 0!important;}
+  .home-dark-section{padding:48px 0!important;}
 
   /* Co sticky note — hide on small screens to avoid layout clash */
   .co-sticky-note{display:none!important;}
 
-  /* Ask Co header — stack on mobile */
-  #page-home #ai-chat-wrap ~ div,
-  #page-home .home-section [style*="display:flex;align-items:flex-end;justify-content:space-between"]{flex-direction:column!important;align-items:flex-start!important;}
+  /* Hero CTA buttons — stack on mobile */
+  #page-home .home-hero-grid > div:first-child > div[style*="display:flex;gap:12px"]{flex-direction:column!important;}
+
+  /* Tonight strip cards — slightly smaller */
+  .tonight-card{width:170px!important;}
+  .tonight-card-img{height:120px!important;}
 
   /* School Fuel + Collection — stack */
   .home-sf-collection-grid{grid-template-columns:1fr!important;}
@@ -725,118 +763,117 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 <!-- =============== HOME =============== -->
 <div class="page active" id="page-home">
 
-  <!-- ═══ SECTION 1: HERO ═══ -->
-  <div class="home-section" style="text-align:center;padding-top:100px;padding-bottom:72px;position:relative;">
-    <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:22px;opacity:.8;">A recipe site by a 5th grader &amp; his dad</div>
-    <h1 style="font-family:’Fraunces’,serif;font-size:clamp(54px,10vw,96px);font-weight:700;line-height:.95;letter-spacing:-.04em;margin:0 0 28px;color:var(--text);">Cooking<br><em style="color:var(--accent);font-style:italic;">with Co.</em></h1>
-    <p style="font-family:’Fraunces’,serif;font-size:clamp(17px,2.4vw,24px);font-weight:400;font-style:italic;line-height:1.4;color:var(--dim);margin:0 auto;max-width:460px;">Real chefs. Real ingredients.<br>Food kids actually make.</p>
-    <!-- Co’s note -->
-    <div style="display:inline-block;margin-top:36px;background:var(--accent);color:white;font-size:12px;font-weight:600;padding:8px 18px;border-radius:100px;opacity:.9;letter-spacing:.01em;">↓ Scroll to explore</div>
-  </div>
-
-  <!-- ═══ SECTION 2: CO’S NOTE ═══ -->
-  <div class="home-section reveal" style="padding-top:0;padding-bottom:72px;">
-    <div class="container" style="max-width:780px;">
-      <!-- Co’s annotation bar -->
-      <div style="display:flex;align-items:flex-start;gap:20px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:26px 28px;position:relative;">
-        <div style="flex-shrink:0;width:36px;height:36px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:2px;">👨‍🍳</div>
-        <div>
-          <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px;">Co’s note</div>
-          <p style="font-family:’Fraunces’,serif;font-size:clamp(16px,2vw,20px);font-weight:500;font-style:italic;color:var(--text);margin:0;line-height:1.5;">"I wanted to cook what chefs actually make — not the dumbed-down version. So my dad and I figured out how to make it work at home. 192 recipes later, here we are."</p>
+  <!-- ═══ SECTION 1: HERO — SPLIT ═══ -->
+  <div class="container">
+    <div class="home-hero-grid">
+      <!-- LEFT: HEADLINE -->
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.22em;margin-bottom:20px;opacity:.75;">By a 5th grader &amp; his dad</div>
+        <h1 style="font-family:’Fraunces’,serif;font-size:clamp(58px,8.5vw,100px);font-weight:700;line-height:.92;letter-spacing:-.04em;margin:0 0 30px;color:var(--text);">Cook&shy;ing<br><em style="color:var(--accent);font-style:italic;">with Co.</em></h1>
+        <p style="font-family:’Fraunces’,serif;font-size:clamp(16px,2vw,21px);font-weight:400;font-style:italic;line-height:1.5;color:var(--dim);margin:0 0 36px;max-width:400px;">192 recipes from 27 of the world’s best chefs — made actually cookable at home.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button onclick="document.getElementById(‘home-ask-co’).scrollIntoView({behavior:’smooth’})" style="background:var(--accent);color:white;border:none;font-family:’Sora’,sans-serif;font-size:14px;font-weight:700;padding:14px 26px;border-radius:100px;cursor:pointer;">Ask Co what to make</button>
+          <button onclick="showPage(‘recipes’)" style="background:transparent;color:var(--text);border:1.5px solid var(--border);font-family:’Sora’,sans-serif;font-size:14px;font-weight:600;padding:14px 26px;border-radius:100px;cursor:pointer;">Browse all recipes</button>
+        </div>
+        <!-- Stats strip -->
+        <div style="display:flex;gap:24px;margin-top:40px;padding-top:28px;border-top:1px solid var(--border);">
+          <div><div style="font-family:’Fraunces’,serif;font-size:26px;font-weight:700;color:var(--text);">192</div><div style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;">Recipes</div></div>
+          <div><div style="font-family:’Fraunces’,serif;font-size:26px;font-weight:700;color:var(--text);">27</div><div style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;">Chefs</div></div>
+          <div><div style="font-family:’Fraunces’,serif;font-size:26px;font-weight:700;color:var(--text);">100</div><div style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;">School Fuel</div></div>
         </div>
       </div>
-      <!-- 3 pillars, compact -->
-      <div class="why-cols" style="margin-top:16px;">
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 18px;">
-          <div style="font-size:18px;margin-bottom:6px;">⭐</div>
-          <div style="font-family:’Fraunces’,serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Chef-sourced</div>
-          <div style="font-size:12px;line-height:1.55;color:var(--dim);">27 world-class chefs. Every recipe traces back to the real thing.</div>
+      <!-- RIGHT: RECIPE IMAGE MOSAIC (JS populated) -->
+      <div class="hero-mosaic" id="hero-mosaic"></div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 2: COOK THIS TONIGHT ═══ -->
+  <div style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:56px 0;" class="reveal">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;gap:12px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:10px;">Co’s current obsession</div>
+          <h2 style="font-family:’Fraunces’,serif;font-size:clamp(24px,3.5vw,36px);font-weight:700;color:var(--text);margin:0;line-height:1;letter-spacing:-.02em;">Cook this tonight.</h2>
         </div>
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 18px;">
-          <div style="font-size:18px;margin-bottom:6px;">🏠</div>
-          <div style="font-family:’Fraunces’,serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Home-cookable</div>
-          <div style="font-size:12px;line-height:1.55;color:var(--dim);">Real ingredients. No pro gear. Clear steps that actually work.</div>
-        </div>
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 18px;">
-          <div style="font-size:18px;margin-bottom:6px;">🔥</div>
-          <div style="font-family:’Fraunces’,serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Worth making</div>
-          <div style="font-size:12px;line-height:1.55;color:var(--dim);">Better than anything frozen, boxed, or drive-through. Every time.</div>
-        </div>
+        <a onclick="showPage(‘recipes’)" style="font-size:13px;color:var(--accent);font-weight:700;cursor:pointer;white-space:nowrap;padding-bottom:4px;">See all 192 →</a>
+      </div>
+      <div class="tonight-strip-wrap">
+        <div class="tonight-strip" id="home-tonight-strip"></div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ SECTION 3: ASK CO ═══ -->
-  <div class="home-section reveal" style="padding-top:72px;padding-bottom:88px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <!-- ═══ SECTION 3: ASK CO — DARK ═══ -->
+  <div id="home-ask-co" class="home-dark-section reveal" style="padding:80px 0;">
     <div class="container">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:20px;">
         <div>
-          <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:12px;">✨ The AI Chef</div>
-          <h2 style="font-family:’Fraunces’,serif;font-size:clamp(32px,5vw,56px);font-weight:700;color:var(--text);margin:0;line-height:1;letter-spacing:-.03em;">What are you<br><em style="color:var(--accent);font-style:italic;">hungry for?</em></h2>
+          <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:14px;">✨ Your AI chef</div>
+          <h2 style="font-family:’Fraunces’,serif;font-size:clamp(32px,5vw,60px);font-weight:700;color:#e8f5e8;margin:0;line-height:.95;letter-spacing:-.03em;">What are you<br><em style="color:var(--accent);font-style:italic;">hungry for?</em></h2>
+          <p style="font-size:14px;color:rgba(232,245,232,.5);margin-top:14px;max-width:380px;line-height:1.6;">Tell Co what’s in your fridge, how much time you have, or just what sounds good. Co’s tried it all.</p>
         </div>
-        <!-- Co’s margin note -->
-        <div class="co-sticky-note" style="background:var(--bg2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:12px 16px;max-width:200px;box-shadow:2px 3px 12px rgba(0,0,0,.08);transform:rotate(1.5deg);flex-shrink:0;">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:4px;">Co says</div>
-          <div style="font-size:12px;line-height:1.5;font-family:’Fraunces’,serif;font-style:italic;color:var(--dim);">Ask me anything — what’s in your fridge, how much time you have, whatever.</div>
+        <!-- Sticky note — desktop only -->
+        <div class="co-sticky-note" style="background:#f5f0e8;color:#1a1a1a;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:14px 18px;max-width:210px;box-shadow:3px 4px 16px rgba(0,0,0,.25);transform:rotate(2deg);flex-shrink:0;margin-top:8px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">Co says</div>
+          <div style="font-size:12px;line-height:1.55;font-family:’Fraunces’,serif;font-style:italic;color:#333;">Ask me anything — what’s in your fridge, how much time you have, whatever.</div>
         </div>
       </div>
       <div id="ai-suggestions" style="display:none;"></div>
-      <div id="ai-chat-wrap" style="background:var(--bg);border:1.5px solid rgba(46,204,113,0.35);border-radius:24px;overflow:hidden;box-shadow:0 4px 24px rgba(46,204,113,0.08);">
+      <div id="ai-chat-wrap" style="background:rgba(255,255,255,.06);border:1.5px solid rgba(46,204,113,0.4);border-radius:24px;overflow:hidden;">
         <div style="padding:18px 26px 16px;border-bottom:1px solid rgba(46,204,113,0.2);">
-          <span style="font-family:’Fraunces’,serif;font-size:16px;font-weight:600;color:var(--text);letter-spacing:-.01em;">I’m hungry for:</span>
+          <span style="font-family:’Fraunces’,serif;font-size:16px;font-weight:600;color:#e8f5e8;letter-spacing:-.01em;">I’m hungry for:</span>
         </div>
         <div id="ai-chat" style="padding:24px 28px;min-height:220px;max-height:52vh;overflow-y:auto;"></div>
         <div style="display:flex;gap:8px;align-items:center;padding:16px 28px 18px;border-top:1px solid rgba(46,204,113,0.2);">
-          <input type="text" id="ai-input" placeholder="or type anything..." autocomplete="off"
-            style="flex:1;background:transparent;border:none;outline:none;font-family:’Sora’,sans-serif;font-size:14px;color:var(--text);"/>
+          <input type="text" id="ai-input" placeholder="pasta, something quick, bold flavors..." autocomplete="off"
+            style="flex:1;background:transparent;border:none;outline:none;font-family:’Sora’,sans-serif;font-size:14px;color:#e8f5e8;"/>
           <button class="ai-send-btn" onclick="doBuddyChat()" style="padding:10px 22px;border-radius:100px;border:none;background:var(--accent);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:’Sora’,sans-serif;">→</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ SECTION 4: EXPLORE ═══ -->
-  <!-- THE CHEFS -->
-  <div class="container reveal" style="padding-top:80px;margin-bottom:24px;">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;">
+  <!-- ═══ SECTION 4: THE CHEFS ═══ -->
+  <div class="container reveal" style="padding-top:72px;margin-bottom:24px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:10px;">
       <div>
-        <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:10px;">Who’s behind it</div>
-        <div style="font-family:’Fraunces’,serif;font-size:clamp(22px,3.5vw,32px);font-weight:700;color:var(--text);line-height:1;letter-spacing:-.02em;">The chefs.</div>
+        <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:10px;">The lineup</div>
+        <div style="font-family:’Fraunces’,serif;font-size:clamp(22px,3.5vw,34px);font-weight:700;color:var(--text);line-height:1;letter-spacing:-.02em;">The chefs.</div>
       </div>
-      <a onclick="showPage(‘more’)" style="font-size:12px;color:var(--accent);font-weight:600;cursor:pointer;white-space:nowrap;padding-bottom:4px;">All 27 →</a>
+      <a onclick="showPage(‘more’)" style="font-size:13px;color:var(--accent);font-weight:700;cursor:pointer;white-space:nowrap;padding-bottom:4px;">All 27 →</a>
     </div>
-    <div style="font-size:13px;color:var(--dim);margin-bottom:20px;font-style:italic;">Michelin stars. James Beard winners. YouTube legends. All in one place.</div>
+    <p style="font-size:13px;color:var(--dim);margin-bottom:22px;font-style:italic;">Michelin stars. James Beard winners. YouTube legends.</p>
     <div id="home-chef-row" style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;"></div>
   </div>
 
-  <!-- SCHOOL FUEL + COLLECTION -->
-  <div class="container reveal" style="margin-top:56px;margin-bottom:64px;">
-    <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:10px;">Start cooking</div>
-    <h3 style="font-family:’Fraunces’,serif;font-size:clamp(22px,3.5vw,32px);font-weight:700;color:var(--text);margin:0 0 20px;letter-spacing:-.02em;line-height:1;">Pick your format.</h3>
-    <div class="home-sf-collection-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+  <!-- ═══ SECTION 5: BROWSE CARDS ═══ -->
+  <div class="container reveal" style="margin-top:64px;margin-bottom:72px;">
+    <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:10px;">Where to start</div>
+    <h3 style="font-family:’Fraunces’,serif;font-size:clamp(22px,3.5vw,34px);font-weight:700;color:var(--text);margin:0 0 22px;letter-spacing:-.02em;line-height:1;">Pick your format.</h3>
+    <div class="home-sf-collection-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
 
-      <div id="home-card-school" style="background:var(--bg2);border:1.5px solid var(--border);border-radius:20px;padding:24px 22px;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;position:relative;overflow:hidden;" onmouseover="this.style.transform=’translateY(-3px)’;this.style.borderColor=’var(--accent)’;this.style.boxShadow=’0 8px 28px rgba(46,204,113,0.15)’" onmouseout="this.style.transform=’’;this.style.borderColor=’var(--border)’;this.style.boxShadow=’’">
-        <div style="font-size:28px;margin-bottom:12px;">🎒</div>
-        <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;">School Fuel</div>
-        <div style="font-family:’Fraunces’,serif;font-size:clamp(15px,2vw,20px);font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.2;">Michelin, packed in a lunchbox.</div>
-        <div style="font-size:12px;color:var(--dim);margin-bottom:16px;line-height:1.5;">100 snacks &amp; lunches · under 20 min · pack it yourself</div>
-        <!-- Co’s sticky note -->
-        <div style="background:rgba(46,204,113,0.12);border-radius:8px;padding:8px 10px;margin-bottom:16px;">
-          <span style="font-size:11px;font-style:italic;color:var(--dim);">"This is the one I use every morning."</span>
+      <div id="home-card-school" style="background:var(--bg2);border:1.5px solid var(--border);border-radius:22px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform=’translateY(-4px)’;this.style.boxShadow=’0 16px 40px rgba(46,204,113,0.18)’" onmouseout="this.style.transform=’’;this.style.boxShadow=’’">
+        <!-- Color band -->
+        <div style="height:6px;background:linear-gradient(90deg,var(--accent),#27ae60);"></div>
+        <div style="padding:24px 24px 26px;">
+          <div style="font-size:32px;margin-bottom:14px;">🎒</div>
+          <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;">School Fuel</div>
+          <div style="font-family:’Fraunces’,serif;font-size:clamp(16px,2.2vw,22px);font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.2;">Michelin,<br>packed in a lunchbox.</div>
+          <div style="font-size:12px;color:var(--dim);margin-bottom:20px;line-height:1.6;">100 snacks &amp; lunches · under 20 min · pack it yourself</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(46,204,113,0.1);border-radius:100px;padding:8px 16px;font-size:12px;font-weight:700;color:var(--accent);">Browse School Fuel →</div>
         </div>
-        <div style="font-size:13px;color:var(--accent);font-weight:700;">Browse School Fuel →</div>
       </div>
 
-      <div id="home-card-recipes" style="background:var(--bg2);border:1.5px solid var(--border);border-radius:20px;padding:24px 22px;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;position:relative;overflow:hidden;" onmouseover="this.style.transform=’translateY(-3px)’;this.style.borderColor=’var(--accent)’;this.style.boxShadow=’0 8px 28px rgba(46,204,113,0.15)’" onmouseout="this.style.transform=’’;this.style.borderColor=’var(--border)’;this.style.boxShadow=’’">
-        <div style="font-size:28px;margin-bottom:12px;">📖</div>
-        <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;">The Collection</div>
-        <div style="font-family:’Fraunces’,serif;font-size:clamp(15px,2vw,20px);font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.2;">192 recipes from 27 chefs.</div>
-        <div style="font-size:12px;color:var(--dim);margin-bottom:16px;line-height:1.5;">Breakfast to wow-the-parents dinners · filter by time, chef, or vibe</div>
-        <!-- Co’s sticky note -->
-        <div style="background:rgba(46,204,113,0.12);border-radius:8px;padding:8px 10px;margin-bottom:16px;">
-          <span style="font-size:11px;font-style:italic;color:var(--dim);">"Find something good for tonight."</span>
+      <div id="home-card-recipes" style="background:var(--bg2);border:1.5px solid var(--border);border-radius:22px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform=’translateY(-4px)’;this.style.boxShadow=’0 16px 40px rgba(46,204,113,0.18)’" onmouseout="this.style.transform=’’;this.style.boxShadow=’’">
+        <!-- Color band -->
+        <div style="height:6px;background:linear-gradient(90deg,#6C5CE7,#a29bfe);"></div>
+        <div style="padding:24px 24px 26px;">
+          <div style="font-size:32px;margin-bottom:14px;">📖</div>
+          <div style="font-size:10px;font-weight:700;color:#6C5CE7;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;">The Collection</div>
+          <div style="font-family:’Fraunces’,serif;font-size:clamp(16px,2.2vw,22px);font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.2;">192 recipes<br>from 27 chefs.</div>
+          <div style="font-size:12px;color:var(--dim);margin-bottom:20px;line-height:1.6;">Breakfast to wow-the-parents dinners · filter by time, chef, or vibe</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(108,92,231,0.1);border-radius:100px;padding:8px 16px;font-size:12px;font-weight:700;color:#6C5CE7;">Browse The Collection →</div>
         </div>
-        <div style="font-size:13px;color:var(--accent);font-weight:700;">Browse The Collection →</div>
       </div>
 
     </div>
@@ -3542,6 +3579,66 @@ document.addEventListener('DOMContentLoaded', function(){
   var cardRecipes = document.getElementById('home-card-recipes');
   if(cardSchool) cardSchool.addEventListener('click', function(){ window.showPage('school'); });
   if(cardRecipes) cardRecipes.addEventListener('click', function(){ window.showPage('recipes'); });
+
+  // Hero mosaic — 3 food photos from recipe data
+  (function(){
+    var mosaic = document.getElementById('hero-mosaic');
+    if(!mosaic || !recipes || !recipes.length) return;
+    var pool = recipes.filter(function(r){ return r.img; });
+    var d = new Date().getDate();
+    var picks = [
+      pool[(d * 7) % pool.length],
+      pool[(d * 13 + 17) % pool.length],
+      pool[(d * 19 + 37) % pool.length]
+    ];
+    picks.forEach(function(r, i){
+      var div = document.createElement('div');
+      div.className = 'hero-mosaic-item';
+      if(i === 0) div.style.gridRow = '1 / 3';
+      var img = document.createElement('img');
+      img.src = r.img;
+      img.alt = r.title;
+      img.loading = 'lazy';
+      // Overlay with recipe name
+      var overlay = document.createElement('div');
+      overlay.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.65));padding:16px 14px 12px;';
+      overlay.innerHTML = '<div style="font-size:11px;font-weight:700;color:white;line-height:1.3;">' + r.title + '</div>'
+        + '<div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:2px;">' + r.chef + '</div>';
+      div.appendChild(img);
+      div.appendChild(overlay);
+      div.style.cursor = 'pointer';
+      div.onclick = function(){ openRecipe(r.id); };
+      mosaic.appendChild(div);
+    });
+  })();
+
+  // Tonight strip — horizontal scroll of recipe cards
+  (function(){
+    var strip = document.getElementById('home-tonight-strip');
+    if(!strip || !recipes || !recipes.length) return;
+    var pool = recipes.filter(function(r){ return r.img; });
+    var day = new Date().getDay();
+    var picks = [];
+    for(var i = 0; i < 8; i++){
+      var idx = (day * 11 + i * 23 + 7) % pool.length;
+      picks.push(pool[idx]);
+    }
+    picks.forEach(function(r){
+      var card = document.createElement('div');
+      card.className = 'tonight-card';
+      card.innerHTML = '<div class="tonight-card-img"><img src="' + r.img + '" alt="' + r.title + '" loading="lazy"></div>'
+        + '<div class="tonight-card-body">'
+        + '<div style="font-size:12px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:5px;">' + r.title + '</div>'
+        + '<div style="font-size:10px;color:var(--dim);margin-bottom:6px;">' + r.chef + '</div>'
+        + '<div style="display:flex;gap:6px;flex-wrap:wrap;">'
+        + '<span style="font-size:10px;background:var(--bg3);padding:3px 8px;border-radius:100px;color:var(--dim);">⏱ ' + r.time + '</span>'
+        + '<span style="font-size:10px;background:var(--bg3);padding:3px 8px;border-radius:100px;color:var(--dim);">💰 $' + (r.cost||'?') + '</span>'
+        + '</div>'
+        + '</div>';
+      card.onclick = function(){ openRecipe(r.id); };
+      strip.appendChild(card);
+    });
+  })();
 
   // Close mobile nav when tapping outside
   document.addEventListener('click', function(e){
