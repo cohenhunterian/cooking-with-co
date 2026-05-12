@@ -770,22 +770,17 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 
       <!-- LEFT: HEADLINE -->
       <div>
-        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,201,106,.12);border-radius:100px;padding:6px 14px;margin-bottom:24px;">
-          <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span>
-          <span style="font-family:‘Space Grotesk’,sans-serif;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.04em;">Made by a 5th grader &amp; his dad</span>
+        <!-- Co’s origin quote -->
+        <div style="margin-bottom:28px;padding:16px 20px;border-left:3px solid var(--accent);background:rgba(0,201,106,.05);border-radius:0 12px 12px 0;">
+          <p style="font-family:’Sora’,sans-serif;font-size:15px;font-style:italic;color:var(--text);line-height:1.65;margin:0 0 8px;">"I was tired of eating slop in the cafeteria and decided to do something about it."</p>
+          <span style="font-family:’Space Grotesk’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;">— Co, age 10</span>
         </div>
-        <h1 style="font-family:’Space Grotesk’,sans-serif;font-size:clamp(44px,6.5vw,80px);font-weight:700;line-height:.93;letter-spacing:-.04em;margin:0 0 6px;color:var(--text);">Michelin chefs.</h1>
-        <h1 style="font-family:’Space Grotesk’,sans-serif;font-size:clamp(44px,6.5vw,80px);font-weight:700;line-height:1;letter-spacing:-.04em;margin:0 0 26px;color:var(--accent);">Your kitchen.</h1>
-        <p style="font-family:’Sora’,sans-serif;font-size:clamp(14px,1.5vw,17px);font-weight:400;line-height:1.65;color:var(--dim);margin:0 0 32px;max-width:400px;">Real chefs. Real ingredients. Made actually cookable at home — no culinary school required.</p>
+        <h1 style="font-family:’Space Grotesk’,sans-serif;font-size:clamp(44px,6.5vw,80px);font-weight:700;line-height:.93;letter-spacing:-.04em;margin:0 0 6px;color:var(--text);">Top chefs.</h1>
+        <h1 style="font-family:’Space Grotesk’,sans-serif;font-size:clamp(44px,6.5vw,80px);font-weight:700;line-height:1;letter-spacing:-.04em;margin:0 0 26px;color:var(--accent);">In your kitchen.</h1>
+        <p style="font-family:’Sora’,sans-serif;font-size:clamp(14px,1.5vw,17px);font-weight:400;line-height:1.65;color:var(--dim);margin:0 0 32px;max-width:400px;">Gordon Ramsay, Julia Child, David Chang and 24 more — every recipe made cookable at home. Any grocery store. No culinary school.</p>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <button id="hero-btn-ask" style="background:var(--accent);color:white;border:none;font-family:‘Space Grotesk’,sans-serif;font-size:15px;font-weight:700;padding:14px 28px;border-radius:100px;cursor:pointer;transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform=’scale(1.03)’;this.style.boxShadow=’0 8px 24px rgba(0,201,106,.35)’" onmouseout="this.style.transform=’’;this.style.boxShadow=’’">Ask Co what to make ✨</button>
-          <button id="hero-btn-browse" style="background:var(--bg2);color:var(--text);border:1.5px solid var(--border);font-family:‘Space Grotesk’,sans-serif;font-size:15px;font-weight:600;padding:14px 28px;border-radius:100px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor=’var(--accent)’" onmouseout="this.style.borderColor=’var(--border)’">Browse recipes →</button>
-        </div>
-        <!-- Stats -->
-        <div style="display:flex;gap:28px;margin-top:36px;padding-top:24px;border-top:1px solid var(--border);">
-          <div><div style="font-family:‘Space Grotesk’,sans-serif;font-size:28px;font-weight:800;color:var(--text);line-height:1;">192</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">Recipes</div></div>
-          <div><div style="font-family:‘Space Grotesk’,sans-serif;font-size:28px;font-weight:800;color:var(--text);line-height:1;">27</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">World chefs</div></div>
-          <div><div style="font-family:‘Space Grotesk’,sans-serif;font-size:28px;font-weight:800;color:var(--text);line-height:1;">100</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">School Fuel</div></div>
+          <button id="hero-btn-ask" style="background:var(--accent);color:white;border:none;font-family:’Space Grotesk’,sans-serif;font-size:15px;font-weight:700;padding:14px 28px;border-radius:100px;cursor:pointer;transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform=’scale(1.03)’;this.style.boxShadow=’0 8px 24px rgba(0,201,106,.35)’" onmouseout="this.style.transform=’’;this.style.boxShadow=’’">Ask Co what to make ✨</button>
+          <button id="hero-btn-browse" style="background:var(--bg2);color:var(--text);border:1.5px solid var(--border);font-family:’Space Grotesk’,sans-serif;font-size:15px;font-weight:600;padding:14px 28px;border-radius:100px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor=’var(--accent)’" onmouseout="this.style.borderColor=’var(--border)’">Browse recipes →</button>
         </div>
       </div>
 
@@ -879,7 +874,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
       </div>
       <a onclick="window.showPage(‘more’)" style="font-family:‘Space Grotesk’,sans-serif;font-size:13px;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;border:1.5px solid var(--accent);padding:8px 16px;border-radius:100px;">All 27 →</a>
     </div>
-    <p style="font-size:13px;color:var(--dim);margin-bottom:20px;">Michelin stars. James Beard winners. YouTube legends. All in one place.</p>
+    <p style="font-size:13px;color:var(--dim);margin-bottom:20px;">The chefs behind the food you actually want to eat — in your kitchen, tonight.</p>
     <div id="home-chef-row" style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;"></div>
   </div>
 
@@ -894,7 +889,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
         <div style="padding:26px 24px 28px;">
           <div style="font-size:36px;margin-bottom:14px;">🎒</div>
           <div style="font-family:‘Space Grotesk’,sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;">School Fuel</div>
-          <div style="font-family:‘Space Grotesk’,sans-serif;font-size:clamp(17px,2.2vw,22px);font-weight:800;color:var(--text);margin-bottom:8px;line-height:1.15;letter-spacing:-.02em;">Michelin chefs,<br>packed in your lunchbox.</div>
+          <div style="font-family:’Space Grotesk’,sans-serif;font-size:clamp(17px,2.2vw,22px);font-weight:800;color:var(--text);margin-bottom:8px;line-height:1.15;letter-spacing:-.02em;">Top chef recipes,<br>packed in your lunchbox.</div>
           <div style="font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.6;">100 snacks &amp; lunches · under 20 min · pack it yourself</div>
           <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,201,106,.12);border-radius:100px;padding:9px 18px;font-family:‘Space Grotesk’,sans-serif;font-size:13px;font-weight:700;color:var(--accent);">Browse School Fuel →</div>
         </div>
@@ -976,7 +971,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     <div style="background:var(--bg2);border:1px solid rgba(46,204,113,.2);border-radius:24px;padding:48px 32px;margin-bottom:24px;text-align:center;">
       <div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:16px;">🎒 School Fuel · Where it comes together</div>
       <h1 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(44px,6vw,72px);font-weight:600;line-height:1;margin:0 0 14px;letter-spacing:-.02em;color:var(--text);">School Fuel.</h1>
-      <p style="font-family:'Space Grotesk',sans-serif;font-style:italic;font-size:clamp(17px,1.8vw,22px);line-height:1.4;color:var(--accent);margin:0 0 16px;font-weight:400;">Michelin at home, packed in a lunchbox.</p>
+      <p style="font-family:'Space Grotesk',sans-serif;font-style:italic;font-size:clamp(17px,1.8vw,22px);line-height:1.4;color:var(--accent);margin:0 0 16px;font-weight:400;">Chef-level food, packed in a lunchbox.</p>
       <p style="font-size:15px;line-height:1.65;color:var(--dim);margin:0 auto;max-width:480px;">100 snacks and lunches you can pack the night before. Real ingredients, real flavor. The heart of what we do.</p>
     </div>
 
