@@ -2461,13 +2461,13 @@ window.openBuddyRecipe = function(recipeId){
     var detailsEl = document.getElementById('recipe-details-section');
     if (!detailsEl) return;
     
-    var html = '<div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:10px;">Ingredients</div>';
+    var html = '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:15px;font-weight:700;margin-bottom:10px;">Ingredients</div>';
     data.ingredients.forEach(function(ing){
       html += '<div style="font-size:12px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;">'
         + '<span style="color:#2ECC71;">&#10003;</span> ' + ing + '</div>';
     });
     
-    html += '<div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin:16px 0 10px;">Steps</div>';
+    html += '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:15px;font-weight:700;margin:16px 0 10px;">Steps</div>';
     data.steps.forEach(function(step, i){
       var cleanStep = step.replace(/^Step \d+:\s*/i, '');
       html += '<div style="display:flex;gap:12px;margin-bottom:12px;">'
@@ -2915,7 +2915,7 @@ function callBuddyProxy(msg, chatEl, clearTyping, onComplete, schoolFuelMode){
 
         // Title
         var nameEl = document.createElement('div');
-        nameEl.style.cssText = 'font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;margin-bottom:4px;color:var(--text);line-height:1.2;';
+        nameEl.style.cssText = 'font-family:"Space Grotesk",sans-serif;font-size:17px;font-weight:700;margin-bottom:4px;color:var(--text);line-height:1.2;';
         nameEl.textContent = r.title;
 
         // Chef + time from recipe data (reliable, never wrong)
@@ -4253,7 +4253,7 @@ window.commLoadGallery = function() {
     if (!gallery) return;
     if (!Array.isArray(posts) || posts.length === 0) {
       gallery.style.gridTemplateColumns = '1fr';
-      gallery.innerHTML = '<div style="padding:48px 24px;text-align:center;background:var(--bg2);border-radius:20px;border:1px solid var(--border);"><div style="font-size:48px;margin-bottom:12px;">📸</div><div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;margin-bottom:6px;">No posts yet</div><div style="font-size:13px;color:var(--dim);">Be the first to share what you cooked!</div></div>';
+      gallery.innerHTML = '<div style="padding:48px 24px;text-align:center;background:var(--bg2);border-radius:20px;border:1px solid var(--border);"><div style="font-size:48px;margin-bottom:12px;">📸</div><div style="font-family:\'Space Grotesk\',sans-serif;font-size:18px;font-weight:600;margin-bottom:6px;">No posts yet</div><div style="font-size:13px;color:var(--dim);">Be the first to share what you cooked!</div></div>';
       return;
     }
     gallery.style.gridTemplateColumns = '';
