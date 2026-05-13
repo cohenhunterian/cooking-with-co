@@ -256,21 +256,23 @@ body.dark .mission-strip{background:#1a1a1a!important;}
     display:none;
     flex-direction:column;
     position:fixed;
-    top:52px;left:0;right:0;bottom:0;
+    top:62px;left:0;right:0;
     background:var(--bg);
-    padding:28px 24px;
+    padding:12px 0 24px;
     gap:0;
     z-index:99;
     overflow-y:auto;
+    border-bottom:1px solid var(--border);
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
   }
   .nav-links.mobile-open{display:flex;}
   .nav-links a{
-    font-size:17px;font-weight:600;
-    padding:16px 0;
+    font-size:16px;font-weight:600;
+    padding:14px 24px;
     border-bottom:1px solid var(--border);
     color:var(--text);
   }
-  .nav-links button{margin-top:16px;align-self:flex-start;}
+  .nav-links a:last-child{border-bottom:none;}
 
   /* Container tighter on phone */
   .container{padding:0 16px;}
@@ -783,12 +785,16 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     <a onclick="showPage('recipes');closeMobileNav();" id="nav-recipes">Recipes</a>
     <a onclick="showPage('community');closeMobileNav();" id="nav-community">Community</a>
     <a onclick="showPage('about');closeMobileNav();" id="nav-about">About</a>
-    <button style="background:none;border:none;font-size:18px;cursor:pointer;" onclick="toggleTheme()" title="Toggle theme">☀️</button>
   </div>
-  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileNav()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button style="background:none;border:none;font-size:18px;cursor:pointer;" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+    <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
+<!-- Mobile nav backdrop -->
+<div id="nav-backdrop" onclick="closeMobileNav()" style="display:none;position:fixed;inset:0;z-index:98;background:rgba(0,0,0,.4);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);"></div>
 
 <!-- =============== HOME =============== -->
 <div class="page active" id="page-home">
@@ -1867,17 +1873,21 @@ const weekChef=chefs[weekNum%chefs.length];
 function toggleMobileNav(){
   var nav = document.getElementById('nav-links');
   var burger = document.getElementById('nav-hamburger');
+  var backdrop = document.getElementById('nav-backdrop');
   if(!nav) return;
   var isOpen = nav.classList.toggle('mobile-open');
   burger.classList.toggle('open', isOpen);
+  if(backdrop) backdrop.style.display = isOpen ? 'block' : 'none';
   document.body.style.overflow = isOpen ? 'hidden' : '';
 }
 function closeMobileNav(){
   var nav = document.getElementById('nav-links');
   var burger = document.getElementById('nav-hamburger');
+  var backdrop = document.getElementById('nav-backdrop');
   if(!nav) return;
   nav.classList.remove('mobile-open');
   if(burger) burger.classList.remove('open');
+  if(backdrop) backdrop.style.display = 'none';
   document.body.style.overflow = '';
 }
 
