@@ -204,7 +204,7 @@ body.dark .mission-strip{background:#1a1a1a!important;}
 @media(max-width:640px){.why-cols{grid-template-columns:1fr;gap:12px;}}
 
 /* HOME HERO — SPLIT */
-.home-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;min-height:92vh;padding:88px 0 72px;}
+.home-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;min-height:92vh;padding:32px 0 72px;}
 @media(max-width:860px){.home-hero-grid{grid-template-columns:1fr;min-height:auto;padding:72px 0 40px;}}
 
 /* HERO MOSAIC */
@@ -2468,13 +2468,19 @@ window.openBuddyRecipe = function(recipeId){
   ytBtn.style.cssText = 'padding:12px;border-radius:14px;border:1.5px solid #FF0000;background:transparent;color:#FF0000;font-size:13px;font-weight:600;cursor:pointer;font-family:Sora,sans-serif;';
   ytBtn.onclick = function(){window.open(videoUrl, '_blank');};
   btns.appendChild(ytBtn);
-  
+
   var storeBtn = document.createElement('button');
   storeBtn.innerHTML = '📍 Find ingredients';
   storeBtn.style.cssText = 'padding:12px;border-radius:14px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;font-family:Sora,sans-serif;';
   storeBtn.onclick = function(){window.open('https://www.google.com/maps/search/grocery+store+near+me', '_blank');};
   btns.appendChild(storeBtn);
-  
+
+  var printBtn = document.createElement('button');
+  printBtn.innerHTML = '🖨️ Print recipe';
+  printBtn.style.cssText = 'grid-column:1/-1;padding:12px;border-radius:14px;border:1.5px solid var(--border);background:transparent;color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:Sora,sans-serif;margin-top:2px;';
+  printBtn.onclick = function(){ window.printRecipe(r); };
+  btns.appendChild(printBtn);
+
   content.appendChild(btns);
   
   modal.style.display = 'block';
@@ -2500,6 +2506,39 @@ window.openBuddyRecipe = function(recipeId){
     });
     
     detailsEl.innerHTML = html;
+  });
+};
+
+window.printRecipe = function(r){
+  window.getRecipeDetailsFromAPI(r, function(data){
+    var w = window.open('','_blank');
+    var ing = data.ingredients.map(function(i){ return '<li>'+i+'</li>'; }).join('');
+    var steps = data.steps.map(function(s,i){
+      return '<div class="step"><span class="num">'+(i+1)+'</span><span>'+s.replace(/^Step \d+:\s*/i,'')+'</span></div>';
+    }).join('');
+    w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>'+r.title+'</title><style>'
+      +'*{margin:0;padding:0;box-sizing:border-box;}'
+      +'body{font-family:Georgia,serif;color:#111;padding:40px;max-width:680px;margin:0 auto;}'
+      +'h1{font-size:28px;margin-bottom:4px;}'
+      +'.meta{font-size:13px;color:#666;margin-bottom:24px;}'
+      +'h2{font-size:14px;text-transform:uppercase;letter-spacing:.1em;color:#444;margin:24px 0 10px;border-bottom:1px solid #ddd;padding-bottom:6px;}'
+      +'ul{list-style:none;padding:0;}'
+      +'ul li{font-size:14px;padding:6px 0;border-bottom:1px solid #f0f0f0;}'
+      +'.step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start;}'
+      +'.num{width:24px;height:24px;border-radius:6px;background:#00C96A;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:Arial,sans-serif;}'
+      +'.step span:last-child{font-size:14px;line-height:1.6;}'
+      +'.footer{margin-top:32px;font-size:11px;color:#aaa;text-align:center;}'
+      +'@media print{body{padding:20px;}}'
+      +'</style></head><body>'
+      +'<h1>'+r.title+'</h1>'
+      +'<div class="meta">'+r.chef+' &nbsp;·&nbsp; '+r.time+' &nbsp;·&nbsp; $'+r.cost+' per serving</div>'
+      +'<h2>Ingredients</h2><ul>'+ing+'</ul>'
+      +'<h2>Steps</h2>'+steps
+      +'<div class="footer">Cooking with Co &nbsp;·&nbsp; No Slop — Just Fire</div>'
+      +'</body></html>');
+    w.document.close();
+    w.focus();
+    setTimeout(function(){ w.print(); }, 400);
   });
 };
 
