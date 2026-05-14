@@ -3958,126 +3958,270 @@ window.renderChefsNew = function(tag){
 };
 
 // === CHEF BATTLE ===
+// Week 1 started Monday May 4 2026. New battle goes live every Monday.
+// Vote % hidden until Sunday of each week, then winner is revealed automatically.
+var BATTLE_START = new Date('2026-05-04T00:00:00');
+
+function getBattleWeekNum() {
+  var ms = new Date() - BATTLE_START;
+  if (ms < 0) return 0;
+  return Math.floor(ms / (7 * 24 * 60 * 60 * 1000)) + 1;
+}
+
+function isBattleRevealed(weekNum) {
+  var cur = getBattleWeekNum();
+  if (weekNum < cur) return true;
+  if (weekNum === cur) return new Date().getDay() === 0;
+  return false;
+}
+
+// Load persisted votes from localStorage
 var battleVotes = {};
+(function(){
+  try { var s = localStorage.getItem('cwco_bv'); if(s) battleVotes = JSON.parse(s); } catch(e){}
+})();
+
 var battleMatchups = [
   {
-    id:'b1', week:'This Week', dish:'The Burger',
+    id:'b1', weekNum:1, dish:'The Burger',
     description:'Smash it thin or stack it tall? Two takes on the perfect home burger.',
     chef1:'Kenji López-Alt', recipe1:'burger',
     chef2:'Salt Bae (Nusret)', recipe2:'saltbae-burger',
     votes1:142, votes2:98
   },
   {
-    id:'b2', week:'Week 2', dish:'Crispy Chicken',
+    id:'b2', weekNum:2, dish:'Crispy Chicken',
     description:'Homemade nuggets or oven-baked wings? The great kid-food showdown.',
     chef1:'Joshua Weissman', recipe1:'nuggets',
     chef2:'Kenji López-Alt', recipe2:'wings',
     votes1:127, votes2:115
   },
   {
-    id:'b3', week:'Week 3', dish:'The Sweet Treat',
+    id:'b3', weekNum:3, dish:'The Sweet Treat',
     description:'Cookies vs. brownies. The eternal dessert debate. Make both, decide for yourself.',
     chef1:'Kenji López-Alt', recipe1:'cookies',
     chef2:'Binging with Babish', recipe2:'brownies',
     votes1:165, votes2:148
   },
   {
-    id:'b4', week:'Week 4', dish:'The Pasta',
+    id:'b4', weekNum:4, dish:'The Pasta',
     description:'Real Italian carbonara or American baked mac and cheese? Two ways to do pasta night.',
     chef1:'Jamie Oliver', recipe1:'carbonara',
     chef2:'Binging with Babish', recipe2:'mac-cheese',
     votes1:88, votes2:124
   },
   {
-    id:'b5', week:'Week 5', dish:'The Breakfast',
-    description:'Fluffy pancakes or crispy waffles? The most important meal’s biggest fight.',
+    id:'b5', weekNum:5, dish:'The Breakfast',
+    description:"Fluffy pancakes or crispy waffles? The most important meal's biggest fight.",
     chef1:'Jamie Oliver', recipe1:'pancakes',
     chef2:'The Happy Pear', recipe2:'waffles',
     votes1:103, votes2:91
   },
   {
-    id:'b6', week:'Week 6', dish:'Comfort Classics',
-    description:'Grilled cheese or French toast? Cheesy and crispy or sweet and crispy. You can’t lose.',
+    id:'b6', weekNum:6, dish:'Comfort Classics',
+    description:"Grilled cheese or French toast? Cheesy and crispy or sweet and crispy. You can't lose.",
     chef1:'Binging with Babish', recipe1:'grilled-cheese',
     chef2:'Jacques Pépin', recipe2:'french-toast',
     votes1:96, votes2:108
+  },
+  {
+    id:'b7', weekNum:7, dish:'The Steak',
+    description:'A perfect pan sear vs. the butter-baste method. Two legends, one cut of beef.',
+    chef1:'Gordon Ramsay', recipe1:'gordon-steak',
+    chef2:'Kenji López-Alt', recipe2:'pan-steak',
+    votes1:0, votes2:0
+  },
+  {
+    id:'b8', weekNum:8, dish:'The Egg',
+    description:"The world's most debated ingredient. A silky rolled omelette or impossibly soft scrambled?",
+    chef1:'Jacques Pépin', recipe1:'omelette',
+    chef2:'Gordon Ramsay', recipe2:'scrambled-eggs',
+    votes1:0, votes2:0
+  },
+  {
+    id:'b9', weekNum:9, dish:'The Ramen',
+    description:'Two-hour tonkotsu from scratch vs. a 20-minute weeknight bowl. Effort vs. speed.',
+    chef1:'David Chang', recipe1:'tonkotsu-ramen',
+    chef2:'Joshua Weissman', recipe2:'easy-ramen',
+    votes1:0, votes2:0
+  },
+  {
+    id:'b10', weekNum:10, dish:'The Taco',
+    description:'Slow-cooked carnitas or 15-minute fish tacos. Street food done two very different ways.',
+    chef1:'Rick Bayless', recipe1:'carnitas-tacos',
+    chef2:'Gordon Ramsay', recipe2:'fish-tacos',
+    votes1:0, votes2:0
+  },
+  {
+    id:'b11', weekNum:11, dish:'The Soup',
+    description:'Classic French onion vs. rich miso ramen. Two bowls that demand a couch and a blanket.',
+    chef1:'Julia Child', recipe1:'french-onion-soup',
+    chef2:'Joshua Weissman', recipe2:'miso-ramen',
+    votes1:0, votes2:0
+  },
+  {
+    id:'b12', weekNum:12, dish:'The Curry',
+    description:"Butter chicken vs. Thai green curry. The eternal what-are-we-having-tonight debate.",
+    chef1:'Gordon Ramsay', recipe1:'butter-chicken',
+    chef2:'Jamie Oliver', recipe2:'thai-green-curry',
+    votes1:0, votes2:0
   }
 ];
 
 window.renderBattleArena = function(){
   var arena = document.getElementById('battle-arena');
   if(!arena) return;
-  arena.innerHTML = battleMatchups.map(function(m, idx){
+  var curWeek = getBattleWeekNum();
+  // Only show weeks that have started
+  var visible = battleMatchups.filter(function(m){ return m.weekNum <= curWeek; });
+  // Sort: current week first, then past weeks descending
+  visible.sort(function(a,b){ return b.weekNum - a.weekNum; });
+
+  var currentBattle = visible.find(function(m){ return m.weekNum === curWeek; });
+  var pastBattles = visible.filter(function(m){ return m.weekNum < curWeek; });
+
+  var html = '';
+
+  // ── CURRENT WEEK BATTLE ──
+  if(currentBattle){
+    var m = currentBattle;
     var voted = battleVotes[m.id] || null;
-    var t = m.votes1 + m.votes2;
-    var p1 = Math.round(m.votes1/t*100), p2 = Math.round(m.votes2/t*100);
-    var r1 = recipes.find(function(r){return r.id === m.recipe1;}) || {title:m.recipe1, img:'', time:'', cost:''};
-    var r2 = recipes.find(function(r){return r.id === m.recipe2;}) || {title:m.recipe2, img:'', time:'', cost:''};
-    var winnerSide = m.votes1 > m.votes2 ? 1 : (m.votes2 > m.votes1 ? 2 : 0);
-    
-    return '<div class="battle-card" style="background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:28px;margin-bottom:24px;">'
-      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
-        + '<div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;">' + m.week + '</div>'
-        + '<div style="font-size:11px;color:var(--dim);">' + (m.votes1 + m.votes2) + ' votes</div>'
-      + '</div>'
-      + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:32px;font-weight:600;line-height:1.1;margin-bottom:8px;letter-spacing:-.015em;">' + m.dish + '</div>'
-      + '<p style="font-size:14px;color:var(--dim);line-height:1.6;margin:0 0 24px;max-width:560px;">' + m.description + '</p>'
-      
-      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch;">'
-      
-        // Recipe A card
-        + '<div onclick="window.openBuddyRecipe(\'' + m.recipe1 + '\')" style="background:var(--bg);border:2px solid ' + (voted===1?'var(--accent)':'var(--border)') + ';border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s;display:flex;flex-direction:column;" onmouseover="this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.transform=\'\'">'
-          + '<div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg3);">' + (r1.img ? '<img src="' + r1.img + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>' : '') + '</div>'
-          + '<div style="padding:14px 16px;flex:1;display:flex;flex-direction:column;">'
-            + '<div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">' + m.chef1 + '</div>'
-            + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:16px;font-weight:600;line-height:1.25;margin-bottom:8px;flex:1;">' + r1.title + '</div>'
-            + '<div style="font-size:11px;color:var(--dim);">' + r1.time + (r1.cost ? ' · $' + r1.cost : '') + '</div>'
+    var revealed = isBattleRevealed(m.weekNum);
+    var t = m.votes1 + m.votes2 + (voted===1?0:0); // base votes
+    var r1 = recipes.find(function(r){return r.id===m.recipe1;}) || {title:m.dish+' A',img:'',time:'',cost:''};
+    var r2 = recipes.find(function(r){return r.id===m.recipe2;}) || {title:m.dish+' B',img:'',time:'',cost:''};
+
+    html += '<div style="background:var(--bg2);border:2px solid var(--accent);border-radius:24px;padding:28px;margin-bottom:32px;position:relative;overflow:hidden;">'
+      // Live badge
+      + '<div style="position:absolute;top:20px;right:20px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;padding:5px 12px;border-radius:100px;">🔥 Live now</div>'
+      // Week label
+      + '<div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Week ' + m.weekNum + ' · This week</div>'
+      // Dish name
+      + '<div style="font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,5vw,42px);font-weight:700;line-height:1;margin-bottom:8px;letter-spacing:-.02em;">' + m.dish + '</div>'
+      + '<p style="font-size:14px;color:var(--dim);line-height:1.6;margin:0 0 22px;max-width:560px;">' + m.description + '</p>'
+
+      // Recipe cards grid
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">'
+        // Card A
+        + '<div onclick="window.openBuddyRecipe('' + m.recipe1 + '')" style="background:var(--bg);border:2px solid '+(voted===1?'var(--accent)':'var(--border)')+';border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .2s;display:flex;flex-direction:column;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">'
+          + '<div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg3);">' + (r1.img ? '<img src="'+r1.img+'" style="width:100%;height:100%;object-fit:cover;" loading="lazy"/>' : '') + '</div>'
+          + '<div style="padding:12px 14px;">'
+            + '<div style="font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Option A · ' + m.chef1 + '</div>'
+            + '<div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;line-height:1.25;margin-bottom:6px;">' + r1.title + '</div>'
+            + '<div style="font-size:11px;color:var(--dim);">' + (r1.time||'') + (r1.cost ? ' · $'+r1.cost : '') + '</div>'
           + '</div>'
         + '</div>'
-        
-        // Recipe B card
-        + '<div onclick="window.openBuddyRecipe(\'' + m.recipe2 + '\')" style="background:var(--bg);border:2px solid ' + (voted===2?'var(--accent)':'var(--border)') + ';border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s;display:flex;flex-direction:column;" onmouseover="this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.transform=\'\'">'
-          + '<div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg3);">' + (r2.img ? '<img src="' + r2.img + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>' : '') + '</div>'
-          + '<div style="padding:14px 16px;flex:1;display:flex;flex-direction:column;">'
-            + '<div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">' + m.chef2 + '</div>'
-            + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:16px;font-weight:600;line-height:1.25;margin-bottom:8px;flex:1;">' + r2.title + '</div>'
-            + '<div style="font-size:11px;color:var(--dim);">' + r2.time + (r2.cost ? ' · $' + r2.cost : '') + '</div>'
+        // Card B
+        + '<div onclick="window.openBuddyRecipe('' + m.recipe2 + '')" style="background:var(--bg);border:2px solid '+(voted===2?'var(--accent)':'var(--border)')+';border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .2s;display:flex;flex-direction:column;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">'
+          + '<div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg3);">' + (r2.img ? '<img src="'+r2.img+'" style="width:100%;height:100%;object-fit:cover;" loading="lazy"/>' : '') + '</div>'
+          + '<div style="padding:12px 14px;">'
+            + '<div style="font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Option B · ' + m.chef2 + '</div>'
+            + '<div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;line-height:1.25;margin-bottom:6px;">' + r2.title + '</div>'
+            + '<div style="font-size:11px;color:var(--dim);">' + (r2.time||'') + (r2.cost ? ' · $'+r2.cost : '') + '</div>'
           + '</div>'
         + '</div>'
       + '</div>'
-      
+
       // Vote section
-      + '<div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);">'
-        + '<div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:12px;">🍽️ Cook one (or both). Then vote.</div>'
-        
-        // Vote bar with percentages
-        + '<div style="display:flex;height:8px;border-radius:100px;overflow:hidden;background:var(--bg3);margin-bottom:10px;">'
-          + '<div style="width:' + p1 + '%;background:' + (winnerSide===1?'var(--accent)':'var(--text)') + ';transition:width .4s;"></div>'
-          + '<div style="width:' + p2 + '%;background:' + (winnerSide===2?'var(--accent)':'var(--dim)') + ';transition:width .4s;"></div>'
+      + '<div style="border-top:1px solid var(--border);padding-top:18px;">';
+
+    if(revealed) {
+      // Sunday: show results
+      var tv = m.votes1 + m.votes2; var p1 = Math.round(m.votes1/tv*100); var p2 = 100-p1;
+      var winSide = m.votes1>m.votes2?1:(m.votes2>m.votes1?2:0);
+      html += '<div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px;">🏆 Results are in!</div>'
+        + '<div style="display:flex;height:10px;border-radius:100px;overflow:hidden;background:var(--bg3);margin-bottom:8px;">'
+          + '<div style="width:'+p1+'%;background:'+(winSide===1?'var(--accent)':'var(--dim)')+';transition:width .5s;"></div>'
+          + '<div style="width:'+p2+'%;background:'+(winSide===2?'var(--accent)':'var(--dim)')+';transition:width .5s;"></div>'
         + '</div>'
-        + '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-bottom:14px;">'
-          + '<div>Team ' + m.chef1.split(' ')[0] + ' <strong style="color:' + (winnerSide===1?'var(--accent)':'var(--text)') + ';">' + p1 + '%</strong></div>'
-          + '<div><strong style="color:' + (winnerSide===2?'var(--accent)':'var(--text)') + ';">' + p2 + '%</strong> Team ' + m.chef2.split(' ')[0] + '</div>'
+        + '<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--dim);">'
+          + '<span>'+m.chef1.split(' ')[0]+' <strong style="color:'+(winSide===1?'var(--accent)':'var(--text)')+'">'+p1+'%</strong>'+(winSide===1?' 🏆':'')+'</span>'
+          + '<span>'+(winSide===2?'🏆 ':'')+m.chef2.split(' ')[0]+' <strong style="color:'+(winSide===2?'var(--accent)':'var(--text)')+'">'+p2+'%</strong></span>'
+        + '</div>';
+    } else if(voted) {
+      // Voted but not Sunday yet — confirm vote, tease results
+      html += '<div style="background:rgba(0,201,106,.08);border:1px solid rgba(0,201,106,.25);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;">'
+        + '<span style="font-size:22px;">🔥</span>'
+        + '<div>'
+          + '<div style="font-size:13px;font-weight:700;color:var(--accent);">Vote saved! You're on Team '+(voted===1?m.chef1:m.chef2).split(' ')[0]+'.</div>'
+          + '<div style="font-size:12px;color:var(--dim);margin-top:2px;">Results reveal this Sunday · '+(m.votes1+m.votes2)+' votes so far</div>'
         + '</div>'
-        
-        // Vote buttons
+      + '</div>';
+    } else {
+      // Not voted yet — show vote buttons
+      html += '<div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px;">🍽️ Cook one (or both). Then vote.</div>'
+        + '<div style="background:rgba(0,0,0,.04);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:8px;">'
+          + '<span>🔒</span><span>Results reveal this Sunday — vote now without the spoiler</span>'
+        + '</div>'
         + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
-          + '<button onclick="window.voteBattle(\'' + m.id + '\',1);event.stopPropagation();" style="padding:11px 16px;border-radius:12px;border:1.5px solid ' + (voted===1?'var(--accent)':'var(--border)') + ';background:' + (voted===1?'var(--accent)':'var(--bg)') + ';color:' + (voted===1?'#fff':'var(--text)') + ';font-size:13px;font-weight:600;cursor:' + (voted?'default':'pointer') + ';font-family:inherit;">' + (voted===1?'✓ You voted A':(voted?'A':'Vote A')) + '</button>'
-          + '<button onclick="window.voteBattle(\'' + m.id + '\',2);event.stopPropagation();" style="padding:11px 16px;border-radius:12px;border:1.5px solid ' + (voted===2?'var(--accent)':'var(--border)') + ';background:' + (voted===2?'var(--accent)':'var(--bg)') + ';color:' + (voted===2?'#fff':'var(--text)') + ';font-size:13px;font-weight:600;cursor:' + (voted?'default':'pointer') + ';font-family:inherit;">' + (voted===2?'✓ You voted B':(voted?'B':'Vote B')) + '</button>'
+          + '<button onclick="window.voteBattle(''+m.id+'',1);event.stopPropagation();" style="padding:12px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">Vote A · '+m.chef1.split(' ')[0]+'</button>'
+          + '<button onclick="window.voteBattle(''+m.id+'',2);event.stopPropagation();" style="padding:12px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">Vote B · '+m.chef2.split(' ')[0]+'</button>'
+        + '</div>';
+    }
+    html += '</div></div>'; // close vote section and main card
+  }
+
+  // ── PAST BATTLES ARCHIVE ──
+  if(pastBattles.length > 0){
+    html += '<div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.12em;margin-bottom:16px;padding-top:8px;">Past battles</div>';
+    pastBattles.forEach(function(m){
+      var voted = battleVotes[m.id] || null;
+      var t = m.votes1 + m.votes2; if(!t) t=1;
+      var p1 = Math.round(m.votes1/t*100), p2 = 100-p1;
+      var winSide = m.votes1>m.votes2?1:(m.votes2>m.votes1?2:0);
+      var r1 = recipes.find(function(r){return r.id===m.recipe1;}) || {title:m.dish+' A',img:'',time:'',cost:''};
+      var r2 = recipes.find(function(r){return r.id===m.recipe2;}) || {title:m.dish+' B',img:'',time:'',cost:''};
+
+      html += '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:22px;margin-bottom:16px;">'
+        + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">'
+          + '<div style="font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;">Week '+m.weekNum+'</div>'
+          + '<div style="font-size:10px;color:var(--dim);">'+t+' votes</div>'
         + '</div>'
-      + '</div>'
-    + '</div>';
-  }).join('');
+        + '<div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:12px;letter-spacing:-.01em;">'+m.dish+'</div>'
+
+        // Mini recipe cards
+        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">'
+          + '<div onclick="window.openBuddyRecipe(''+m.recipe1+'')" style="background:var(--bg);border:1.5px solid '+(winSide===1?'var(--accent)':voted===1?'rgba(0,201,106,.4)':'var(--border)')+';border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .15s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">'
+            + (r1.img ? '<div style="height:80px;overflow:hidden;"><img src="'+r1.img+'" style="width:100%;height:100%;object-fit:cover;" loading="lazy"/></div>' : '')
+            + '<div style="padding:8px 10px;">'
+              + '<div style="font-size:9px;font-weight:700;color:'+(winSide===1?'var(--accent)':'var(--dim)')+';text-transform:uppercase;margin-bottom:2px;">'+(winSide===1?'🏆 Winner · ':'')+m.chef1.split(' ')[0]+'</div>'
+              + '<div style="font-size:12px;font-weight:600;line-height:1.2;">'+r1.title+'</div>'
+            + '</div>'
+          + '</div>'
+          + '<div onclick="window.openBuddyRecipe(''+m.recipe2+'')" style="background:var(--bg);border:1.5px solid '+(winSide===2?'var(--accent)':voted===2?'rgba(0,201,106,.4)':'var(--border)')+';border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .15s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">'
+            + (r2.img ? '<div style="height:80px;overflow:hidden;"><img src="'+r2.img+'" style="width:100%;height:100%;object-fit:cover;" loading="lazy"/></div>' : '')
+            + '<div style="padding:8px 10px;">'
+              + '<div style="font-size:9px;font-weight:700;color:'+(winSide===2?'var(--accent)':'var(--dim)')+';text-transform:uppercase;margin-bottom:2px;">'+(winSide===2?'🏆 Winner · ':'')+m.chef2.split(' ')[0]+'</div>'
+              + '<div style="font-size:12px;font-weight:600;line-height:1.2;">'+r2.title+'</div>'
+            + '</div>'
+          + '</div>'
+        + '</div>'
+
+        // Results bar
+        + '<div style="display:flex;height:6px;border-radius:100px;overflow:hidden;background:var(--bg3);margin-bottom:6px;">'
+          + '<div style="width:'+p1+'%;background:'+(winSide===1?'var(--accent)':'var(--dim)')+';transition:width .5s;"></div>'
+          + '<div style="width:'+p2+'%;background:'+(winSide===2?'var(--accent)':'var(--bg3)')+';transition:width .5s;"></div>'
+        + '</div>'
+        + '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim);">'
+          + '<span>'+(voted===1?'✓ Your vote · ':'')+m.chef1.split(' ')[0]+' <strong style="color:'+(winSide===1?'var(--accent)':'var(--text)')+'">'+p1+'%</strong></span>'
+          + '<span><strong style="color:'+(winSide===2?'var(--accent)':'var(--text)')+'">'+p2+'%</strong> '+(voted===2?'· Your vote ✓ ':'')+m.chef2.split(' ')[0]+'</span>'
+        + '</div>'
+      + '</div>';
+    });
+  }
+
+  arena.innerHTML = html;
 };
 
 window.voteBattle = function(id, side){
   if(battleVotes[id]) return;
   battleVotes[id] = side;
+  // Save to localStorage
+  try { localStorage.setItem('cwco_bv', JSON.stringify(battleVotes)); } catch(e){}
   var m = battleMatchups.find(function(x){return x.id===id;});
   if(m){ if(side===1) m.votes1+=1; else m.votes2+=1; }
   window.renderBattleArena();
 };
-
 // === MEAL PLANNER ===
 var plannerMeals = {Mon:[],Tue:[],Wed:[],Thu:[],Fri:[],Sat:[],Sun:[]};
 var plannerOpen = {};
