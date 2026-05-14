@@ -1891,19 +1891,6 @@ function closeMobileNav(){
   document.body.style.overflow = '';
 }
 
-window.showPage = function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-  const nav=document.getElementById('nav-'+id);
-  if(nav) nav.classList.add('active');
-  window.scrollTo(0,0);
-  if(id==='chefs') renderChefsPage('all');
-  if(id==='school') renderSFPage('all');
-  if(id==='more'){renderChefsPage('all');renderBattles();renderPlanner();}
-  if(id==='news') loadNews();
-  if(id==='featured') renderFeaturedPage();
-}
 
 // ===========================================
 // TYPEWRITER
@@ -2102,7 +2089,7 @@ window.buildCarousel = function buildCarousel(){
   const track=document.getElementById('chef-track');
   if(!track) return;
   track.innerHTML=chefs.slice(0,12).map(c=>`
-    <div class="chef-card-item" onclick="showPage('chefs')">
+    <div class="chef-card-item" onclick="showPage('more')">
       <img src="${c.img}" alt="${c.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
       <div class="cf-fb" style="display:none;background:${c.bg};color:${c.color}">${c.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
       <div class="cf-body">
