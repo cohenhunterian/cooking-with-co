@@ -3958,9 +3958,9 @@ window.renderChefsNew = function(tag){
 };
 
 // === CHEF BATTLE ===
-// Week 1 started Monday May 4 2026. New battle goes live every Monday.
-// Vote % hidden until Sunday of each week, then winner is revealed automatically.
-var BATTLE_START = new Date('2026-05-04T00:00:00');
+// Week 1 starts Monday May 12 2026. New battles go live every Monday.
+// Vote % hidden until Sunday of each week, then winners are revealed automatically.
+var BATTLE_START = new Date('2026-05-12T00:00:00');
 
 function getBattleWeekNum() {
   var ms = new Date() - BATTLE_START;
@@ -3981,244 +3981,447 @@ var battleVotes = {};
   try { var s = localStorage.getItem('cwco_bv'); if(s) battleVotes = JSON.parse(s); } catch(e){}
 })();
 
+// 4 battles per week, 15 weeks — only current week is shown
 var battleMatchups = [
-  {
-    id:'b1', weekNum:1, dish:'The Burger',
-    description:'Smash it thin or stack it tall? Two takes on the perfect home burger.',
-    chef1:'Kenji López-Alt', recipe1:'burger',
-    chef2:'Salt Bae (Nusret)', recipe2:'saltbae-burger',
-    votes1:142, votes2:98
-  },
-  {
-    id:'b2', weekNum:2, dish:'Crispy Chicken',
+  // ── WEEK 1 ──
+  { id:'w1-b1', weekNum:1, dish:'Crispy Chicken',
     description:'Homemade nuggets or oven-baked wings? The great kid-food showdown.',
     chef1:'Joshua Weissman', recipe1:'nuggets',
     chef2:'Kenji López-Alt', recipe2:'wings',
-    votes1:127, votes2:115
-  },
-  {
-    id:'b3', weekNum:3, dish:'The Sweet Treat',
-    description:'Cookies vs. brownies. The eternal dessert debate. Make both, decide for yourself.',
+    votes1:0, votes2:0 },
+  { id:'w1-b2', weekNum:1, dish:'The Burger',
+    description:'Smash it thin on a scorching griddle or go thick and juicy? Two legends settle it.',
+    chef1:'Kenji López-Alt', recipe1:'burger',
+    chef2:'Joshua Weissman', recipe2:'smash-burger',
+    votes1:0, votes2:0 },
+  { id:'w1-b3', weekNum:1, dish:'The Pasta',
+    description:'Roman carbonara with egg yolks and guanciale vs. the creamiest baked mac ever made.',
+    chef1:'Jamie Oliver', recipe1:'carbonara',
+    chef2:'Binging with Babish', recipe2:'mac',
+    votes1:0, votes2:0 },
+  { id:'w1-b4', weekNum:1, dish:'The Sweet Treat',
+    description:'Crispy-edged chocolate chip cookies vs. fudgy brownies. Which one disappears faster?',
     chef1:'Kenji López-Alt', recipe1:'cookies',
     chef2:'Binging with Babish', recipe2:'brownies',
-    votes1:165, votes2:148
-  },
-  {
-    id:'b4', weekNum:4, dish:'The Pasta',
-    description:'Real Italian carbonara or American baked mac and cheese? Two ways to do pasta night.',
-    chef1:'Jamie Oliver', recipe1:'carbonara',
-    chef2:'Binging with Babish', recipe2:'mac-cheese',
-    votes1:88, votes2:124
-  },
-  {
-    id:'b5', weekNum:5, dish:'The Breakfast',
-    description:"Fluffy pancakes or crispy waffles? The most important meal's biggest fight.",
+    votes1:0, votes2:0 },
+
+  // ── WEEK 2 ──
+  { id:'w2-b1', weekNum:2, dish:'The Breakfast',
+    description:'Fluffy buttermilk pancakes vs. crispy golden waffles. The most important meal is at war.',
     chef1:'Jamie Oliver', recipe1:'pancakes',
     chef2:'The Happy Pear', recipe2:'waffles',
-    votes1:103, votes2:91
-  },
-  {
-    id:'b6', weekNum:6, dish:'Comfort Classics',
-    description:"Grilled cheese or French toast? Cheesy and crispy or sweet and crispy. You can't lose.",
+    votes1:0, votes2:0 },
+  { id:'w2-b2', weekNum:2, dish:'The Steak',
+    description:'Butter-basted pan sear vs. low-and-slow reverse sear. A battle of technique, not just taste.',
+    chef1:'Gordon Ramsay', recipe1:'ribeye',
+    chef2:'Guga Foods', recipe2:'reverse-sear',
+    votes1:0, votes2:0 },
+  { id:'w2-b3', weekNum:2, dish:'Comfort Classics',
+    description:'Gooey grilled cheese vs. custardy French toast. Two golden-brown legends on one pan.',
     chef1:'Binging with Babish', recipe1:'grilled-cheese',
     chef2:'Jacques Pépin', recipe2:'french-toast',
-    votes1:96, votes2:108
-  },
-  {
-    id:'b7', weekNum:7, dish:'The Steak',
-    description:'A perfect pan sear vs. the butter-baste method. Two legends, one cut of beef.',
-    chef1:'Gordon Ramsay', recipe1:'gordon-steak',
-    chef2:'Kenji López-Alt', recipe2:'pan-steak',
-    votes1:0, votes2:0
-  },
-  {
-    id:'b8', weekNum:8, dish:'The Egg',
-    description:"The world's most debated ingredient. A silky rolled omelette or impossibly soft scrambled?",
-    chef1:'Jacques Pépin', recipe1:'omelette',
-    chef2:'Gordon Ramsay', recipe2:'scrambled-eggs',
-    votes1:0, votes2:0
-  },
-  {
-    id:'b9', weekNum:9, dish:'The Ramen',
-    description:'Two-hour tonkotsu from scratch vs. a 20-minute weeknight bowl. Effort vs. speed.',
-    chef1:'David Chang', recipe1:'tonkotsu-ramen',
-    chef2:'Joshua Weissman', recipe2:'easy-ramen',
-    votes1:0, votes2:0
-  },
-  {
-    id:'b10', weekNum:10, dish:'The Taco',
-    description:'Slow-cooked carnitas or 15-minute fish tacos. Street food done two very different ways.',
-    chef1:'Rick Bayless', recipe1:'carnitas-tacos',
-    chef2:'Gordon Ramsay', recipe2:'fish-tacos',
-    votes1:0, votes2:0
-  },
-  {
-    id:'b11', weekNum:11, dish:'The Soup',
-    description:'Classic French onion vs. rich miso ramen. Two bowls that demand a couch and a blanket.',
-    chef1:'Julia Child', recipe1:'french-onion-soup',
+    votes1:0, votes2:0 },
+  { id:'w2-b4', weekNum:2, dish:'The Chicken',
+    description:'Crispy skin-on thighs from a Michelin legend vs. sticky honey garlic from the internet king.',
+    chef1:'Gordon Ramsay', recipe1:'chicken',
+    chef2:'Nick DiGiovanni', recipe2:'honey-chicken',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 3 ──
+  { id:'w3-b1', weekNum:3, dish:'The Taco',
+    description:'Proper carne asada from Mexico vs. slow-cooked carnitas from Bayless. One corn tortilla, two souls.',
+    chef1:'Rick Bayless', recipe1:'steak-tacos',
+    chef2:'Joshua Weissman', recipe2:'carne-asada',
+    votes1:0, votes2:0 },
+  { id:'w3-b2', weekNum:3, dish:'The Ramen',
+    description:'Two-hour tonkotsu broth vs. a quick weeknight bowl. Effort vs. speed — which wins your stomach?',
+    chef1:'David Chang', recipe1:'ramen',
     chef2:'Joshua Weissman', recipe2:'miso-ramen',
-    votes1:0, votes2:0
-  },
-  {
-    id:'b12', weekNum:12, dish:'The Curry',
-    description:"Butter chicken vs. Thai green curry. The eternal what-are-we-having-tonight debate.",
+    votes1:0, votes2:0 },
+  { id:'w3-b3', weekNum:3, dish:'The Egg',
+    description:"Jacques' silky French omelette vs. Ramsay's impossibly soft scrambled. The world's most debated ingredient.",
+    chef1:"Jacques Pépin", recipe1:'omelette',
+    chef2:'Gordon Ramsay', recipe2:'scrambled-eggs',
+    votes1:0, votes2:0 },
+  { id:'w3-b4', weekNum:3, dish:'Korean BBQ',
+    description:'Sweet soy-marinated bulgogi vs. sizzling kalbi short ribs. Fire up the grill and pick your side.',
+    chef1:'David Chang', recipe1:'bulgogi',
+    chef2:'Kenji López-Alt', recipe2:'kalbi',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 4 ──
+  { id:'w4-b1', weekNum:4, dish:'The Soup',
+    description:"Julia's classic French onion under a broiled cheese lid vs. Chang's rich miso broth. Two bowls, one couch.",
+    chef1:'Julia Child', recipe1:'french-onion-soup',
+    chef2:'David Chang', recipe2:'miso-ramen',
+    votes1:0, votes2:0 },
+  { id:'w4-b2', weekNum:4, dish:'The Curry',
+    description:'Velvety butter chicken vs. aromatic Thai green curry. The eternal what-are-we-having debate.',
     chef1:'Gordon Ramsay', recipe1:'butter-chicken',
     chef2:'Jamie Oliver', recipe2:'thai-green-curry',
-    votes1:0, votes2:0
-  }
+    votes1:0, votes2:0 },
+  { id:'w4-b3', weekNum:4, dish:'The Sandwich',
+    description:'Shaved ribeye Philly cheesesteak vs. the best shawarma wrap you have ever had at home.',
+    chef1:'Joshua Weissman', recipe1:'philly',
+    chef2:'Kenji López-Alt', recipe2:'shawarma',
+    votes1:0, votes2:0 },
+  { id:'w4-b4', weekNum:4, dish:'The Salad',
+    description:'A restaurant-quality steak salad vs. a Caesar so good you will never buy dressing again.',
+    chef1:'Gordon Ramsay', recipe1:'steak-salad',
+    chef2:'Jamie Oliver', recipe2:'caesar-salad',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 5 ──
+  { id:'w5-b1', weekNum:5, dish:'The Rice Bowl',
+    description:'Kimchi fried rice with all the crispy bits vs. a buttery salmon rice bowl. Fork or chopsticks?',
+    chef1:'David Chang', recipe1:'kimchi-fried-rice',
+    chef2:'Nick DiGiovanni', recipe2:'salmon-rice-bowl',
+    votes1:0, votes2:0 },
+  { id:'w5-b2', weekNum:5, dish:'The Stir Fry',
+    description:'Soy-glazed pepper steak from a screaming wok vs. pad thai with the perfect wok char.',
+    chef1:'Kenji López-Alt', recipe1:'pepper-steak',
+    chef2:'David Chang', recipe2:'pad-thai',
+    votes1:0, votes2:0 },
+  { id:'w5-b3', weekNum:5, dish:'The Pasta 2',
+    description:'Butter-tossed cacio e pepe vs. a slow-simmered bolognese. One takes 10 minutes, one takes 4 hours.',
+    chef1:'Kenji López-Alt', recipe1:'cacio-e-pepe',
+    chef2:'Joshua Weissman', recipe2:'bolognese',
+    votes1:0, votes2:0 },
+  { id:'w5-b4', weekNum:5, dish:'The Wings',
+    description:'Oven-crisped baked wings vs. sticky honey garlic glazed wings. Both boneless arguments are invalid.',
+    chef1:'Kenji López-Alt', recipe1:'wings',
+    chef2:'Nick DiGiovanni', recipe2:'honey-wings',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 6 ──
+  { id:'w6-b1', weekNum:6, dish:'The Roast',
+    description:"Keller's legendary simple roast chicken — just salt and heat — vs. Ramsay's herb-stuffed bird.",
+    chef1:'Thomas Keller', recipe1:'roast-chicken',
+    chef2:'Gordon Ramsay', recipe2:'chicken',
+    votes1:0, votes2:0 },
+  { id:'w6-b2', weekNum:6, dish:'The Chili',
+    description:'Texas-style beef chili — no beans, no apology — vs. a rich, slow-simmered classic bowl.',
+    chef1:'Gordon Ramsay', recipe1:'beef-chili',
+    chef2:'Joshua Weissman', recipe2:'chili',
+    votes1:0, votes2:0 },
+  { id:'w6-b3', weekNum:6, dish:'The Noodles',
+    description:'Cold soba with dipping broth vs. a deeply savory dan dan noodle. Slurp loudly for both.',
+    chef1:'Kenji López-Alt', recipe1:'soba',
+    chef2:'David Chang', recipe2:'dan-dan-noodles',
+    votes1:0, votes2:0 },
+  { id:'w6-b4', weekNum:6, dish:'The Pork',
+    description:'Crispy pork belly with perfect crackling vs. melt-in-your-mouth slow-cooked carnitas.',
+    chef1:'Gordon Ramsay', recipe1:'pork-belly',
+    chef2:'Rick Bayless', recipe2:'carnitas',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 7 ──
+  { id:'w7-b1', weekNum:7, dish:'The Pizza',
+    description:'NY-style thin, foldable, crispy-bottomed slice vs. Detroit deep-dish with caramelized cheese edges.',
+    chef1:'Kenji López-Alt', recipe1:'pizza',
+    chef2:'Joshua Weissman', recipe2:'detroit-pizza',
+    votes1:0, votes2:0 },
+  { id:'w7-b2', weekNum:7, dish:'The Fish',
+    description:'Pan-seared salmon with crispy skin vs. beer-battered fish tacos from a street cart legend.',
+    chef1:'Gordon Ramsay', recipe1:'salmon',
+    chef2:'Rick Bayless', recipe2:'fish-tacos',
+    votes1:0, votes2:0 },
+  { id:'w7-b3', weekNum:7, dish:'The Lamb',
+    description:'Herb-crusted rack of lamb vs. slow-braised lamb shoulder that falls apart with a look.',
+    chef1:'Thomas Keller', recipe1:'rack-lamb',
+    chef2:'Jamie Oliver', recipe2:'lamb-shoulder',
+    votes1:0, votes2:0 },
+  { id:'w7-b4', weekNum:7, dish:'The Meatball',
+    description:'Italian-American sauced meatballs on Sunday gravy vs. Swedish meatballs in brown butter cream.',
+    chef1:'Binging with Babish', recipe1:'meatballs',
+    chef2:'Joshua Weissman', recipe2:'swedish-meatballs',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 8 ──
+  { id:'w8-b1', weekNum:8, dish:'The Sandwich 2',
+    description:'Crispy chicken cutlet parm on a hero roll vs. a double-patty smash burger with secret sauce.',
+    chef1:'Binging with Babish', recipe1:'parm',
+    chef2:'Kenji López-Alt', recipe2:'burger',
+    votes1:0, votes2:0 },
+  { id:'w8-b2', weekNum:8, dish:'The Dumplings',
+    description:'Hand-folded pork and cabbage gyoza vs. silky Shanghai soup dumplings. One pan, one bamboo steamer.',
+    chef1:'David Chang', recipe1:'gyoza',
+    chef2:'Kenji López-Alt', recipe2:'soup-dumplings',
+    votes1:0, votes2:0 },
+  { id:'w8-b3', weekNum:8, dish:'The BBQ',
+    description:'Low and slow Texas brisket smoked all day vs. sticky Korean BBQ ribs on a hot grill.',
+    chef1:'Joshua Weissman', recipe1:'brisket',
+    chef2:'David Chang', recipe2:'kalbi',
+    votes1:0, votes2:0 },
+  { id:'w8-b4', weekNum:8, dish:'The Vegetable',
+    description:'Roasted cauliflower steak with tahini vs. crispy Brussels sprouts that convert every hater.',
+    chef1:'Yotam Ottolenghi', recipe1:'cauliflower-steak',
+    chef2:'Kenji López-Alt', recipe2:'brussels-sprouts',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 9 ──
+  { id:'w9-b1', weekNum:9, dish:'The Sushi',
+    description:'Crispy rice spicy tuna bites vs. homemade salmon nigiri. Raw fish, big decisions.',
+    chef1:'Nick DiGiovanni', recipe1:'crispy-rice',
+    chef2:'Nobu Matsuhisa', recipe2:'salmon-nigiri',
+    votes1:0, votes2:0 },
+  { id:'w9-b2', weekNum:9, dish:'The Fries',
+    description:"McDonald's-style double-fried crispy fries vs. parmesan truffle fries that feel illegal at home.",
+    chef1:'Kenji López-Alt', recipe1:'french-fries',
+    chef2:'Joshua Weissman', recipe2:'truffle-fries',
+    votes1:0, votes2:0 },
+  { id:'w9-b3', weekNum:9, dish:'The Chicken 2',
+    description:'Nashville hot chicken dripping with cayenne butter vs. Korean fried chicken double-fried for max crunch.',
+    chef1:'Joshua Weissman', recipe1:'nashville-hot',
+    chef2:'David Chang', recipe2:'korean-fried-chicken',
+    votes1:0, votes2:0 },
+  { id:'w9-b4', weekNum:9, dish:'The Steak 2',
+    description:'Classic steak au poivre — peppercorn crust and brandy cream — vs. chimichurri flank steak.',
+    chef1:'Anthony Bourdain', recipe1:'bourdain-steak',
+    chef2:'Nick DiGiovanni', recipe2:'flank',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 10 ──
+  { id:'w10-b1', weekNum:10, dish:'The Bake',
+    description:'Molten lava chocolate cake that oozes on cut vs. a cloud-light soufflé that collapses for no one.',
+    chef1:'Gordon Ramsay', recipe1:'lava-cake',
+    chef2:'Jacques Pépin', recipe2:'souffle',
+    votes1:0, votes2:0 },
+  { id:'w10-b2', weekNum:10, dish:'The Braise',
+    description:'Slow-braised beef short ribs in red wine vs. Japanese beef stew with a silky dashi base.',
+    chef1:'Daniel Boulud', recipe1:'osso-buco',
+    chef2:'David Chang', recipe2:'beef-stew',
+    votes1:0, votes2:0 },
+  { id:'w10-b3', weekNum:10, dish:'The Shrimp',
+    description:'Garlic butter shrimp scampi over angel hair vs. crispy coconut shrimp with mango dipping sauce.',
+    chef1:'Gordon Ramsay', recipe1:'shrimp-scampi',
+    chef2:'Nick DiGiovanni', recipe2:'coconut-shrimp',
+    votes1:0, votes2:0 },
+  { id:'w10-b4', weekNum:10, dish:'The Bowl',
+    description:'Bibimbap with a sizzling dolsot crust vs. a poke bowl built for maximum freshness.',
+    chef1:'David Chang', recipe1:'bibimbap',
+    chef2:'Nick DiGiovanni', recipe2:'poke-bowl',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 11 ──
+  { id:'w11-b1', weekNum:11, dish:'The Weeknight',
+    description:'Honey garlic salmon in a sheet pan vs. one-pan lemon herb chicken thighs. Minimal dishes, maximum flavor.',
+    chef1:'Jamie Oliver', recipe1:'sheet-pan-salmon',
+    chef2:'Gordon Ramsay', recipe2:'chicken',
+    votes1:0, votes2:0 },
+  { id:'w11-b2', weekNum:11, dish:'The Flatbread',
+    description:'Chewy homemade naan from a cast iron vs. crispy pita with blistered edges from a screaming hot pan.',
+    chef1:'Kenji López-Alt', recipe1:'naan',
+    chef2:'Yotam Ottolenghi', recipe2:'pita',
+    votes1:0, votes2:0 },
+  { id:'w11-b3', weekNum:11, dish:'The Beef Wellington',
+    description:'The most iconic dish in fine dining vs. a deconstructed version that is actually doable on a Tuesday.',
+    chef1:'Gordon Ramsay', recipe1:'beef-welly',
+    chef2:'Joshua Weissman', recipe2:'beef-welly-easy',
+    votes1:0, votes2:0 },
+  { id:'w11-b4', weekNum:11, dish:'The Fried Rice',
+    description:'Kenji egg fried rice with maximum wok hei vs. a Thai basil fried rice that bites back.',
+    chef1:'Kenji López-Alt', recipe1:'kimchi-fried-rice',
+    chef2:'David Chang', recipe2:'thai-fried-rice',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 12 ──
+  { id:'w12-b1', weekNum:12, dish:'The Roast 2',
+    description:'Sunday prime rib with horseradish cream vs. a butterflied leg of lamb marinated overnight.',
+    chef1:'Gordon Ramsay', recipe1:'prime-rib',
+    chef2:'Jamie Oliver', recipe2:'leg-of-lamb',
+    votes1:0, votes2:0 },
+  { id:'w12-b2', weekNum:12, dish:'The Lobster',
+    description:'Butter-poached lobster tail with tarragon vs. spicy lobster rolls piled high on a toasted bun.',
+    chef1:'Thomas Keller', recipe1:'lobster-tail',
+    chef2:'Joshua Weissman', recipe2:'lobster-roll',
+    votes1:0, votes2:0 },
+  { id:'w12-b3', weekNum:12, dish:'The Soup 2',
+    description:'Velvety roasted tomato bisque vs. a thick and smoky black bean soup. Both demand crusty bread.',
+    chef1:'Jamie Oliver', recipe1:'tomato-soup',
+    chef2:'Joshua Weissman', recipe2:'black-bean-soup',
+    votes1:0, votes2:0 },
+  { id:'w12-b4', weekNum:12, dish:'The Dessert',
+    description:'Classic crème brûlée with a torched sugar top vs. New York cheesecake with a graham cracker base.',
+    chef1:'Jacques Pépin', recipe1:'creme-brulee',
+    chef2:'Joshua Weissman', recipe2:'cheesecake',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 13 ──
+  { id:'w13-b1', weekNum:13, dish:'The Holiday',
+    description:'Dry-brined roast turkey with compound butter vs. a full spatchcocked bird cooked in half the time.',
+    chef1:'Kenji López-Alt', recipe1:'roast-turkey',
+    chef2:'Gordon Ramsay', recipe2:'spatchcock-chicken',
+    votes1:0, votes2:0 },
+  { id:'w13-b2', weekNum:13, dish:'The Pasta 3',
+    description:'Slow-cooked Sunday ragu with fresh pappardelle vs. aglio e olio at midnight — 10 ingredients, pure magic.',
+    chef1:'Joshua Weissman', recipe1:'bolognese',
+    chef2:'Kenji López-Alt', recipe2:'aglio-olio',
+    votes1:0, votes2:0 },
+  { id:'w13-b3', weekNum:13, dish:'The Seafood',
+    description:'Crispy skin halibut with brown butter vs. miso-glazed black cod that melts like butter itself.',
+    chef1:'Thomas Keller', recipe1:'halibut',
+    chef2:'Nobu Matsuhisa', recipe2:'miso-cod',
+    votes1:0, votes2:0 },
+  { id:'w13-b4', weekNum:13, dish:'The Snack',
+    description:'Fully loaded nachos with all the toppings vs. homemade soft pretzels with beer cheese dip.',
+    chef1:'Joshua Weissman', recipe1:'nachos',
+    chef2:'Binging with Babish', recipe2:'soft-pretzels',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 14 ──
+  { id:'w14-b1', weekNum:14, dish:'The BBQ 2',
+    description:'Overnight-smoked pulled pork on a brioche bun vs. dry-rubbed baby back ribs with a vinegar slaw.',
+    chef1:'Joshua Weissman', recipe1:'pulled-pork',
+    chef2:'Kenji López-Alt', recipe2:'baby-back-ribs',
+    votes1:0, votes2:0 },
+  { id:'w14-b2', weekNum:14, dish:'The Dip',
+    description:'Freshly made guacamole with hand-cut chips vs. a hot spinach artichoke dip straight from the oven.',
+    chef1:'Rick Bayless', recipe1:'guacamole',
+    chef2:'Binging with Babish', recipe2:'spinach-dip',
+    votes1:0, votes2:0 },
+  { id:'w14-b3', weekNum:14, dish:'The Ramen 2',
+    description:'Rich tare shoyu ramen with slow-simmered tare vs. a spicy tantanmen with sesame and chili oil.',
+    chef1:'David Chang', recipe1:'ramen',
+    chef2:'Kenji López-Alt', recipe2:'tantanmen',
+    votes1:0, votes2:0 },
+  { id:'w14-b4', weekNum:14, dish:'The Skewer',
+    description:'Grilled chicken souvlaki with tzatziki vs. spiced kofta over charcoal with herbed yogurt.',
+    chef1:'Yotam Ottolenghi', recipe1:'souvlaki',
+    chef2:'Kenji López-Alt', recipe2:'kofta',
+    votes1:0, votes2:0 },
+
+  // ── WEEK 15 ──
+  { id:'w15-b1', weekNum:15, dish:'The Final Burger',
+    description:'The smash burger rematch — same griddle, same heat, different chef. Season 1 finale.',
+    chef1:'Kenji López-Alt', recipe1:'burger',
+    chef2:'Gordon Ramsay', recipe2:'ramsay-burger',
+    votes1:0, votes2:0 },
+  { id:'w15-b2', weekNum:15, dish:'The Final Steak',
+    description:'A Wagyu A5 prepared with nothing but salt vs. a dry-aged ribeye with the full butter-baste treatment.',
+    chef1:'Guga Foods', recipe1:'wagyu-steak',
+    chef2:'Gordon Ramsay', recipe2:'ribeye',
+    votes1:0, votes2:0 },
+  { id:'w15-b3', weekNum:15, dish:'The Final Pasta',
+    description:'Fresh handmade tagliatelle with brown butter and sage vs. the ultimate lasagna bolognese.',
+    chef1:'Thomas Keller', recipe1:'fresh-pasta',
+    chef2:'Joshua Weissman', recipe2:'lasagna',
+    votes1:0, votes2:0 },
+  { id:'w15-b4', weekNum:15, dish:'The Final Dessert',
+    description:'A towering chocolate layer cake vs. a burnt Basque cheesecake. The last bite of Season 1.',
+    chef1:'Binging with Babish', recipe1:'chocolate-cake',
+    chef2:'Joshua Weissman', recipe2:'basque-cheesecake',
+    votes1:0, votes2:0 }
 ];
 
 window.renderBattleArena = function(){
   var arena = document.getElementById('battle-arena');
   if(!arena) return;
   var curWeek = getBattleWeekNum();
-  var visible = battleMatchups.filter(function(m){ return m.weekNum <= curWeek; });
-  visible.sort(function(a,b){ return b.weekNum - a.weekNum; });
 
-  var currentBattle = visible.find(function(m){ return m.weekNum === curWeek; });
-  var pastBattles = visible.filter(function(m){ return m.weekNum < curWeek; });
+  if(curWeek < 1){
+    arena.innerHTML = '<div style="text-align:center;padding:80px 20px;color:var(--dim);font-size:14px;">Battles drop Monday — check back soon!</div>';
+    return;
+  }
 
-  var html = '';
+  // Only show current week
+  var thisWeek = battleMatchups.filter(function(m){ return m.weekNum === curWeek; });
+  if(!thisWeek.length){
+    arena.innerHTML = '<div style="text-align:center;padding:80px 20px;color:var(--dim);font-size:14px;">New battles every Monday. Check back soon!</div>';
+    return;
+  }
 
-  // CURRENT WEEK BATTLE
-  if(currentBattle){
-    var m = currentBattle;
+  var revealed = isBattleRevealed(curWeek);
+  var html = '<div style="margin-bottom:28px;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;">'
+    + '<div>'
+      + '<div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;">Week ' + curWeek + ' · Live now 🔥</div>'
+      + '<div style="font-size:13px;color:var(--dim);">Vote on ' + thisWeek.length + ' battles — results reveal every Sunday.</div>'
+    + '</div>'
+  + '</div>';
+
+  thisWeek.forEach(function(m){
     var voted = battleVotes[m.id] || null;
-    var revealed = isBattleRevealed(m.weekNum);
-    var r1 = recipes.find(function(r){return r.id===m.recipe1;}) || {title:m.dish+' A',img:'',time:'',cost:''};
-    var r2 = recipes.find(function(r){return r.id===m.recipe2;}) || {title:m.dish+' B',img:'',time:'',cost:''};
+    var r1 = recipes.find(function(r){return r.id===m.recipe1;}) || {title:m.chef1.split(' ')[0]+"'s "+m.dish,img:'',time:'',cost:''};
+    var r2 = recipes.find(function(r){return r.id===m.recipe2;}) || {title:m.chef2.split(' ')[0]+"'s "+m.dish,img:'',time:'',cost:''};
+    var c1b = voted===1 ? 'var(--accent)' : 'var(--border)';
+    var c2b = voted===2 ? 'var(--accent)' : 'var(--border)';
 
-    var card1Border = voted===1 ? 'var(--accent)' : 'var(--border)';
-    var card2Border = voted===2 ? 'var(--accent)' : 'var(--border)';
+    html += '<div style="background:var(--bg2);border:1.5px solid var(--border);border-radius:20px;padding:22px;margin-bottom:20px;">';
 
-    html += '<div style="background:var(--bg2);border:2px solid var(--accent);border-radius:24px;padding:28px;margin-bottom:32px;position:relative;overflow:hidden;">'
-      + '<div style="position:absolute;top:20px;right:20px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;padding:5px 12px;border-radius:100px;">🔥 Live now</div>'
-      + '<div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Week ' + m.weekNum + ' · This week</div>'
-      + '<div style="font-family:Space Grotesk,sans-serif;font-size:clamp(28px,5vw,42px);font-weight:700;line-height:1;margin-bottom:8px;letter-spacing:-.02em;">' + m.dish + '</div>'
-      + '<p style="font-size:14px;color:var(--dim);line-height:1.6;margin:0 0 22px;max-width:560px;">' + m.description + '</p>'
-      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">'
-        + '<div data-recipe="' + m.recipe1 + '" style="background:var(--bg);border:2px solid ' + card1Border + ';border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .2s;display:flex;flex-direction:column;">'
-          + '<div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg3);">' + (r1.img ? '<img src="' + r1.img + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy"/>' : '') + '</div>'
-          + '<div style="padding:12px 14px;">'
-            + '<div style="font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Option A · ' + m.chef1 + '</div>'
-            + '<div style="font-family:Space Grotesk,sans-serif;font-size:15px;font-weight:600;line-height:1.25;margin-bottom:6px;">' + r1.title + '</div>'
-            + '<div style="font-size:11px;color:var(--dim);">' + (r1.time||'') + (r1.cost ? ' · $' + r1.cost : '') + '</div>'
-          + '</div>'
-        + '</div>'
-        + '<div data-recipe="' + m.recipe2 + '" style="background:var(--bg);border:2px solid ' + card2Border + ';border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .2s;display:flex;flex-direction:column;">'
-          + '<div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg3);">' + (r2.img ? '<img src="' + r2.img + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy"/>' : '') + '</div>'
-          + '<div style="padding:12px 14px;">'
-            + '<div style="font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Option B · ' + m.chef2 + '</div>'
-            + '<div style="font-family:Space Grotesk,sans-serif;font-size:15px;font-weight:600;line-height:1.25;margin-bottom:6px;">' + r2.title + '</div>'
-            + '<div style="font-size:11px;color:var(--dim);">' + (r2.time||'') + (r2.cost ? ' · $' + r2.cost : '') + '</div>'
-          + '</div>'
+    // Header
+    html += '<div style="margin-bottom:16px;">'
+      + '<div style="font-family:Space Grotesk,sans-serif;font-size:20px;font-weight:700;line-height:1;margin-bottom:5px;">' + m.dish + '</div>'
+      + '<div style="font-size:13px;color:var(--dim);line-height:1.5;">' + m.description + '</div>'
+    + '</div>';
+
+    // Recipe cards
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">'
+      + '<div data-recipe="' + m.recipe1 + '" style="background:var(--bg);border:2px solid ' + c1b + ';border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .2s;">'
+        + (r1.img ? '<div style="aspect-ratio:4/3;overflow:hidden;background:var(--bg3);"><img src="' + r1.img + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy"/></div>' : '<div style="aspect-ratio:4/3;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:28px;">🍽️</div>')
+        + '<div style="padding:10px 12px;">'
+          + '<div style="font-size:9px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">Option A · ' + m.chef1 + '</div>'
+          + '<div style="font-size:13px;font-weight:600;line-height:1.2;">' + r1.title + '</div>'
+          + (r1.time ? '<div style="font-size:11px;color:var(--dim);margin-top:2px;">' + r1.time + (r1.cost ? ' · $' + r1.cost : '') + '</div>' : '')
         + '</div>'
       + '</div>'
-      + '<div style="border-top:1px solid var(--border);padding-top:18px;">';
+      + '<div data-recipe="' + m.recipe2 + '" style="background:var(--bg);border:2px solid ' + c2b + ';border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .2s;">'
+        + (r2.img ? '<div style="aspect-ratio:4/3;overflow:hidden;background:var(--bg3);"><img src="' + r2.img + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy"/></div>' : '<div style="aspect-ratio:4/3;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:28px;">🍽️</div>')
+        + '<div style="padding:10px 12px;">'
+          + '<div style="font-size:9px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">Option B · ' + m.chef2 + '</div>'
+          + '<div style="font-size:13px;font-weight:600;line-height:1.2;">' + r2.title + '</div>'
+          + (r2.time ? '<div style="font-size:11px;color:var(--dim);margin-top:2px;">' + r2.time + (r2.cost ? ' · $' + r2.cost : '') + '</div>' : '')
+        + '</div>'
+      + '</div>'
+    + '</div>';
 
-    if(revealed) {
+    // Vote / result section
+    html += '<div style="border-top:1px solid var(--border);padding-top:12px;">';
+    if(revealed){
       var tv = m.votes1 + m.votes2 || 1;
-      var p1 = Math.round(m.votes1/tv*100);
-      var p2 = 100-p1;
-      var winSide = m.votes1>m.votes2 ? 1 : (m.votes2>m.votes1 ? 2 : 0);
-      html += '<div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px;">🏆 Results are in!</div>'
-        + '<div style="display:flex;height:10px;border-radius:100px;overflow:hidden;background:var(--bg3);margin-bottom:8px;">'
-          + '<div style="width:' + p1 + '%;background:' + (winSide===1?'var(--accent)':'var(--dim)') + ';transition:width .5s;"></div>'
-          + '<div style="width:' + p2 + '%;background:' + (winSide===2?'var(--accent)':'var(--dim)') + ';transition:width .5s;"></div>'
-        + '</div>'
-        + '<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--dim);">'
-          + '<span>' + m.chef1.split(' ')[0] + ' <strong style="color:' + (winSide===1?'var(--accent)':'var(--text)') + '">' + p1 + '%</strong>' + (winSide===1?' 🏆':'') + '</span>'
-          + '<span>' + (winSide===2?'🏆 ':'') + m.chef2.split(' ')[0] + ' <strong style="color:' + (winSide===2?'var(--accent)':'var(--text)') + '">' + p2 + '%</strong></span>'
-        + '</div>';
-    } else if(voted) {
-      var teamName = (voted===1?m.chef1:m.chef2).split(' ')[0];
-      html += '<div style="background:rgba(0,201,106,.08);border:1px solid rgba(0,201,106,.25);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;">'
-        + '<span style="font-size:22px;">🔥</span>'
-        + '<div>'
-          + '<div style="font-size:13px;font-weight:700;color:var(--accent);">Vote saved! You\'re on Team ' + teamName + '.</div>'
-          + '<div style="font-size:12px;color:var(--dim);margin-top:2px;">Results reveal this Sunday · ' + (m.votes1+m.votes2) + ' votes so far</div>'
-        + '</div>'
-      + '</div>';
-    } else {
-      html += '<div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px;">🍽️ Cook one (or both). Then vote.</div>'
-        + '<div style="background:rgba(0,0,0,.04);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:8px;">'
-          + '<span>🔒</span><span>Results reveal this Sunday — vote now without the spoiler</span>'
-        + '</div>'
-        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
-          + '<button data-vote-id="' + m.id + '" data-vote-side="1" style="padding:12px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:border-color .2s,background .2s;">Vote A · ' + m.chef1.split(' ')[0] + '</button>'
-          + '<button data-vote-id="' + m.id + '" data-vote-side="2" style="padding:12px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:border-color .2s,background .2s;">Vote B · ' + m.chef2.split(' ')[0] + '</button>'
-        + '</div>';
-    }
-    html += '</div></div>';
-  }
-
-  // PAST BATTLES ARCHIVE
-  if(pastBattles.length > 0){
-    html += '<div style="font-family:Space Grotesk,sans-serif;font-size:13px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.12em;margin-bottom:16px;padding-top:8px;">Past battles</div>';
-    pastBattles.forEach(function(m){
-      var voted = battleVotes[m.id] || null;
-      var t = m.votes1 + m.votes2 || 1;
-      var p1 = Math.round(m.votes1/t*100), p2 = 100-p1;
-      var winSide = m.votes1>m.votes2 ? 1 : (m.votes2>m.votes1 ? 2 : 0);
-      var r1 = recipes.find(function(r){return r.id===m.recipe1;}) || {title:m.dish+' A',img:'',time:'',cost:''};
-      var r2 = recipes.find(function(r){return r.id===m.recipe2;}) || {title:m.dish+' B',img:'',time:'',cost:''};
-      var b1 = winSide===1 ? 'var(--accent)' : (voted===1 ? 'rgba(0,201,106,.4)' : 'var(--border)');
-      var b2 = winSide===2 ? 'var(--accent)' : (voted===2 ? 'rgba(0,201,106,.4)' : 'var(--border)');
-
-      html += '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:22px;margin-bottom:16px;">'
-        + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">'
-          + '<div style="font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;">Week ' + m.weekNum + '</div>'
-          + '<div style="font-size:10px;color:var(--dim);">' + t + ' votes</div>'
-        + '</div>'
-        + '<div style="font-family:Space Grotesk,sans-serif;font-size:20px;font-weight:700;margin-bottom:12px;letter-spacing:-.01em;">' + m.dish + '</div>'
-        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">'
-          + '<div data-recipe="' + m.recipe1 + '" style="background:var(--bg);border:1.5px solid ' + b1 + ';border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .15s;">'
-            + (r1.img ? '<div style="height:80px;overflow:hidden;"><img src="' + r1.img + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy"/></div>' : '')
-            + '<div style="padding:8px 10px;">'
-              + '<div style="font-size:9px;font-weight:700;color:' + (winSide===1?'var(--accent)':'var(--dim)') + ';text-transform:uppercase;margin-bottom:2px;">' + (winSide===1?'🏆 Winner · ':'') + m.chef1.split(' ')[0] + '</div>'
-              + '<div style="font-size:12px;font-weight:600;line-height:1.2;">' + r1.title + '</div>'
-            + '</div>'
-          + '</div>'
-          + '<div data-recipe="' + m.recipe2 + '" style="background:var(--bg);border:1.5px solid ' + b2 + ';border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .15s;">'
-            + (r2.img ? '<div style="height:80px;overflow:hidden;"><img src="' + r2.img + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy"/></div>' : '')
-            + '<div style="padding:8px 10px;">'
-              + '<div style="font-size:9px;font-weight:700;color:' + (winSide===2?'var(--accent)':'var(--dim)') + ';text-transform:uppercase;margin-bottom:2px;">' + (winSide===2?'🏆 Winner · ':'') + m.chef2.split(' ')[0] + '</div>'
-              + '<div style="font-size:12px;font-weight:600;line-height:1.2;">' + r2.title + '</div>'
-            + '</div>'
-          + '</div>'
-        + '</div>'
-        + '<div style="display:flex;height:6px;border-radius:100px;overflow:hidden;background:var(--bg3);margin-bottom:6px;">'
-          + '<div style="width:' + p1 + '%;background:' + (winSide===1?'var(--accent)':'var(--dim)') + ';transition:width .5s;"></div>'
-          + '<div style="width:' + p2 + '%;background:' + (winSide===2?'var(--accent)':'var(--bg3)') + ';transition:width .5s;"></div>'
+      var p1 = Math.round(m.votes1/tv*100), p2 = 100-p1;
+      var ws = m.votes1>m.votes2 ? 1 : (m.votes2>m.votes1 ? 2 : 0);
+      html += '<div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:7px;">🏆 Results</div>'
+        + '<div style="display:flex;height:8px;border-radius:100px;overflow:hidden;background:var(--bg3);margin-bottom:6px;">'
+          + '<div style="width:' + p1 + '%;background:' + (ws===1?'var(--accent)':'var(--dim)') + ';transition:width .6s;"></div>'
+          + '<div style="width:' + p2 + '%;background:' + (ws===2?'var(--accent)':'var(--bg3)') + ';transition:width .6s;"></div>'
         + '</div>'
         + '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim);">'
-          + '<span>' + (voted===1?'✓ Your vote · ':'') + m.chef1.split(' ')[0] + ' <strong style="color:' + (winSide===1?'var(--accent)':'var(--text)') + '">' + p1 + '%</strong></span>'
-          + '<span><strong style="color:' + (winSide===2?'var(--accent)':'var(--text)') + '">' + p2 + '%</strong> ' + (voted===2?'· Your vote ✓ ':'') + m.chef2.split(' ')[0] + '</span>'
-        + '</div>'
+          + '<span>' + m.chef1.split(' ')[0] + ' <strong style="color:' + (ws===1?'var(--accent)':'var(--text)') + '">' + p1 + '%</strong>' + (ws===1?' 🏆':'') + '</span>'
+          + '<span>' + (ws===2?'🏆 ':'') + m.chef2.split(' ')[0] + ' <strong style="color:' + (ws===2?'var(--accent)':'var(--text)') + '">' + p2 + '%</strong></span>'
+        + '</div>';
+    } else if(voted){
+      var tn = (voted===1?m.chef1:m.chef2).split(' ')[0];
+      html += '<div style="display:flex;align-items:center;gap:10px;background:rgba(0,201,106,.08);border:1px solid rgba(0,201,106,.2);border-radius:10px;padding:10px 14px;">'
+        + '<span style="font-size:18px;">🔥</span>'
+        + '<div style="font-size:12px;"><strong style="color:var(--accent);">Voted Team ' + tn + '!</strong> <span style="color:var(--dim);">Results drop Sunday.</span></div>'
       + '</div>';
-    });
-  }
+    } else {
+      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'
+        + '<button data-vote-id="' + m.id + '" data-vote-side="1" style="padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s;">Vote A · ' + m.chef1.split(' ')[0] + '</button>'
+        + '<button data-vote-id="' + m.id + '" data-vote-side="2" style="padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s;">Vote B · ' + m.chef2.split(' ')[0] + '</button>'
+      + '</div>';
+    }
+    html += '</div>'; // close vote
+    html += '</div>'; // close card
+  });
 
   arena.innerHTML = html;
 
-  // Wire up click handlers after innerHTML set (avoids inline onclick quoting issues)
+  // Event listeners (no inline onclick = no quoting issues)
   arena.querySelectorAll('[data-recipe]').forEach(function(el){
     el.addEventListener('click', function(){
-      var id = this.getAttribute('data-recipe');
-      if(window.openBuddyRecipe) window.openBuddyRecipe(id);
+      if(window.openBuddyRecipe) window.openBuddyRecipe(this.getAttribute('data-recipe'));
     });
     el.addEventListener('mouseover', function(){ this.style.transform = 'translateY(-2px)'; });
-    el.addEventListener('mouseout', function(){ this.style.transform = ''; });
+    el.addEventListener('mouseout',  function(){ this.style.transform = ''; });
   });
   arena.querySelectorAll('[data-vote-id]').forEach(function(btn){
     btn.addEventListener('click', function(e){
       e.stopPropagation();
-      var id = this.getAttribute('data-vote-id');
-      var side = parseInt(this.getAttribute('data-vote-side'));
-      window.voteBattle(id, side);
+      window.voteBattle(this.getAttribute('data-vote-id'), parseInt(this.getAttribute('data-vote-side')));
     });
     btn.addEventListener('mouseover', function(){ this.style.borderColor = 'var(--accent)'; });
-    btn.addEventListener('mouseout', function(){ this.style.borderColor = 'var(--border)'; });
+    btn.addEventListener('mouseout',  function(){ this.style.borderColor = 'var(--border)'; });
   });
 };
 
