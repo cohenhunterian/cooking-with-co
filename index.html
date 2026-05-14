@@ -18,8 +18,7 @@
   <meta name="twitter:description" content="Top chef recipes made cookable at home. No slop — just fire."/>
   <meta name="twitter:image" content="https://cooking-with-co.netlify.app/og-image.png"/>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-:root{
+  <style>:root{
   --bg:#FFFFFF;
   --bg2:#F6F6F6;
   --bg3:#ECECEC;
@@ -31,12 +30,13 @@
   --accent3:#7C3AED;
   --gold:#00C96A;
   --gold-border:rgba(0,201,106,.2);
+  --green:#2ECC71;
+  --gold-dim:rgba(0,201,106,.08);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
 .container{max-width:1100px;margin:0 auto;padding:0 24px;}
 a{text-decoration:none;color:inherit;}
-
 /* NAV */
 .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1100px;margin:0 auto;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
 .logo{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);}
@@ -44,7 +44,6 @@ a{text-decoration:none;color:inherit;}
 .nav-links{display:flex;align-items:center;gap:24px;}
 .nav-links a{font-size:13px;color:var(--dim);font-weight:500;transition:color .2s;cursor:pointer;}
 .nav-links a.active,.nav-links a:hover{color:var(--text);}
-
 /* HERO */
 .hero{padding:48px 0 32px;text-align:center;}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;background:rgba(46,204,113,.08);padding:6px 16px;border-radius:100px;margin-bottom:20px;}
@@ -57,7 +56,6 @@ a{text-decoration:none;color:inherit;}
 .stat:not(:last-child){border-right:1.5px solid var(--border);}
 .stat-num{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:var(--accent);}
 .stat-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;font-weight:500;}
-
 /* AI ASSISTANT */
 .chef-ai{max-width:600px;margin:0 auto 40px;background:var(--bg2);border-radius:24px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.04);border:1px solid var(--border);}
 .chef-ai-header{text-align:center;margin-bottom:20px;}
@@ -70,18 +68,15 @@ a{text-decoration:none;color:inherit;}
 .ai-msg-bot{border-radius:14px 14px 14px 4px;}
 .ai-loading{font-size:13px;color:var(--dim);padding:8px 16px;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-
 .ai-prompts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;justify-content:center;}
 .ai-prompt{padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;cursor:pointer;font-family:'Sora',sans-serif;font-weight:500;transition:all .2s;}
 .ai-prompt:hover{border-color:var(--accent);color:var(--accent);background:rgba(46,204,113,.04);transform:translateY(-1px);}
-
 .ai-input-row{display:flex;gap:8px;}
 .ai-input-row input{flex:1;background:var(--bg3);border:1.5px solid transparent;border-radius:14px;padding:12px 18px;color:var(--text);font-size:13px;outline:none;font-family:'Sora',sans-serif;transition:border .2s;}
 .ai-input-row input:focus{border-color:var(--accent);}
 .ai-input-row input::placeholder{color:#888;}
 .ai-send-btn{padding:12px 18px;border-radius:14px;border:none;background:var(--accent);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;box-shadow:0 2px 8px rgba(46,204,113,.25);}
 .ai-send-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(46,204,113,.3);}
-
 /* HOW IT WORKS */
 .how-section{margin-bottom:48px;}
 .how-title{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;text-align:center;margin-bottom:24px;}
@@ -97,24 +92,19 @@ a{text-decoration:none;color:inherit;}
 .how-card:nth-child(3) .how-num{background:var(--accent3);}
 .how-card-title{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px;}
 .how-card-desc{font-size:12px;color:var(--dim);line-height:1.5;}
-
 /* BROWSE */
 .browse-header{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin-bottom:16px;}
 .cat-tabs{display:flex;gap:8px;padding:0;margin-bottom:20px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
 .cat-tabs::-webkit-scrollbar{display:none;}
 .cat-tab{padding:8px 18px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;border:1.5px solid var(--border);background:var(--bg);color:var(--dim);transition:all .2s;font-family:'Sora',sans-serif;}
 .cat-tab.active,.cat-tab:hover{background:var(--text);color:var(--bg);border-color:var(--text);}
-
 .recipe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 @media(min-width:768px){.recipe-grid{grid-template-columns:repeat(4,1fr);}}
 @media(min-width:1024px){.recipe-grid{grid-template-columns:repeat(5,1fr);}}
-
 @media(min-width:768px){#chefs-grid{grid-template-columns:repeat(4,1fr)!important;}}
 @media(min-width:1024px){#chefs-grid{grid-template-columns:repeat(5,1fr)!important;}}
-
 @media(max-width:480px){#sf-grid{grid-template-columns:repeat(2,1fr)!important;}
 .recipe-grid{grid-template-columns:repeat(2,1fr);gap:10px;}}
-
 .recipe-card{background:var(--bg2);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;border:1px solid var(--border);}
 .recipe-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.08);}
 .rc-img-wrap{width:100%;aspect-ratio:4/3;overflow:hidden;position:relative;}
@@ -128,36 +118,30 @@ a{text-decoration:none;color:inherit;}
 .rc-hs span{font-size:9px;opacity:.2;}
 .rc-hs span.on{opacity:1;}
 .rc-time{font-size:10px;color:var(--dim);font-weight:500;}
-
 /* SCHOOL FUEL BANNER */
 .sf-banner{max-width:600px;margin:32px auto;background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border-radius:20px;padding:24px;cursor:pointer;transition:transform .2s,box-shadow .2s;border:1px solid rgba(46,204,113,.12);}
 .sf-banner:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(46,204,113,.12);}
 .sf-banner-label{font-size:11px;font-weight:600;color:var(--accent2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
 .sf-banner-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;}
 .sf-banner-desc{font-size:13px;color:#555;line-height:1.5;}
-
 /* FOOTER */
 .footer{text-align:center;padding:32px 24px;color:var(--dim);font-size:12px;}
 .footer em{color:var(--accent);font-style:normal;}
-
 /* PAGES */
 .page{display:none;}
 .page.active{display:block;}
-
 /* SECTIONS */
 .section{padding:0;margin-bottom:24px;}
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .section-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;}
 .no-results-msg{padding:28px 0;text-align:center;display:none;}
 .no-results-msg p{font-size:13px;color:var(--dim);}
-
 /* SEARCH RESULTS (hidden) */
 .search-results{display:none;}
 .sr-header{display:flex;align-items:center;justify-content:space-between;padding:10px 0;}
 .sr-title{font-size:14px;font-weight:600;}
 .sr-clear{background:none;border:1px solid var(--border);border-radius:8px;padding:4px 12px;font-size:11px;cursor:pointer;color:var(--dim);font-family:'Sora',sans-serif;}
 .sr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-
 /* DARK MODE */
 body.dark{--bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#242424;--text:#f0f0f0;--dim:#888;--border:rgba(255,255,255,.07);}
 body.dark .nav{background:rgba(15,15,15,.92);border-bottom-color:rgba(255,255,255,.06);}
@@ -175,7 +159,6 @@ body.dark #ai-input{color:#ffffff!important;}
 body.dark .home-dark-section{background:#060e06;}
 body.dark .hero-btn-browse{background:var(--bg2)!important;}
 body.dark .mission-strip{background:#1a1a1a!important;}
-
 /* ANIMATIONS */
 @keyframes spin{to{transform:rotate(360deg);}}
 .recipe-card{animation:fadeUp .4s ease backwards;}
@@ -185,15 +168,12 @@ body.dark .mission-strip{background:#1a1a1a!important;}
 .recipe-card:nth-child(4){animation-delay:.2s;}
 .recipe-card:nth-child(5){animation-delay:.25s;}
 .recipe-card:nth-child(6){animation-delay:.3s;}
-
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-thumb{background:#ccc;border-radius:4px;}
-
 /* SCROLL REVEAL */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease;}
 .reveal.visible{opacity:1;transform:none;}
-
 /* HOME SECTIONS */
 .home-section{padding:80px 0;border-bottom:1px solid var(--border);}
 .home-section:last-child{border-bottom:none;}
@@ -202,11 +182,9 @@ body.dark .mission-strip{background:#1a1a1a!important;}
 .home-stat-strip span.dot{opacity:.25;}
 .why-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 @media(max-width:640px){.why-cols{grid-template-columns:1fr;gap:12px;}}
-
 /* HOME HERO — SPLIT */
 .home-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;min-height:92vh;padding:32px 0 72px;}
 @media(max-width:860px){.home-hero-grid{grid-template-columns:1fr;min-height:auto;padding:72px 0 40px;}}
-
 /* HERO MOSAIC */
 .hero-mosaic{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:240px 240px;gap:12px;height:492px;}
 .hero-mosaic-item{border-radius:20px;overflow:hidden;position:relative;}
@@ -214,7 +192,6 @@ body.dark .mission-strip{background:#1a1a1a!important;}
 .hero-mosaic-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s;}
 .hero-mosaic-item:hover img{transform:scale(1.05);}
 @media(max-width:860px){.hero-mosaic{display:none;}}
-
 /* TONIGHT STRIP */
 .tonight-strip-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;}
 .tonight-strip-wrap::-webkit-scrollbar{display:none;}
@@ -225,25 +202,20 @@ body.dark .mission-strip{background:#1a1a1a!important;}
 .tonight-card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s;}
 .tonight-card:hover .tonight-card-img img{transform:scale(1.06);}
 .tonight-card-body{padding:13px 15px 15px;}
-
 /* DARK ASK CO SECTION */
 .home-dark-section{background:#0d1a0d;border-top:none;border-bottom:none;}
 .home-dark-section *{--border:rgba(255,255,255,.1);}
-
 /* FEATURED RECIPE CARD */
 .feat-recipe-card{display:grid;grid-template-columns:1fr 1fr;border-radius:24px;overflow:hidden;background:var(--bg2);border:1.5px solid var(--border);}
 @media(max-width:680px){.feat-recipe-card{grid-template-columns:1fr;}}
-
 /* ── HAMBURGER (hidden on desktop) ── */
 .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
 .nav-hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .25s;}
 .nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
 .nav-hamburger.open span:nth-child(2){opacity:0;}
 .nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-
 /* ── BUDDY RECIPE ROW (JS adds this class) ── */
 .buddy-recipe-row{display:grid;grid-template-columns:200px 1fr;gap:14px;align-items:start;background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;}
-
 /* ══════════════════════════════════════
    MOBILE — everything ≤640px
 ══════════════════════════════════════ */
@@ -346,22 +318,23 @@ body.dark .mission-strip{background:#1a1a1a!important;}
   .modal-overlay{align-items:flex-end!important;}
 }
 *{-webkit-tap-highlight-color:transparent;}
-html{scroll-behavior:smooth;}.typing-dots{display:inline-flex;gap:3px;}.typing-dots span{animation:blink 1.4s infinite both;font-size:24px;line-height:1;}.typing-dots span:nth-child(2){animation-delay:.2s;}.typing-dots span:nth-child(3){animation-delay:.4s;}@keyframes blink{0%,80%,100%{opacity:.2;}40%{opacity:1;}}
-
+html{scroll-behavior:smooth;}
+.typing-dots{display:inline-flex;gap:3px;}
+.typing-dots span{animation:blink 1.4s infinite both;font-size:24px;line-height:1;}
+.typing-dots span:nth-child(2){animation-delay:.2s;}
+.typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.2;}40%{opacity:1;}}
 /* Gallery */
 .gallery-card{background:var(--bg2);border-radius:16px;overflow:hidden;border:1px solid var(--border);}
 .gallery-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
 @media(max-width:480px){#gallery-grid{grid-template-columns:repeat(2,1fr)!important;}}
-
 /* ── MORE PAGE ── */
 .more-nav{padding:10px 20px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;border:1.5px solid var(--border);background:var(--bg);color:var(--dim);font-family:'Sora',sans-serif;transition:all .2s;}
 .more-nav.active,.more-nav:hover{background:var(--text);color:var(--bg);border-color:var(--text);}
 .more-sec{animation:fadeUp .3s ease;}
-
 /* Chef cards */
 .chef-card-new{background:var(--bg2);border-radius:16px;border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;}
 .chef-card-new:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.06);}
-
 /* Battle cards */
 .battle-matchup{background:var(--bg2);border-radius:20px;border:1px solid var(--border);padding:24px;display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;}
 .battle-chef{text-align:center;cursor:pointer;transition:transform .15s;}
@@ -372,35 +345,28 @@ html{scroll-behavior:smooth;}.typing-dots{display:inline-flex;gap:3px;}.typing-d
 .battle-vote-btn{padding:8px 20px;border-radius:100px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font-size:12px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;margin-top:8px;}
 .battle-vote-btn:hover{background:var(--accent);color:white;}
 .battle-vote-btn.voted{background:var(--accent);color:white;}
-
 /* Planner */
 .planner-day-card{background:var(--bg2);border-radius:16px;border:1px solid var(--border);overflow:hidden;}
 .planner-day-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;}
 .planner-day-header:hover{background:var(--bg3);}
 .planner-day-name{font-size:14px;font-weight:600;}
 .planner-day-meals{padding:0 18px 14px;display:none;}
-.planner-day-meals.open{display:block;}
 .planner-add-btn{display:flex;align-items:center;gap:8px;padding:8px 0;cursor:pointer;font-size:12px;color:var(--dim);transition:color .2s;}
 .planner-add-btn:hover{color:var(--accent);}
-
 @media(max-width:768px){#chefs-grid{grid-template-columns:repeat(3,1fr)!important;}}
 @media(max-width:480px){#chefs-grid{grid-template-columns:repeat(2,1fr)!important;}.battle-matchup{grid-template-columns:1fr!important;text-align:center;}}
-
 /* ── SCHOOL FUEL PILLS ── */
 .sf-pill{padding:8px 16px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;border:1.5px solid #C8E6C9;background:#E8F5E9;color:#2E7D32;font-family:'Sora',sans-serif;transition:all .2s;}
 .sf-pill.active,.sf-pill:hover{background:#2E7D32;color:#fff;border-color:#2E7D32;}
 .sf-card{background:var(--bg2);border-radius:16px;border:1px solid var(--border);cursor:pointer;overflow:hidden;transition:transform .2s,box-shadow .2s;}
 .sf-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.06);}
-
 /* ── SCHOOL FUEL PAGE DESIGN ── */
 #page-school .cat-tab{background:#E8F5E9;border-color:#C8E6C9;color:#2E7D32;}
 #page-school .cat-tab.active{background:#2E7D32;color:#fff;border-color:#2E7D32;}
 #page-school .footer{background:transparent;}
-
 /* ── MORE PAGE RESPONSIVE ── */
 @media(max-width:768px){#chefs-grid{grid-template-columns:repeat(3,1fr)!important;}}
 @media(max-width:480px){#chefs-grid{grid-template-columns:repeat(2,1fr)!important;}}
-
 /* ORIGIN BADGE */
 .origin-wrap{padding:14px 24px 0;}
 .origin-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:0.5px solid #2a2a1a;border-radius:20px;padding:5px 12px;cursor:pointer;transition:border-color .2s;font-size:11px;color:var(--dim);}
@@ -549,74 +515,9 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 .picker-item-title{font-size:13px;font-weight:500;color:#e8e0c8;}
 .picker-item-chef{font-size:10px;color:rgba(201,168,76,.6);}
 .picker-item-cost{font-size:11px;color:var(--green);margin-left:auto;}
-.modal-sourcing{margin-top:14px;padding:12px 14px;border-radius:10px;border:0.5px solid var(--border);}
-.modal-sourcing-canmake{background:rgba(139,195,74,.06);border-color:rgba(139,195,74,.15);}
-.modal-sourcing-stores{background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.15);}
-.modal-sourcing-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;font-weight:500;}
-.modal-sourcing-label.green{color:#8bc34a;}
-.modal-sourcing-label.gold{color:#c9a84c;}
-.modal-sourcing-text{font-size:12px;color:#c8c0a8;line-height:1.6;}
-.modal-sourcing-icon{margin-right:4px;}
-.store-cards{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
-.store-card{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg3);border-radius:10px;border:0.5px solid var(--border);cursor:pointer;transition:all .2s;text-decoration:none;}
-.store-card:hover{border-color:var(--gold-border);transform:translateY(-1px);}
-.store-icon{font-size:16px;flex-shrink:0;}
-.store-info{flex:1;min-width:0;}
-.store-name{font-size:12px;font-weight:500;color:var(--text);}
-.store-addr{font-size:10px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.store-dist{text-align:right;flex-shrink:0;}
-.store-dist-num{font-size:12px;font-weight:500;color:var(--green);}
-.store-dist-unit{font-size:9px;color:var(--dim);}
-.store-dir-btn{font-size:9px;color:var(--gold);margin-top:2px;}
-.store-loading{font-size:11px;color:var(--dim);padding:8px 0;display:flex;align-items:center;gap:6px;}
-.store-loading::before{content:"";width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
-.picker-item:active{background:var(--bg3)!important;transform:scale(.98);}
-/* Smooth modal */
-.modal-overlay{transition:opacity .25s ease;}
-.modal-overlay.open .modal{animation:slideUp .3s ease;}
-/* Better modal backdrop blur */
-.modal-overlay{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
-/* Picker slide-up animation */
-.picker-overlay.open .picker-sheet{animation:slideUp .3s ease;}
-/* Battle card animations */
-.battle-card{animation:fadeInUp .4s ease backwards;}
-/* Planner day expand animation */
-.planner-day-meals.open{animation:fadeIn .2s ease;}
 .score-row{display:flex;gap:5px;padding:14px 24px 0;overflow-x:auto;scrollbar-width:none;}
 .score-row
 .modal-sourcing{margin-top:14px;padding:12px 14px;border-radius:10px;border:0.5px solid var(--border);}
-.modal-sourcing-canmake{background:rgba(139,195,74,.06);border-color:rgba(139,195,74,.15);}
-.modal-sourcing-stores{background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.15);}
-.modal-sourcing-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;font-weight:500;}
-.modal-sourcing-label.green{color:#8bc34a;}
-.modal-sourcing-label.gold{color:#c9a84c;}
-.modal-sourcing-text{font-size:12px;color:#c8c0a8;line-height:1.6;}
-.modal-sourcing-icon{margin-right:4px;}
-.store-cards{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
-.store-card{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg3);border-radius:10px;border:0.5px solid var(--border);cursor:pointer;transition:all .2s;text-decoration:none;}
-.store-card:hover{border-color:var(--gold-border);transform:translateY(-1px);}
-.store-icon{font-size:16px;flex-shrink:0;}
-.store-info{flex:1;min-width:0;}
-.store-name{font-size:12px;font-weight:500;color:var(--text);}
-.store-addr{font-size:10px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.store-dist{text-align:right;flex-shrink:0;}
-.store-dist-num{font-size:12px;font-weight:500;color:var(--green);}
-.store-dist-unit{font-size:9px;color:var(--dim);}
-.store-dir-btn{font-size:9px;color:var(--gold);margin-top:2px;}
-.store-loading{font-size:11px;color:var(--dim);padding:8px 0;display:flex;align-items:center;gap:6px;}
-.store-loading::before{content:"";width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
-.picker-item:active{background:var(--bg3)!important;transform:scale(.98);}
-/* Smooth modal */
-.modal-overlay{transition:opacity .25s ease;}
-.modal-overlay.open .modal{animation:slideUp .3s ease;}
-/* Better modal backdrop blur */
-.modal-overlay{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
-/* Picker slide-up animation */
-.picker-overlay.open .picker-sheet{animation:slideUp .3s ease;}
-/* Battle card animations */
-.battle-card{animation:fadeInUp .4s ease backwards;}
-/* Planner day expand animation */
-.planner-day-meals.open{animation:fadeIn .2s ease;}
 .score-chip{font-size:11px;padding:4px 10px;border-radius:20px;border:0.5px solid #2a2a1a;color:var(--dim);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;background:transparent;}
 .score-chip.active{border-color:rgba(201,168,76,.35);color:var(--gold);background:var(--gold-dim);}
 .hs-mini{display:flex;gap:1px;}
@@ -644,44 +545,12 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 .week-chef-bio{font-size:11px;color:var(--dim);line-height:1.5;}
 .chef-big-card{background:var(--bg2);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .18s;}
 .chef-big-card:hover{transform:translateY(-2px);}
-.modal-sourcing{margin-top:14px;padding:12px 14px;border-radius:10px;border:0.5px solid var(--border);}
-.modal-sourcing-canmake{background:rgba(139,195,74,.06);border-color:rgba(139,195,74,.15);}
-.modal-sourcing-stores{background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.15);}
-.modal-sourcing-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;font-weight:500;}
-.modal-sourcing-label.green{color:#8bc34a;}
-.modal-sourcing-label.gold{color:#c9a84c;}
-.modal-sourcing-text{font-size:12px;color:#c8c0a8;line-height:1.6;}
-.modal-sourcing-icon{margin-right:4px;}
-.store-cards{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
-.store-card{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg3);border-radius:10px;border:0.5px solid var(--border);cursor:pointer;transition:all .2s;text-decoration:none;}
-.store-card:hover{border-color:var(--gold-border);transform:translateY(-1px);}
-.store-icon{font-size:16px;flex-shrink:0;}
-.store-info{flex:1;min-width:0;}
-.store-name{font-size:12px;font-weight:500;color:var(--text);}
-.store-addr{font-size:10px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.store-dist{text-align:right;flex-shrink:0;}
-.store-dist-num{font-size:12px;font-weight:500;color:var(--green);}
-.store-dist-unit{font-size:9px;color:var(--dim);}
-.store-dir-btn{font-size:9px;color:var(--gold);margin-top:2px;}
-.store-loading{font-size:11px;color:var(--dim);padding:8px 0;display:flex;align-items:center;gap:6px;}
-.store-loading::before{content:"";width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
-.picker-item:active{background:var(--bg3)!important;transform:scale(.98);}
-/* Smooth modal */
-.modal-overlay{transition:opacity .25s ease;}
-.modal-overlay.open .modal{animation:slideUp .3s ease;}
-/* Better modal backdrop blur */
-.modal-overlay{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
-/* Picker slide-up animation */
-.picker-overlay.open .picker-sheet{animation:slideUp .3s ease;}
-/* Battle card animations */
-.battle-card{animation:fadeInUp .4s ease backwards;}
-/* Planner day expand animation */
-.planner-day-meals.open{animation:fadeIn .2s ease;}
 .src-mode{display:flex;gap:6px;margin-bottom:10px;}
 .src-btn{flex:1;padding:6px 8px;border-radius:10px;border:0.5px solid #2a2a1a;background:transparent;font-size:11px;font-weight:500;color:var(--dim);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;text-align:center;}
 .src-btn.make.active{background:#1e2e14;border-color:#4a7a20;color:var(--green);}
 .src-btn.shop.active{background:#1a1408;border-color:#5a4010;color:var(--gold);}
-.src-panel{display:none;}.src-panel.show{display:block;}
+.src-panel{display:none;}
+.src-panel.show{display:block;}
 .src-label{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:7px;}
 .src-label.gold{color:var(--gold);}
 .src-store{display:flex;align-items:center;gap:10px;background:var(--bg3);border-radius:9px;padding:8px 11px;margin-bottom:6px;}
@@ -751,8 +620,7 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
 /* Battle card animations */
 .battle-card{animation:fadeInUp .4s ease backwards;}
 /* Planner day expand animation */
-.planner-day-meals.open{animation:fadeIn .2s ease;}
-</style>
+.planner-day-meals.open{animation:fadeIn .2s ease;}</style>
 </head>
 <body>
 <div class="container">
@@ -1112,42 +980,11 @@ body.light .origin-badge,body.light .search-box,body.light .score-chip,body.ligh
     </div>
 
     <!-- Upload card -->
-    <div style="background:var(--bg2);border:1.5px dashed var(--border);border-radius:20px;padding:28px;margin-bottom:36px;">
-      <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:18px;">Share what you made</div>
-
-      <!-- Photo pick -->
-      <div id="comm-drop-zone" onclick="document.getElementById('comm-file-input').click()" style="background:var(--bg);border:1.5px dashed var(--border);border-radius:14px;padding:28px;text-align:center;cursor:pointer;margin-bottom:16px;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
-        <input type="file" id="comm-file-input" accept="image/*" style="display:none;" onchange="commHandlePhoto(event)"/>
-        <div id="comm-drop-inner">
-          <div style="font-size:36px;margin-bottom:8px;">📷</div>
-          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">Tap to add a photo</div>
-          <div style="font-size:11px;color:var(--dim);">JPG or PNG · max 5MB</div>
-        </div>
-        <img id="comm-preview" style="display:none;width:100%;max-height:260px;object-fit:cover;border-radius:10px;" />
-      </div>
-
-      <!-- Form fields -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;" id="comm-form-fields">
-        <input type="text" id="comm-name" placeholder="Your name (optional)" style="padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;outline:none;"/>
-        <input type="text" id="comm-recipe" placeholder="What did you make? *" style="padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;outline:none;"/>
-        <input type="text" id="comm-caption" placeholder="Caption (optional)" style="padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;outline:none;grid-column:1/-1;"/>
-        <textarea id="comm-recipe-text" placeholder="Share your recipe (optional) — ingredients, steps, tips..." rows="4" style="padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sora',sans-serif;outline:none;grid-column:1/-1;resize:vertical;line-height:1.6;"></textarea>
-      </div>
-
-      <!-- Rating -->
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-        <span style="font-size:12px;color:var(--dim);">How did it turn out?</span>
-        <div id="comm-stars" style="display:flex;gap:4px;">
-          <span class="comm-star" data-v="1" onclick="commSetRating(1)" style="font-size:22px;cursor:pointer;opacity:.3;">🔥</span>
-          <span class="comm-star" data-v="2" onclick="commSetRating(2)" style="font-size:22px;cursor:pointer;opacity:.3;">🔥</span>
-          <span class="comm-star" data-v="3" onclick="commSetRating(3)" style="font-size:22px;cursor:pointer;opacity:.3;">🔥</span>
-          <span class="comm-star" data-v="4" onclick="commSetRating(4)" style="font-size:22px;cursor:pointer;opacity:.3;">🔥</span>
-          <span class="comm-star" data-v="5" onclick="commSetRating(5)" style="font-size:22px;cursor:pointer;opacity:.3;">🔥</span>
-        </div>
-      </div>
-
-      <button onclick="commSubmit()" id="comm-submit-btn" style="padding:12px 28px;border-radius:100px;border:none;background:var(--accent);color:white;font-size:13px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:opacity .2s;">Post it</button>
-      <div id="comm-submit-msg" style="display:none;font-size:13px;color:var(--accent);font-weight:600;margin-top:10px;"></div>
+    <div style="background:var(--bg2);border:1.5px dashed var(--border);border-radius:20px;padding:40px 28px;margin-bottom:36px;text-align:center;">
+      <div style="font-size:40px;margin-bottom:16px;">📸</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px;">Share Your Cook</div>
+      <div style="font-size:13px;color:var(--dim);line-height:1.6;max-width:340px;margin:0 auto 20px;">Community posts are coming soon — we're building a place where everyone can show off what they made. Stay tuned 👀</div>
+      <div style="display:inline-block;padding:10px 24px;border-radius:100px;background:rgba(0,201,106,.1);color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid rgba(0,201,106,.2);">Coming Soon</div>
     </div>
 
     <!-- Gallery -->
@@ -1997,7 +1834,7 @@ window.hsHTML = function hsHTML(hs,hsColor,size=8){
 window.recipeCardHTML = function recipeCardHTML(r){
   return `<div class="recipe-card" onclick="window.openBuddyRecipe('${r.id}')">
     <div class="rc-img-wrap">
-      <img src="${r.img}" alt="${r.title}" style="object-position:${r.imgPos}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <img loading="lazy" src="${r.img}" alt="${r.title}" style="object-position:${r.imgPos}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
       <div class="rc-fallback" style="display:none;background:${r.bg}">${r.emoji}</div>
     </div>
     <div class="rc-body">
@@ -2067,21 +1904,6 @@ function filterChefs(el,tag){
   el.classList.add('active');
   renderChefsPage(tag);
 }
-window.renderChefsPage = function renderChefsPage(tag){
-  const filtered=tag==='all'?chefs:chefs.filter(c=>c.tags.includes(tag));
-  document.getElementById('chefs-grid').innerHTML=filtered.map(c=>`
-    <div class="chef-big-card">
-      <img src="${c.img}" alt="${c.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-      <div class="cbc-fb" style="display:none;background:${c.bg};color:${c.color}">${c.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
-      <div class="cbc-body">
-        <div class="cbc-name">${c.name}</div>
-        <div class="cbc-cred" style="color:${c.color}">${c.cred}</div>
-        <div class="cbc-bio">${c.bio}</div>
-        <div class="cbc-tag" style="background:${c.color}18;color:${c.color};border:0.5px solid ${c.color}33">${c.tags.includes('michelin')?'Michelin ⭐':c.tags.includes('youtube')?'YouTube':c.tags.includes('tv')?'TV chef':'Specialty'}</div>
-      </div>
-    </div>`).join('');
-}
-
 // ===========================================
 // CHEF CAROUSEL (home)
 // ===========================================
@@ -2090,7 +1912,7 @@ window.buildCarousel = function buildCarousel(){
   if(!track) return;
   track.innerHTML=chefs.slice(0,12).map(c=>`
     <div class="chef-card-item" onclick="showPage('more')">
-      <img src="${c.img}" alt="${c.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <img loading="lazy" src="${c.img}" alt="${c.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
       <div class="cf-fb" style="display:none;background:${c.bg};color:${c.color}">${c.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
       <div class="cf-body">
         <div class="cf-name">${c.name}</div>
@@ -2200,7 +2022,7 @@ function prefetchNews(){
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
+      model:'claude-sonnet-4-6',
       max_tokens:800,
       tools:[{type:'web_search_20250305',name:'web_search'}],
       messages:[{role:'user',content:prompt}]
@@ -2345,7 +2167,7 @@ window.getRecipeDetailsFromAPI = function(recipe, callback) {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 1500,
       messages: [{role: 'user', content: prompt}]
     })
@@ -2541,22 +2363,9 @@ window.printRecipe = function(r){
 
 window.buddyRecipeCard = function(r){
   return '<div style="background:var(--bg2);border-radius:14px;overflow:hidden;cursor:pointer;border:1px solid var(--border);" onclick="window.openBuddyRecipe(\''+r.id+'\')">'
-    + '<div style="width:100%;aspect-ratio:16/10;overflow:hidden;background:var(--bg3);"><img src="'+r.img+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/></div>'
+    + '<div style="width:100%;aspect-ratio:16/10;overflow:hidden;background:var(--bg3);"><img loading="lazy" src="'+r.img+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/></div>'
     + '<div style="padding:10px 12px;"><div style="font-size:12px;font-weight:600;line-height:1.3;margin-bottom:4px;">'+r.title+'</div>'
     + '<div style="display:flex;justify-content:space-between;"><span style="font-size:10px;color:var(--dim);">'+r.chef+'</span><span style="font-size:10px;color:var(--dim);">'+r.time+'</span></div></div></div>';
-};
-
-window.switchMoreSection = function(section){
-  document.querySelectorAll('.more-sec').forEach(function(s){s.style.display='none';});
-  document.querySelectorAll('.more-nav').forEach(function(n){n.classList.remove('active');});
-  var sec = document.getElementById('more-sec-'+section);
-  var nav = document.getElementById('mn-'+section);
-  if(sec) sec.style.display='block';
-  if(nav) nav.classList.add('active');
-  
-  if(section==='chefs') window.renderChefsNew('all');
-  if(section==='battle') window.renderBattleArena();
-  if(section==='planner') window.renderPlannerNew();
 };
 
 // === AI CHEF BUDDY CHAT ===
@@ -3873,7 +3682,7 @@ window.renderSFGridGlobal = function(list, grid){
     var imgSection = r.img 
       ? '<div style="width:100%;aspect-ratio:4/3;overflow:hidden;background:linear-gradient(135deg,#1B4332,#2D6A4F);display:flex;align-items:center;justify-content:center;position:relative;">'
         + '<div style="font-size:40px;position:absolute;z-index:1;">' + r.emoji + '</div>'
-        + '<img src="' + r.img + '" style="width:100%;height:100%;object-fit:cover;position:relative;z-index:2;" onerror="this.style.display=\'none\'"/>'
+        + '<img loading="lazy" src="' + r.img + '" style="width:100%;height:100%;object-fit:cover;position:relative;z-index:2;" onerror="this.style.display=\'none\'"/>'
         + '</div>'
       : '<div style="width:100%;aspect-ratio:4/3;overflow:hidden;background:linear-gradient(135deg,#1B4332,#2D6A4F);display:flex;align-items:center;justify-content:center;">'
         + '<div style="font-size:40px;">' + r.emoji + '</div>'
@@ -3904,7 +3713,7 @@ window.renderHomeChefRow = function(){
     return '<div onclick="showPage(\'more\')" style="cursor:pointer;text-align:center;transition:transform .15s;" onmouseover="this.style.transform=\'translateY(-3px)\'" onmouseout="this.style.transform=\'\'">'
       + '<div style="position:relative;width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;background:var(--bg2);border:1px solid var(--border);margin-bottom:10px;">'
       +   '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:\'Space Grotesk\',sans-serif;font-size:32px;font-weight:600;color:var(--dim);">' + initials + '</div>'
-      +   (c.img ? '<img src="' + c.img + '" style="position:relative;width:100%;height:100%;object-fit:cover;z-index:2;" onerror="this.style.display=\'none\'"/>' : '')
+      +   (c.img ? '<img loading="lazy" src="' + c.img + '" style="position:relative;width:100%;height:100%;object-fit:cover;z-index:2;" onerror="this.style.display=\'none\'"/>' : '')
       + '</div>'
       + '<div style="font-size:12px;font-weight:600;color:var(--text);line-height:1.2;margin-bottom:2px;">' + c.name + '</div>'
       + '<div style="font-size:10px;color:var(--dim);line-height:1.3;">' + c.cred + '</div>'
@@ -3931,7 +3740,7 @@ window.renderChefsNew = function(tag){
     return '<div class="chef-card-new">'
       + '<div style="width:100%;aspect-ratio:1;background:' + (c.bg||'var(--bg3)') + ';display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;">'
       + '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:' + (c.color||'var(--accent)') + ';">' + initials + '</div>'
-      + (c.img && c.img.length > 10 ? '<img src="'+c.img+'" style="position:relative;z-index:2;width:100%;height:100%;object-fit:cover;" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'"/>' : '')
+      + (c.img && c.img.length > 10 ? '<img loading="lazy" src="'+c.img+'" style="position:relative;z-index:2;width:100%;height:100%;object-fit:cover;" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'"/>' : '')
       + '</div>'
       + '<div style="padding:12px 14px;">'
       + '<div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px;">' + c.name + '</div>'
@@ -4677,7 +4486,7 @@ window.commLoadGallery = function() {
       var ago = commTimeAgo(p.created_at);
       var reacted = commHasReacted(p.id);
       return '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;">'
-        + '<img src="' + p.photo_url + '" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" onerror="this.parentElement.style.display=\'none\'"/>'
+        + '<img loading="lazy" src="' + p.photo_url + '" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" onerror="this.parentElement.style.display=\'none\'"/>'
         + '<div style="padding:10px 12px;">'
         + '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">' + commEsc(p.recipe_name) + '</div>'
         + (p.caption ? '<div style="font-size:11px;color:var(--dim);margin-bottom:4px;line-height:1.4;">' + commEsc(p.caption) + '</div>' : '')
